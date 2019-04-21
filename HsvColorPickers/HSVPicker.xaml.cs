@@ -3,6 +3,10 @@ using Windows.UI.Xaml.Controls;
 
 namespace HSVColorPickers
 {
+    /// <summary>
+    /// HSVPicker:
+    ///    HSV of color picker.
+    /// </summary>
     public sealed partial class HSVPicker : UserControl, IPicker
     {
 
@@ -32,9 +36,9 @@ namespace HSVColorPickers
             set
             {
                 byte A = value.A;
-                double H = value.H;
-                double S = value.S;
-                double L = value.V;
+                float H = value.H;
+                float S = value.S;
+                float L = value.V;
 
                 //H          
                 this.HSlider.Value = this.HPicker.Value = (int)H;
@@ -46,12 +50,12 @@ namespace HSVColorPickers
                 this.HF.Color = HSV.HSVtoRGB(A, 300, S, L);
                 //S
                 this.SSlider.Value = SPicker.Value = (int)S;
-                this.SLeft.Color = HSV.HSVtoRGB(A, H, 0.0d, L);
-                this.SRight.Color = HSV.HSVtoRGB(A, H, 100.0d, L);
+                this.SLeft.Color = HSV.HSVtoRGB(A, H, 0.0f, L);
+                this.SRight.Color = HSV.HSVtoRGB(A, H, 100.0f, L);
                 //L
                 this.VSlider.Value = VPicker.Value = (int)L;
-                this.VLeft.Color = HSV.HSVtoRGB(A, H, S, 0.0d);
-                this.VRight.Color = HSV.HSVtoRGB(A, H, S, 100.0d);
+                this.VLeft.Color = HSV.HSVtoRGB(A, H, S, 0.0f);
+                this.VRight.Color = HSV.HSVtoRGB(A, H, S, 100.0f);
 
                 this.hsl = value;
             }
@@ -71,9 +75,9 @@ namespace HSVColorPickers
             this.InitializeComponent();
 
             //Slider
-            this.HSlider.ValueChangeDelta += (sender, value) => this.HSV = this._HSL = new HSV(this.hsl.A, value, this.hsl.S, this.hsl.V);
-            this.SSlider.ValueChangeDelta += (sender, value) => this.HSV = this._HSL = new HSV(this.hsl.A, this.hsl.H, value, this.hsl.V);
-            this.VSlider.ValueChangeDelta += (sender, value) => this.HSV = this._HSL = new HSV(this.hsl.A, this.hsl.H, this.hsl.S, value);
+            this.HSlider.ValueChangeDelta += (sender, value) => this.HSV = this._HSL = new HSV(this.hsl.A, (float)value, this.hsl.S, this.hsl.V);
+            this.SSlider.ValueChangeDelta += (sender, value) => this.HSV = this._HSL = new HSV(this.hsl.A, this.hsl.H, (float)value, this.hsl.V);
+            this.VSlider.ValueChangeDelta += (sender, value) => this.HSV = this._HSL = new HSV(this.hsl.A, this.hsl.H, this.hsl.S, (float)value);
 
             //Picker
             this.HPicker.ValueChange += (sender, Value) => this.HSV = this._HSL = new HSV(this.hsl.A, Value, this.hsl.S, this.HSV.V);

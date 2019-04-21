@@ -8,6 +8,10 @@ using Windows.UI.Xaml.Controls;
 
 namespace HSVColorPickers
 {
+    /// <summary>
+    /// AlphaPicker:
+    ///    Color alpha picker.
+    /// </summary>
     public sealed partial class AlphaPicker : UserControl
     {
         //Delegate
@@ -15,6 +19,11 @@ namespace HSVColorPickers
 
         float CanvasWidth;
         float CanvasHeight;
+        CanvasBitmap Bitmap;
+
+        CanvasLinearGradientBrush Brush;
+        Vector2 StartPoint;
+        Vector2 EndPoint;
 
         #region DependencyProperty
 
@@ -49,7 +58,7 @@ namespace HSVColorPickers
         public AlphaPicker()
         {
             this.InitializeComponent();
-           
+
             //Slider
             this.ASlider.ValueChangeDelta += (object sender, double value) => this.Alpha = this._Alpha = (byte)value;
             //Picker
@@ -61,6 +70,30 @@ namespace HSVColorPickers
                 if (e.NewSize == e.PreviousSize) return;
                 this.CanvasWidth = (float)e.NewSize.Width;
                 this.CanvasHeight = (float)e.NewSize.Height;
+
+                this.StartPoint = new Vector2(0, this.CanvasHeight / 2);
+                this.EndPoint = new Vector2(this.CanvasWidth, this.CanvasHeight / 2);
+
+                if (this.Brush != null)
+                {
+                    this.Brush.StartPoint = this.StartPoint;
+                    this.Brush.EndPoint = this.EndPoint;
+                }
+            };
+            this.CanvasControl.Draw += (sender, args) =>
+            {
+                Color[] colors = new Color[]
+                {
+                     Windows.UI.Colors.LightGray, Windows.UI.Colors.White,
+                     Windows.UI.Colors.White, Windows.UI.Colors.LightGray
+                };
+                this.Bitmap = CanvasBitmap.CreateFromColors(sender, colors, 2, 2);
+
+                this.Brush = new CanvasLinearGradientBrush(sender, Windows.UI.Colors.Transparent, Windows.UI.Colors.DimGray)
+                {
+                    StartPoint = this.StartPoint,
+                    EndPoint = this.EndPoint
+                };
             };
             this.CanvasControl.Draw += (sender, args) =>
             {
@@ -74,29 +107,13 @@ namespace HSVColorPickers
                         {
                             ExtendX = CanvasEdgeBehavior.Wrap,
                             ExtendY = CanvasEdgeBehavior.Wrap,
-                            Source = CanvasBitmap.CreateFromColors
-                            (
-                                resourceCreator: sender,
-                                widthInPixels: 2,
-                                heightInPixels: 2,
-                                colors: new Color[]
-                                {
-                                 Windows.UI.Colors.LightGray,
-                                 Windows.UI.Colors.White,
-                                 Windows.UI.Colors.White,
-                                 Windows.UI.Colors.LightGray
-                                }
-                             )
+                            Source = this.Bitmap
                         }
                     }
                 });
-                
-                args.DrawingSession.FillRectangle(0, 0, this.CanvasWidth, this.CanvasHeight, new CanvasLinearGradientBrush(sender, Windows.UI.Colors.Transparent, Windows.UI.Colors.DimGray)
-                {
-                    StartPoint = new Vector2(0, this.CanvasHeight / 2),
-                    EndPoint = new Vector2(this.CanvasWidth, this.CanvasHeight / 2)
-                });
+
+                args.DrawingSession.FillRectangle(0, 0, this.CanvasWidth, this.CanvasHeight, this.Brush);
             };
-        }       
+        }
     }
 }

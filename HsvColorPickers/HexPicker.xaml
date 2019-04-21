@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"    
+    MinWidth="100"
     d:DesignHeight="50"
     d:DesignWidth="100">
 
@@ -16,7 +17,7 @@
         <TextBlock Text="#" VerticalAlignment="Center"/>
         <TextBox x:Name="TextBox" Grid.Column="1" BorderThickness="0" />
     </Grid>
-    
+
 </UserControl>
 
 

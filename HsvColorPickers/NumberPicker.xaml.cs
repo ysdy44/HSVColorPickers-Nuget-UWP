@@ -26,7 +26,8 @@ namespace HSVColorPickers
 
             if (e.NewValue is int value)
             {
-                con.Button.Content = value.ToString() + " " + con.Unit;
+                int limite = con.GeLimitedtValue(value);
+                con.SetValue(limite);
             }
         })));
 
@@ -58,107 +59,98 @@ namespace HSVColorPickers
 
             if (e.NewValue is string value)
             {
-                con.Button.Content = (con.IsNegative ? "-" : "") + con.Value.ToString() + " " + value;
+                con.SetValue(value);
             }
         })));
 
 
         #endregion
 
-        #region Property
+        //Flyout
+        private bool IsFlyouted;
+        private bool IsNegative;
 
-
-        private int OldValue { get; set; }
-
-        private int newValue;
-        private int NewValue
+        private int cacheValue;
+        private int CacheValue
         {
-            get => this.newValue;
+            get => this.cacheValue;
             set
             {
-                this.Button.Content = (this.IsNegative ? "-" : "") + value.ToString() + " " + this.Unit;
-                this.newValue = value;
+                this.SetValue(this.IsNegative, value);
+
+                this.cacheValue = value;
             }
         }
-
-        private bool isNegative;
-        private bool IsNegative
-        {
-            get => this.isNegative;
-            set
-            {
-                this.Button.Content = (value ? "-" : "") + this.Value.ToString() + " " + this.Unit;
-                this.isNegative = value;
-            }
-        }
-
-
-        #endregion
 
 
         public NumberPicker()
         {
             this.InitializeComponent();
             this.Loaded += (s, e) => this.Button.Content = this.Value.ToString() + " " + this.Unit;
-
-            //Number
-            this.Zero.Click += (s, e) => this.NewValue = this.NewValue * 10;
-            this.One.Click += (s, e) => this.NewValue = this.NewValue * 10 + 1;
-            this.Two.Click += (s, e) => this.NewValue = this.NewValue * 10 + 2;
-            this.Three.Click += (s, e) => this.NewValue = this.NewValue * 10 + 3;
-            this.Four.Click += (s, e) => this.NewValue = this.NewValue * 10 + 4;
-            this.Five.Click += (s, e) => this.NewValue = this.NewValue * 10 + 5;
-            this.Six.Click += (s, e) => this.NewValue = this.NewValue * 10 + 6;
-            this.Seven.Click += (s, e) => this.NewValue = this.NewValue * 10 + 7;
-            this.Eight.Click += (s, e) => this.NewValue = this.NewValue * 10 + 8;
-            this.Nine.Click += (s, e) => this.NewValue = this.NewValue * 10 + 9;
-
-            //Back, Negative
-            this.Back.Click += (s, e) => this.NewValue = this.NewValue / 10;
-            this.Negative.Click += (s, e) => this.IsNegative = !this.IsNegative;
-            this.Decimal.Click += (s, e) => this.NewValue = 0;
-
-            //OK, Cancel
-            this.OK.Click += (s, e) =>
-            {
-                this.Value = this.GetValue(this.NewValue);
-                this.ValueChange?.Invoke(this, this.Value);
-            };
-            this.Cancel.Click += (s, e) =>
-            {
-                this.Value = this.GetValue(this.OldValue);
-                this.ValueChange?.Invoke(this, this.Value);
-            };
-
             this.Button.Click += (s, e) =>
             {
-                //cache value
-                if (this.Value >= 0)
+                this.cacheValue = Math.Abs(this.Value);
+                this.IsNegative = (this.Value < 0);
+            };
+
+            //Flyout
+            this.Flyout.Opened += (s, e) =>
+            {
+                this.cacheValue = 0;
+                this.IsFlyouted = true;
+            };
+            this.Flyout.Closed += (s, e) =>
+            {
+                if (this.IsFlyouted)
                 {
-                    this.NewValue = this.Value;
-                    this.OldValue = this.Value;
-                    this.IsNegative = false;
+                    this.CacheValue = this.Value;
+                    this.IsFlyouted = false;
                 }
-                else
-                {
-                    this.NewValue = -this.Value;
-                    this.OldValue = -this.Value;
-                    this.IsNegative = true;
-                }
+            };
+
+            //Number
+            this.Zero.Click += (s, e) => this.CacheValue = this.cacheValue * 10;
+            this.One.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 1;
+            this.Two.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 2;
+            this.Three.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 3;
+            this.Four.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 4;
+            this.Five.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 5;
+            this.Six.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 6;
+            this.Seven.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 7;
+            this.Eight.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 8;
+            this.Nine.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 9;
+
+            //Back, Negative
+            this.Back.Click += (s, e) => this.CacheValue = this.cacheValue / 10;
+            this.Negative.Click += (s, e) => this.IsNegative = !this.IsNegative;
+            this.Decimal.Click += (s, e) => this.CacheValue = 0;
+
+            //OK, Cancel
+            this.Cancel.Click += (s, e) => this.Flyout.Hide();
+            this.OK.Click += (s, e) =>
+            {
+                this.IsFlyouted = false;
+                this.Flyout.Hide();
+
+                int value = this.GeLimitedtValue(this.cacheValue);
+                this.Value = value;
+                this.ValueChange?.Invoke(this, value);
             };
         }
 
-        private int GetValue(int num)
+        private void SetValue(int value) => this.Button.Content = value.ToString() + " " + this.Unit;
+        private void SetValue(bool isNegative, int value) => this.Button.Content = (isNegative ? "-" : "") + Math.Abs(value).ToString() + " " + this.Unit;
+        private void SetValue(string unit) => this.Button.Content = (this.IsNegative ? "-" : "") + this.Value.ToString() + " " + unit;
+
+        private int GeLimitedtValue(int num)
         {
-            this.Flyout.Hide();
-
             num = Math.Abs(num);
-            int value = this.IsNegative ? -num : num;
-            if (value > this.Maximum) return this.Maximum;
-            if (value < this.Minimum) return this.Minimum;
+            num = this.IsNegative ? -num : num;
 
-            return value;
+            if (num > this.Maximum) return this.Maximum;
+            if (num < this.Minimum) return this.Minimum;
+
+            return num;
         }
-
     }
 }

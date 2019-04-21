@@ -9,6 +9,12 @@ using Windows.UI.Xaml.Shapes;
 
 namespace HSVColorPickers
 {
+    /// <summary>
+    /// SwatchesPicker:
+    ///    Swatches picker
+    /// </summary>
+    public sealed partial class SwatchesPicker : UserControl, IPicker
+    {
 
     /// <summary> It contains 16 colors. </summary>
     public class Swatches
@@ -37,26 +43,26 @@ namespace HSVColorPickers
             return colors;
         }
 
-        private Color[] GetColorfulColors(Color color, int count)
-        {
-            Color[] colors = new Color[count];
-
-            double h = HSV.RGBtoHSV(color).H;
-            double span = 100 / count;
-
-            for (int i = 0; i < count; i++)
+            private Color[] GetColorfulColors(Color color, int count)
             {
-                double l = 100 - i * span;
-                double s = i % 4 * 20 + 20;
-                colors[i] = HSV.HSVtoRGB(255, h, s, l);
+                Color[] colors = new Color[count];
+
+                float h = HSV.RGBtoHSV(color).H;
+                float span = 100 / count;
+
+                for (int i = 0; i < count; i++)
+                {
+                    float l = 100 - i * span;
+                    float s = i % 4 * 20 + 20;
+                    colors[i] = HSV.HSVtoRGB(255, h, s, l);
+                }
+
+                return colors;
             }
-
-            return colors;
         }
-    }
 
-    /// <summary> Size. </summary>
-    public class RainbowSize
+        /// <summary> Size. </summary>
+        public class RainbowSize
     {
         public readonly float Span = 4;
         public readonly float thiscikneee = 1;
@@ -100,9 +106,8 @@ namespace HSVColorPickers
             this.CurrentBackgroundHeight = height;
         }
     }
-     
-    public sealed partial class SwatchesPicker : UserControl, IPicker
-    {
+
+
         //Delegate
         public event ColorChangeHandler ColorChange = null;
 

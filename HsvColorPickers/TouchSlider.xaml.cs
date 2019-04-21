@@ -4,6 +4,10 @@ using Windows.UI.Xaml.Media;
 
 namespace HSVColorPickers
 {
+    /// <summary>
+    /// TouchSlider: 
+    ///    Touch slider, It has three events : Started, Delta and Completed.
+    /// </summary>
     public sealed partial class TouchSlider : UserControl
     {
         //Delegate
@@ -72,7 +76,7 @@ namespace HSVColorPickers
 
 
         public UIElement SliderBackground { get => this.Border.Child; set => this.Border.Child = value; }
-        public Brush SliderBrush { get => this.Border.Background; set => this.Border.Background = value; }
+        public Brush SliderBrush { get => this.UserControl.Background; set => this.UserControl.Background = value; }
 
 
         #endregion

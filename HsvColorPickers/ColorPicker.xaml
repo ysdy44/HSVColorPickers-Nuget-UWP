@@ -1,11 +1,16 @@
 ﻿<UserControl
+    x:Name="UserControl"
     x:Class="HSVColorPickers.ColorPicker"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="using:HSVColorPickers"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    VerticalAlignment="Top"
     mc:Ignorable="d"
+    Width="230"
+    Padding="8,0"
     d:DesignHeight="270"
     d:DesignWidth="200">
 
@@ -15,7 +20,10 @@
     </UserControl.Resources>
 
 
-    <StackPanel >
+    <StackPanel 
+        Background="{x:Bind UserControl.Background,Mode=OneWay}"
+        Padding="{x:Bind UserControl.Padding,Mode=OneWay}"
+        >
 
         <!--Head-->
         <Grid Height="40">
@@ -32,7 +40,7 @@
             <Button x:Name="HexOrStrawButton" Grid.Column="1" Width="Auto" Content="&#xECE7;" FontSize="18" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Stretch" Style="{ThemeResource NavigationBackButtonNormalStyle}"/>
 
             <local:HexPicker x:Name="HexPicker" Grid.Column="2" Height="28"/>
-            <local:StrawPicker x:Name="StrawPicker" Grid.Column="2" HorizontalAlignment="Right"/>
+            <local:StrawPicker x:Name="StrawPicker" Grid.Column="2" HorizontalAlignment="Right" Background="Transparent"/>
         </Grid>
 
         <!--Toggle-->
@@ -41,7 +49,7 @@
                 <ComboBox.Style>
                     <Style TargetType="ComboBox">
                         <Setter Property="Background" Value="{ThemeResource AppBarBackgroundThemeBrush}" />
-                        <Setter Property="BorderBrush" Value="{ThemeResource AppBarBorderThemeBrush}" />
+                        <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundListLowBrush}" />
                         <Setter Property="BorderThickness" Value="1" />
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                         <Setter Property="HorizontalAlignment" Value="Stretch" />

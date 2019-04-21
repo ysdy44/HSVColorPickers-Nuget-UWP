@@ -4,15 +4,15 @@ using Windows.UI.Xaml.Controls;
 
 namespace HSVColorPickers
 {
-
-    interface IPicker
+    public interface IPicker
     {
         event ColorChangeHandler ColorChange;
 
         void SetColor(Color value);
         Color GetColor();
     }
-    class Picker
+
+    public class Picker
     {
         public string Name;
         public IPicker Control;
@@ -24,9 +24,13 @@ namespace HSVColorPickers
         }
     }
 
-
+    /// <summary>
+    /// ColorPicker:
+    ///    Color picker (ง •̀_•́)ง
+    /// </summary>
     public sealed partial class ColorPicker : UserControl
     {
+
         //Delegate
         public event ColorChangeHandler ColorChange;
 
@@ -48,7 +52,7 @@ namespace HSVColorPickers
         private int index;
         public int Index
         {
-            get =>this. index;
+            get => this.index;
             set
             {
                 IPicker newControl = this.Pickers[value].Control;
@@ -105,8 +109,8 @@ namespace HSVColorPickers
                 this.ColorChange?.Invoke(this, Color.FromArgb(this.AlphaPicker.Alpha, value.R, value.G, value.B));
             }
         }
-   
-        
+
+
 
         /// <summary> Alpha of Color Picker </summary>
         public byte Alpha
@@ -171,7 +175,7 @@ namespace HSVColorPickers
         {
             this._Color = value;
             this.HexPicker.Color = value;
-        }            
+        }
         private void Picker_ColorChange2(object sender, Color value)
         {
             this._Color = value;

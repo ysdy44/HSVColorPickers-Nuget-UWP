@@ -7,6 +7,8 @@
     xmlns:local="using:HSVColorPickers"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
+    HorizontalAlignment="Stretch"
+    MinWidth="140"
     d:DesignHeight="50"
     d:DesignWidth="200">
 
@@ -17,7 +19,7 @@
         </Grid.RowDefinitions>
 
         <!--A-->
-        <TextBlock Text="A" Opacity="0.8"/>
+        <TextBlock Text="A" Opacity="0.8" VerticalAlignment="Center"/>
         <local:NumberPicker x:Name="APicker" Minimum="0" Maximum="255" HorizontalAlignment="Right" />
         <local:TouchSlider  x:Name="ASlider" Grid.Row="1" Minimum="0" Maximum="255">
             <local:TouchSlider.SliderBackground>

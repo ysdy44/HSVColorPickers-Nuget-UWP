@@ -15,7 +15,7 @@ namespace HSVColorPickers
         public byte A;
 
         /// <summary> Hue </summary>
-        public double H
+        public float H
         {
             get => this.h;
             set
@@ -25,10 +25,10 @@ namespace HSVColorPickers
                 else this.h = value;
             }
         }
-        private double h;
+        private float h;
 
         /// <summary> Saturation </summary>
-        public double S
+        public float S
         {
             get => this.s;
             set
@@ -38,10 +38,10 @@ namespace HSVColorPickers
                 else this.s = value;
             }
         }
-        private double s;
+        private float s;
 
         /// <summary> Value </summary>
-        public double V
+        public float V
         {
             get => this.v;
             set
@@ -51,20 +51,20 @@ namespace HSVColorPickers
                 else this.v = value;
             }
         }
-        private double v;
+        private float v;
 
 
 
-        public HSV(byte a, double h, double s, double v) { this.A = a; this.h = h; this.s = v; this.v = v; this.H = H; this.S = s; this.V = v; }
+        public HSV(byte a, float h, float s, float v) { this.A = a; this.h = h; this.s = v; this.v = v; this.H = H; this.S = s; this.V = v; }
 
 
 
         /// <summary> RGB to HSV </summary>
         /// <param name="h"> Hue </param>
         /// <returns> Color </returns>
-        public static Color HSVtoRGB(double h)
+        public static Color HSVtoRGB(float h)
         {
-            double hh = h / 60;
+            float hh = h / 60;
             byte xhh = (byte)((1 - Math.Abs(hh % 2 - 1)) * 255);
 
             if (hh < 1) return Color.FromArgb(255, 255, xhh, 0);
@@ -86,7 +86,7 @@ namespace HSVColorPickers
         /// <param name="s"> Saturation </param>
         /// <param name="v"> Value </param>
         /// <returns> Color </returns>
-        public static Color HSVtoRGB(byte a, double h, double s, double v)
+        public static Color HSVtoRGB(byte a, float h, float s, float v)
         {
             if (h == 360) h = 0;
 
@@ -96,16 +96,16 @@ namespace HSVColorPickers
                 return Color.FromArgb(a, ll, ll, ll);
             }
 
-            double S = s / 100;
-            double V = v / 100;
+            float S = s / 100;
+            float V = v / 100;
 
             int H1 = (int)(h * 1.0 / 60);
-            double F = h / 60 - H1;
-            double P = V * (1.0 - S);
-            double Q = V * (1.0 - F * S);
-            double T = V * (1.0 - (1.0 - F) * S);
+            float F = h / 60 - H1;
+            float P = V * (1.0f - S);
+            float Q = V * (1.0f - F * S);
+            float T = V * (1.0f - (1.0f - F) * S);
 
-            double R = 0, G = 0, B = 0;
+            float R = 0, G = 0, B = 0;
             switch (H1)
             {
                 case 0: R = V; G = T; B = P; break;
@@ -146,24 +146,24 @@ namespace HSVColorPickers
         /// <returns> HSV </returns>
         public static HSV RGBtoHSV(byte a, byte r, byte g, byte b)
         {
-            double R = r * 1.0 / 255;
-            double G = g * 1.0 / 255;
-            double B = b * 1.0 / 255;
+            float R = r * 1.0f / 255;
+            float G = g * 1.0f / 255;
+            float B = b * 1.0f / 255;
 
-            double min = Math.Min(Math.Min(R, G), B);
-            double max = Math.Max(Math.Max(R, G), B);
+            float min = Math.Min(Math.Min(R, G), B);
+            float max = Math.Max(Math.Max(R, G), B);
 
-            double H = 0, S, V;
+            float H = 0, S, V;
 
             if (max == min) { H = 0; }
 
-            else if (max == R && G > B) H = 60 * (G - B) * 1.0 / (max - min) + 0;
-            else if (max == R && G < B) H = 60 * (G - B) * 1.0 / (max - min) + 360;
-            else if (max == G) H = H = 60 * (B - R) * 1.0 / (max - min) + 120;
-            else if (max == B) H = H = 60 * (R - G) * 1.0 / (max - min) + 240;
+            else if (max == R && G > B) H = 60 * (G - B) * 1.0f / (max - min) + 0;
+            else if (max == R && G < B) H = 60 * (G - B) * 1.0f / (max - min) + 360;
+            else if (max == G) H = H = 60 * (B - R) * 1.0f / (max - min) + 120;
+            else if (max == B) H = H = 60 * (R - G) * 1.0f / (max - min) + 240;
 
             if (max == 0) S = 0;
-            else S = (max - min) * 1.0 / max;
+            else S = (max - min) * 1.0f / max;
 
             V = max;
 

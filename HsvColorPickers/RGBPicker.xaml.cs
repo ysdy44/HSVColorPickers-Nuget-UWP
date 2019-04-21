@@ -3,14 +3,16 @@ using Windows.UI.Xaml.Controls;
 
 namespace HSVColorPickers
 {
+    /// <summary>
+    /// RGBPicker:
+    ///    RGB of color picker.
+    /// </summary>
     public sealed partial class RGBPicker : UserControl, IPicker
     {
-
         //Delegate
         public event ColorChangeHandler ColorChange = null;
         public Color GetColor() => this.Color;
         public void SetColor(Color value) => this.Color = value;
-
 
         #region DependencyProperty
 
@@ -55,7 +57,6 @@ namespace HSVColorPickers
 
 
         #endregion
-
 
         public RGBPicker()
         {

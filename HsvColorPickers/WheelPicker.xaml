@@ -6,9 +6,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
+    MinWidth="200"
     MinHeight="200"
     >
 
-    <canvas:CanvasControl x:Name="CanvasControl" />
+    <canvas:CanvasControl x:Name="CanvasControl"/>
 
 </UserControl>

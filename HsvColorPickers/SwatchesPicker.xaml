@@ -6,10 +6,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
+    MaxWidth="230"
     d:DesignHeight="60"
     d:DesignWidth="200">
 
-    <Grid>
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
             <RowDefinition Height="40"/>
@@ -17,7 +18,19 @@
 
         <canvas:CanvasControl x:Name="CanvasControl" Grid.Row="1"/>
 
-        <GridView x:Name="GridView"/>
+        <GridView x:Name="GridView">
+            <GridView.Style>
+                <Style TargetType="GridView">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="GridView">
+                                <ItemsPresenter HorizontalAlignment="Center" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </GridView.Style>
+        </GridView>
 
     </Grid>
 </UserControl>

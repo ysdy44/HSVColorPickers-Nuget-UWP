@@ -11,18 +11,22 @@ using Windows.UI.Xaml.Media;
 
 namespace HSVColorPickers
 {
-    public class Square
-    {
-        public Vector2 Center = new Vector2(50, 50);
-        public float Width = 100;
-        public float Height = 100;
-        public float HalfWidth => this.Width / 2;
-        public float HalfHeight => this.Height / 2;
-        public float StrokePadding = 12;
-    }
-
+    /// <summary>
+    /// PalettePicker:
+    ///    Color palette picker.
+    /// </summary>
     public partial class PalettePicker : UserControl, IPicker
     {
+        private class PaletteSquare
+        {
+            public Vector2 Center = new Vector2(50, 50);
+            public float Width = 100;
+            public float Height = 100;
+            public float HalfWidth => this.Width / 2;
+            public float HalfHeight => this.Height / 2;
+            public float StrokePadding = 12;
+        }
+
         //Delegate
         public event ColorChangeHandler ColorChange = null;
         public Color GetColor() => HSV.HSVtoRGB(this.HSV);
@@ -64,12 +68,11 @@ namespace HSVColorPickers
         #endregion
 
 
-
         bool IsPalette = false;
         Vector2 Vector;
         Action<HSV> Action;
-        Square Square = new Square();
-                
+        PaletteSquare Square = new PaletteSquare();
+
         public PalettePicker(PaletteBase paletteBase)
         {
             this.InitializeComponent();
@@ -81,7 +84,7 @@ namespace HSVColorPickers
             this.Slider.Value = paletteBase.GetValue(this.hsl);
             this.LinearGradientBrush.GradientStops = paletteBase.GetSliderBrush(this.hsl);
 
-            this.Slider.ValueChangeDelta += (sender, value) => this.HSV = this._HSL = paletteBase.GetHSL(this.hsl, value);
+            this.Slider.ValueChangeDelta += (sender, value) => this.HSV = this._HSL = paletteBase.GetHSL(this.hsl, (float)value);
 
             //Action
             this.Action = (HSV hsl) =>
@@ -142,8 +145,8 @@ namespace HSVColorPickers
         public double Minimum;
         public double Maximum;
 
-        public abstract HSV GetHSL(HSV HSV, double value);
-        public abstract double GetValue(HSV HSV);
+        public abstract HSV GetHSL(HSV HSV, float value);
+        public abstract float GetValue(HSV HSV);
 
         public abstract GradientStopCollection GetSliderBrush(HSV HSV);
 
@@ -162,15 +165,15 @@ namespace HSVColorPickers
             this.Maximum = 360;
         }
 
-        public override HSV GetHSL(HSV HSV, double value) => new HSV(HSV.A, value, HSV.S, HSV.V);
-        public override double GetValue(HSV HSV) => HSV.H;
+        public override HSV GetHSL(HSV HSV, float value) => new HSV(HSV.A, value, HSV.S, HSV.V);
+        public override float GetValue(HSV HSV) => HSV.H;
 
         public override GradientStopCollection GetSliderBrush(HSV HSV)
         {
             byte A = HSV.A;
-            double H = HSV.H;
-            double S = HSV.S;
-            double L = HSV.V;
+            float H = HSV.H;
+            float S = HSV.S;
+            float L = HSV.V;
 
             return new GradientStopCollection()
             {
@@ -228,8 +231,8 @@ namespace HSVColorPickers
         }
         public override HSV Delta(HSV HSV, Vector2 v, float SquareHalfWidth, float SquareHalfHeight)
         {
-            double S = 50 + v.X * 50 / SquareHalfWidth;
-            double L = 50 - v.Y * 50 / SquareHalfHeight;
+            float S = 50 + v.X * 50 / SquareHalfWidth;
+            float L = 50 - v.Y * 50 / SquareHalfHeight;
 
             return new HSV(HSV.A, HSV.H, S, L);
         }
@@ -262,26 +265,26 @@ namespace HSVColorPickers
             this.Maximum = 100;
         }
 
-        public override HSV GetHSL(HSV HSV, double value) => new HSV(HSV.A, HSV.H, value, HSV.V);
-        public override double GetValue(HSV HSV) => HSV.S;
+        public override HSV GetHSL(HSV HSV, float value) => new HSV(HSV.A, HSV.H, value, HSV.V);
+        public override float GetValue(HSV HSV) => HSV.S;
         public override GradientStopCollection GetSliderBrush(HSV HSV)
         {
             byte A = HSV.A;
-            double H = HSV.H;
-            double S = HSV.S;
-            double L = HSV.V;
+            float H = HSV.H;
+            float S = HSV.S;
+            float L = HSV.V;
 
             return new GradientStopCollection()
             {
                 new GradientStop()
                 {
                     Offset = 0,
-                    Color = HSV.HSVtoRGB(A, H, 0.0d, L)
+                    Color = HSV.HSVtoRGB(A, H, 0.0f, L)
                 },
                new GradientStop()
                 {
                     Offset = 1,
-                    Color =HSV.HSVtoRGB(A, H, 100.0d, L)
+                    Color =HSV.HSVtoRGB(A, H, 100.0f, L)
                 },
             };
         }
@@ -312,8 +315,8 @@ namespace HSVColorPickers
         }
         public override HSV Delta(HSV HSV, Vector2 v, float SquareHalfWidth, float SquareHalfHeight)
         {
-            double H = v.X * 180 / SquareHalfWidth + 180;
-            double L = 50 - v.Y * 50 / SquareHalfHeight;
+            float H = v.X * 180 / SquareHalfWidth + 180;
+            float L = 50 - v.Y * 50 / SquareHalfHeight;
             return new HSV(HSV.A, H, HSV.S, L);
         }
     }
@@ -345,15 +348,15 @@ namespace HSVColorPickers
             this.Maximum = 100;
         }
 
-        public override HSV GetHSL(HSV HSV, double value) => new HSV(HSV.A, HSV.H, HSV.S, value);
-        public override double GetValue(HSV HSV) => HSV.V;
+        public override HSV GetHSL(HSV HSV, float value) => new HSV(HSV.A, HSV.H, HSV.S, value);
+        public override float GetValue(HSV HSV) => HSV.V;
 
         public override GradientStopCollection GetSliderBrush(HSV HSV)
         {
             byte A = HSV.A;
-            double H = HSV.H;
-            double S = HSV.S;
-            double L = HSV.V;
+            float H = HSV.H;
+            float S = HSV.S;
+            float L = HSV.V;
 
             return new GradientStopCollection()
             {
@@ -396,8 +399,8 @@ namespace HSVColorPickers
         }
         public override HSV Delta(HSV HSV, Vector2 v, float SquareHalfWidth, float SquareHalfHeight)
         {
-            double H = v.X * 180 / SquareHalfWidth + 180;
-            double S = 50 - v.Y * 50 / SquareHalfHeight;
+            float H = v.X * 180 / SquareHalfWidth + 180;
+            float S = 50 - v.Y * 50 / SquareHalfHeight;
             return new HSV(HSV.A, H, S, HSV.V);
         }
     }

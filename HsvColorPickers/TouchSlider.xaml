@@ -1,4 +1,5 @@
 ﻿<UserControl
+    x:Name="UserControl"
     x:Class="HSVColorPickers.TouchSlider"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,12 +8,23 @@
     mc:Ignorable="d"    
     HorizontalAlignment="Stretch"
     VerticalAlignment="Center" 
+    MinWidth="140"
+    Height="24" 
+    BorderThickness="1" 
+    BorderBrush="Gray"
+    Background="Gray"
     d:DesignHeight="22"
-    d:DesignWidth="111">
+    d:DesignWidth="111"
+    >
 
     <Grid>
 
-        <Border x:Name="Border" Padding="0" CornerRadius="12" Height="24" BorderThickness="1" BorderBrush="Gray">
+        <Border x:Name="Border" Padding="0" CornerRadius="12" 
+            Height="{x:Bind UserControl.Height,Mode=OneWay}"
+            BorderThickness="{x:Bind UserControl.BorderThickness,Mode=OneWay}"
+            BorderBrush="{x:Bind UserControl.BorderBrush,Mode=OneWay}"
+            Background="{x:Bind UserControl.Background,Mode=OneWay}"
+            >
             <!--Background-->
         </Border>
 

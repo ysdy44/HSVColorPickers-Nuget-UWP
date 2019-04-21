@@ -5,36 +5,41 @@ using Windows.UI.Xaml.Controls;
 
 namespace HSVColorPickers
 {
-    public sealed class Hex
-    {
-        /// <summary> Hex Number To Color </summary>
-        public static Color IntToColor(int hexNumber) => Color.FromArgb(255, (byte)((hexNumber >> 16) & 0xff), (byte)((hexNumber >> 8) & 0xff), (byte)((hexNumber >> 0) & 0xff));
-      
-        /// <summary> String To Hex Number </summary>
-        public static int StringToInt(string hex) => int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
-      
-        /// <summary> String To Color </summary>
-        public static string ColorToString(Color color) => color.R.ToString("x2") + color.G.ToString("x2") + color.B.ToString("x2").ToString();
-        
-        /// <summary> Subste </summary>
-        public static string TextSubstring(string text)
-        {
-            if (text == null) return null;
-
-            if (text.Length < 6) return null;
-
-            if (text.Length == 6) return text;
-
-            return text.Substring(text.Length - 6, 6);
-        }
-    }
-
+    /// <summary>
+    /// HexPicker
+    ///    Hex code.
+    /// </summary>
     public sealed partial class HexPicker : UserControl
     {
 
+        private sealed class Hex
+        {
+            /// <summary> Hex Number To Color </summary>
+            public static Color IntToColor(int hexNumber) => Color.FromArgb(255, (byte)((hexNumber >> 16) & 0xff), (byte)((hexNumber >> 8) & 0xff), (byte)((hexNumber >> 0) & 0xff));
+
+            /// <summary> String To Hex Number </summary>
+            public static int StringToInt(string hex) => int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+
+            /// <summary> String To Color </summary>
+            public static string ColorToString(Color color) => color.R.ToString("x2") + color.G.ToString("x2") + color.B.ToString("x2").ToString();
+
+            /// <summary> Subste </summary>
+            public static string TextSubstring(string text)
+            {
+                if (text == null) return null;
+
+                if (text.Length < 6) return null;
+
+                if (text.Length == 6) return text;
+
+                return text.Substring(text.Length - 6, 6);
+            }
+        }
+
+
         //Delegate
         public event ColorChangeHandler ColorChange = null;
-     
+
         #region DependencyProperty
 
 
@@ -66,7 +71,7 @@ namespace HSVColorPickers
         {
             this.InitializeComponent();
 
-            this.TextBox.GotFocus += (object sender, RoutedEventArgs e) =>{};
+            this.TextBox.GotFocus += (object sender, RoutedEventArgs e) => { };
             this.TextBox.LostFocus += (object sender, RoutedEventArgs e) => this.Color = this._Color = this.TextHex(this.TextBox.Text);
         }
 
@@ -78,7 +83,7 @@ namespace HSVColorPickers
 
             try
             {
-               return Hex.IntToColor(Hex.StringToInt(hex));
+                return Hex.IntToColor(Hex.StringToInt(hex));
             }
             catch (Exception)
             {

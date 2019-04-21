@@ -10,82 +10,88 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Shapes;
 
 namespace HSVColorPickers
 {
-
-    /// <summary> A boxed Popup with Postionand Size. </summary>
-    struct PopupSize
+    /// <summary>
+    ///  StrawPicker:
+    ///     Color straw picker.
+    /// </summary>
+    public sealed partial class StrawPicker : UserControl
     {
-        /// <summary> Popup control </summary>
-        readonly Popup Popup;
-        public bool IsOpen
+        /// <summary> A boxed Popup with Postionand Size. </summary>
+        struct PopupSize
         {
-            get => this.Popup.IsOpen;
-            set => this.Popup.IsOpen = value;
-        }
-
-        /// <summary> Popup control's Postion. </summary>
-        public Vector2 Postion
-        {
-            get => this.postion;
-            set
+            /// <summary> Popup control </summary>
+            readonly Popup Popup;
+            public bool IsOpen
             {
-                this.Popup.HorizontalOffset = value.X - this.SizeHalf;
-                this.Popup.VerticalOffset = value.Y - this.SizeHalf;
-
-                this.postion = value;
+                get => this.Popup.IsOpen;
+                set => this.Popup.IsOpen = value;
             }
-        }
-        private Vector2 postion;
 
-        readonly float Size;
-        readonly Vector2 SizeVector;
-        readonly float SizeHalf;
-        readonly Vector2 SizeHalfVector;
-
-        /// <summary>
-        /// Get the Matrix for CanvasControl
-        /// </summary>
-        /// <param name="scale"></param>
-        /// <returns></returns>
-        public Matrix3x2 Matrix(float scale) =>
-            Matrix3x2.CreateTranslation(-this.Postion - this.SizeHalfVector) *
-            Matrix3x2.CreateScale(scale) *
-            Matrix3x2.CreateTranslation(this.SizeVector * scale - this.SizeHalfVector);
-
-        /// <summary>
-        /// Initialize PopupSize class
-        /// </summary>
-        /// <param name="canvasControl"> The CanvasControl. </param>
-        /// <param name="textBlock"> The TextBlock. </param>
-        /// <param name="size">the width and height of popup control</param>
-        public PopupSize(UIElement canvasControl, UIElement textBlock, SolidColorBrush brush, float size = 100, float toolTipSize = 20)
-        {
-            this.postion = Vector2.Zero;
-
-            this.Size = size;
-            this.SizeVector = new Vector2(size, size);
-
-            this.SizeHalf = size / 2;
-            this.SizeHalfVector = new Vector2(this.SizeHalf, this.SizeHalf);
-
-            this.Popup = new Popup
+            /// <summary> Popup control's Postion. </summary>
+            public Vector2 Postion
             {
-                IsOpen = false,
-                Child = new Border
+                get => this.postion;
+                set
                 {
-                    Width = this.Size,
-                    Height = this.Size,
-                    CornerRadius = new CornerRadius(this.SizeHalf),
-                    BorderThickness = new Thickness(1),
-                    BorderBrush = new SolidColorBrush(Windows.UI.Colors.Black),
-                    Child = new Grid
+                    this.Popup.HorizontalOffset = value.X - this.SizeHalf;
+                    this.Popup.VerticalOffset = value.Y - this.SizeHalf;
+
+                    this.postion = value;
+                }
+            }
+            private Vector2 postion;
+
+            readonly float Size;
+            readonly Vector2 SizeVector;
+            readonly float SizeHalf;
+            readonly Vector2 SizeHalfVector;
+
+            /// <summary>
+            /// Get the Matrix for CanvasControl
+            /// </summary>
+            /// <param name="scale"></param>
+            /// <returns></returns>
+            public Matrix3x2 Matrix(float scale) =>
+                Matrix3x2.CreateTranslation(-this.Postion - this.SizeHalfVector) *
+                Matrix3x2.CreateScale(scale) *
+                Matrix3x2.CreateTranslation(this.SizeVector * scale - this.SizeHalfVector);
+
+            /// <summary>
+            /// Initialize PopupSize class
+            /// </summary>
+            /// <param name="canvasControl"> The CanvasControl. </param>
+            /// <param name="textBlock"> The TextBlock. </param>
+            /// <param name="size">the width and height of popup control</param>
+            public PopupSize(UIElement canvasControl, UIElement textBlock, SolidColorBrush brush, float size = 100, float toolTipSize = 20)
+            {
+                this.postion = Vector2.Zero;
+
+                this.Size = size;
+                this.SizeVector = new Vector2(size, size);
+
+                this.SizeHalf = size / 2;
+                this.SizeHalfVector = new Vector2(this.SizeHalf, this.SizeHalf);
+
+                this.Popup = new Popup
+                {
+                    IsOpen = false,
+                    Child = new Border
                     {
-                        Children ={
+                        Width = this.Size,
+                        Height = this.Size,
+                        CornerRadius = new CornerRadius(this.SizeHalf),
+                        BorderThickness = new Thickness(1),
+                        BorderBrush = new SolidColorBrush(Windows.UI.Colors.Black),
+                        Child = new Grid
+                        {
+                            Children ={
                             canvasControl,
                             new StackPanel
                             {
@@ -114,57 +120,58 @@ namespace HSVColorPickers
                                 }
                             }
                         }
+                        }
                     }
-                }
-            };
+                };
+            }
         }
-    }
 
-    /// <summary> Screenshot library. </summary>
-    class StrawRender
-    {
-
-        public static Color GetColor(CanvasBitmap bitmap, Vector2 v)
+        /// <summary> Screenshot library. </summary>
+        class StrawRender
         {
-            if (bitmap == null) return Windows.UI.Colors.White;
 
-            int left = StrawRender.GetLeft((int)bitmap.SizeInPixels.Width, v.X, Window.Current.Bounds.Width);
-            int top = StrawRender.GetLeft((int)bitmap.SizeInPixels.Height, v.Y, Window.Current.Bounds.Height);
+            public static Color GetColor(CanvasBitmap bitmap, Vector2 v)
+            {
+                if (bitmap == null) return Windows.UI.Colors.White;
 
-            return bitmap.GetPixelColors(left, top, 1, 1).Single();
+                int left = StrawRender.GetLeft((int)bitmap.SizeInPixels.Width, v.X, Window.Current.Bounds.Width);
+                int top = StrawRender.GetLeft((int)bitmap.SizeInPixels.Height, v.Y, Window.Current.Bounds.Height);
+
+                return bitmap.GetPixelColors(left, top, 1, 1).Single();
+            }
+
+
+            public static async Task<CanvasBitmap> GetRenderTargetBitmap(ICanvasResourceCreator creator, UIElement element)
+            {
+                RenderTargetBitmap render = new RenderTargetBitmap();
+                await render.RenderAsync(element);
+                return CanvasBitmap.CreateFromBytes(creator, await render.GetPixelsAsync(), render.PixelWidth, render.PixelHeight, DirectXPixelFormat.B8G8R8A8UIntNormalized);
+            }
+
+            private static int GetLeft(int bitmapWidth, float x, double windowWidth)
+            {
+                int left = (int)(bitmapWidth * (x / windowWidth));
+
+                if (left < 0) return 0;
+                else if (left >= bitmapWidth) return bitmapWidth - 1;
+                return left;
+            }
+
         }
 
 
-        public static async Task<CanvasBitmap> GetRenderTargetBitmap(ICanvasResourceCreator creator, UIElement element)
-        {
-            RenderTargetBitmap render = new RenderTargetBitmap();
-            await render.RenderAsync(element);
-            return CanvasBitmap.CreateFromBytes(creator, await render.GetPixelsAsync(), render.PixelWidth, render.PixelHeight, DirectXPixelFormat.B8G8R8A8UIntNormalized);
-        }
 
-        private static int GetLeft(int bitmapWidth, float x, double windowWidth)
-        {
-            int left = (int)(bitmapWidth * (x / windowWidth));
-
-            if (left < 0) return 0;
-            else if (left >= bitmapWidth) return bitmapWidth - 1;
-            return left;
-        }
-
-    }
-
-
-    public sealed partial class StrawPicker : UserControl
-    {
         //Delegate
         public event ColorChangeHandler ColorChange = null;
 
-        PopupSize PopupSize;
-
+        //Bitmap
         CanvasDevice Device = new CanvasDevice();
         CanvasBitmap Bitmap;
 
+        //Canvas
+        PopupSize Size;
         CanvasControl CanvasControl;
+
         TextBlock TextBlock = new TextBlock
         {
             FontSize = 12,
@@ -183,56 +190,53 @@ namespace HSVColorPickers
         public StrawPicker()
         {
             this.InitializeComponent();
-            this.PopupSize = new PopupSize(this.CanvasControl, this.TextBlock, this.SolidColorBrushName, 100);
             this.Ellipse.Tapped += (sender, e) => this.ColorChange?.Invoke(this, this.Color);//Delegate
 
+            //Canvas
+            this.CanvasControl = new CanvasControl { UseSharedDevice = true, CustomDevice = this.Device };
+            this.Size = new PopupSize(this.CanvasControl, this.TextBlock, this.SolidColorBrushName, 100);
+            this.CanvasControl.Draw += (sender, args) =>
+            {
+                if (this.Bitmap == null) return;
+
+                args.DrawingSession.DrawImage(new Transform2DEffect
+                {
+                    TransformMatrix = this.Size.Matrix(2),
+                    Source = new DpiCompensationEffect
+                    {
+                        SourceDpi = new Vector2(sender.Dpi),
+                        Source = this.Bitmap
+                    }
+                });
+            };
+
             //Manipulation
-            this.Border.PointerPressed+=(s,e)=>  this.PopupSize.Postion = e.GetCurrentPoint(Window.Current.Content).Position.ToVector2();
-            this.Border.ManipulationStarted +=async (s, e) =>
+            this.IconBorder.ManipulationMode = ManipulationModes.All;
+            this.IconBorder.PointerPressed += (s, e) => this.Size.Postion = e.GetCurrentPoint(Window.Current.Content).Position.ToVector2();
+            this.IconBorder.ManipulationStarted += async (s, e) =>
             {
                 this.Bitmap = await StrawRender.GetRenderTargetBitmap(this.Device, Window.Current.Content);
 
-                this.Color = StrawRender.GetColor(this.Bitmap, this.PopupSize.Postion);
+                this.Color = StrawRender.GetColor(this.Bitmap, this.Size.Postion);
 
-                this.PopupSize.IsOpen = true;
+                this.Size.IsOpen = true;
             };
-            this.Border.ManipulationDelta += (s, e) =>
+            this.IconBorder.ManipulationDelta += (s, e) =>
             {
-                this.PopupSize.Postion += e.Delta.Translation.ToVector2();
+                this.Size.Postion += e.Delta.Translation.ToVector2();
 
-                this.Color = StrawRender.GetColor(this.Bitmap, this.PopupSize.Postion);
+                this.Color = StrawRender.GetColor(this.Bitmap, this.Size.Postion);
                 this.CanvasControl.Invalidate();
                 this.TextBlock.Text = this.Color.ToString();
             };
-            this.Border.ManipulationCompleted += (s, e) =>
+            this.IconBorder.ManipulationCompleted += (s, e) =>
             {
-                this.Color = StrawRender.GetColor(this.Bitmap, this.PopupSize.Postion);
+                this.Color = StrawRender.GetColor(this.Bitmap, this.Size.Postion);
 
                 this.Dispose();
 
-                this.PopupSize.IsOpen = false;
+                this.Size.IsOpen = false;
             };
-                       
-            //Canvas
-            this.CanvasControl = new CanvasControl
-            {
-                UseSharedDevice = true,
-                CustomDevice = this.Device
-            };
-            this.CanvasControl.Draw += (sender, args) =>
-             {
-                 if (this.Bitmap == null) return;
-
-                 args.DrawingSession.DrawImage(new Transform2DEffect
-                 {
-                     TransformMatrix = this.PopupSize.Matrix(2),
-                     Source = new DpiCompensationEffect
-                     {
-                         SourceDpi = new Vector2(sender.Dpi),
-                         Source = this.Bitmap
-                     }
-                 });
-             };
         }
 
         public void Dispose()
