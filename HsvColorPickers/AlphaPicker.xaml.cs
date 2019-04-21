@@ -6,7 +6,7 @@ using System.Numerics;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
 
-namespace HsvColorPickers
+namespace HSVColorPickers
 {
     public sealed partial class AlphaPicker : UserControl
     {

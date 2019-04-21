@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Shapes;
 
-namespace HsvColorPickers
+namespace HSVColorPickers
 {
 
     /// <summary> A boxed Popup with Postionand Size. </summary>

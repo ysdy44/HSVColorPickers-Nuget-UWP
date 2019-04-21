@@ -1,7 +1,7 @@
 ﻿using Windows.UI;
 using Windows.UI.Xaml.Controls;
 
-namespace HsvColorPickers
+namespace HSVColorPickers
 {
     public sealed partial class RGBPicker : UserControl, IPicker
     {

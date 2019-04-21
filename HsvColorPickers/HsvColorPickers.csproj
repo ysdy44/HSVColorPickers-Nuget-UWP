@@ -7,8 +7,8 @@
     <ProjectGuid>{C9A7D2B3-7988-42CB-8475-DE20A40FCB5B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HsvColorPickers</RootNamespace>
-    <AssemblyName>HsvColorPickers</AssemblyName>
+    <RootNamespace>HSVColorPickers</RootNamespace>
+    <AssemblyName>HSVColorPickers</AssemblyName>
     <DefaultLanguage>zh-CN</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17134.0</TargetPlatformVersion>
@@ -115,7 +115,7 @@
     <Compile Include="HexPicker.xaml.cs">
       <DependentUpon>HexPicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="HSL.cs" />
+    <Compile Include="HSV.cs" />
     <Compile Include="HSVPicker.xaml.cs">
       <DependentUpon>HSVPicker.xaml</DependentUpon>
     </Compile>

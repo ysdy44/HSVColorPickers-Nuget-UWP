@@ -2,15 +2,15 @@
 
 ColorPicker, RGBPicker, HSVPicker, WheelPicker, PalettePicker, StrawPicker, HexPicker, SwatchesPicker.
 
-![](https://github.com/ysdy44/HsvColorPickers-Nuget-UWP/blob/master/ScreenShot/ScreenShot001.png)
-![](https://github.com/ysdy44/HsvColorPickers-Nuget-UWP/blob/master/ScreenShot/ScreenShot003.png)
+![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/ScreenShot001.png)
+![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/ScreenShot003.png)
 
 
 ## Getting Started
-  ![](https://github.com/ysdy44/HsvColorPickers-Nuget-UWP/blob/master/ScreenShot/logo.jpg)
+  ![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/logo.jpg)
 
 
-Search 'HsvColorPickers' in Nuget and download it.
+Search 'HSVColorPickers' in Nuget and download it.
 
 
 ### Example
@@ -18,7 +18,7 @@ Search 'HsvColorPickers' in Nuget and download it.
 ```xaml
 
 
-xmlns:pickers="using:HsvColorPickers"
+xmlns:pickers="using:HSVColorPickers"
 
 
 <pickers:ColorPicker/>
@@ -38,7 +38,7 @@ or
 ```csharp
 
 
-using HsvColorPickers;
+using HSVColorPickers;
 
 
  new ColorPicker();

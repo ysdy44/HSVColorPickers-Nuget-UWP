@@ -7,7 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
-namespace HsvColorPickers
+namespace HSVColorPickers
 {
     /// <summary> Size. </summary>
     public class WheelSize

@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
-namespace HsvColorPickers
+namespace HSVColorPickers
 {
 
     /// <summary> It contains 16 colors. </summary>

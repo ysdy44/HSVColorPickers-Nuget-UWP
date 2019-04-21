@@ -2,7 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace HsvColorPickers
+namespace HSVColorPickers
 {
     public sealed partial class NumberPicker : UserControl
     {

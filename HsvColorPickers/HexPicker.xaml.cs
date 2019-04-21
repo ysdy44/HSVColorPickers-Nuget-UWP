@@ -3,7 +3,7 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace HsvColorPickers
+namespace HSVColorPickers
 {
     public sealed class Hex
     {

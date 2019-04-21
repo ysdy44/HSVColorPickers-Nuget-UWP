@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI;
 
-namespace HsvColorPickers
+namespace HSVColorPickers
 {
     //Delegate
     public delegate void AlphaChangeHandler(object sender, byte value);
