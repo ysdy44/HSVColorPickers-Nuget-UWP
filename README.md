@@ -2,12 +2,12 @@
 
 ColorPicker, RGBPicker, HSVPicker, WheelPicker, PalettePicker, StrawPicker, HexPicker, SwatchesPicker.
 
-![](https://github.com/ysdy44/HsvColorPickers-Nuget-UWP/tree/master/screenshot/ScreenShot001.png)
-![](https://github.com/ysdy44/HsvColorPickers-Nuget-UWP/tree/master/screenshot/ScreenShot003.png)
+![](https://github.com/ysdy44/HsvColorPickers-Nuget-UWP/blob/master/screenshot/ScreenShot001.png)
+![](https://github.com/ysdy44/HsvColorPickers-Nuget-UWP/blob/master/screenshot/ScreenShot003.png)
 
 
 ## Getting Started
-  ![](https://github.com/ysdy44/HsvColorPickers-Nuget-UWP/tree/master/ScreenShot/logo.jpg)
+  ![](https://github.com/ysdy44/HsvColorPickers-Nuget-UWP/blob/master/ScreenShot/logo.jpg)
 
 
 Search 'HsvColorPickers' in Nuget and download it.
