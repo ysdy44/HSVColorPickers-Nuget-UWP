@@ -74,6 +74,8 @@ namespace HSVColorPickers
 
         //Delegate
         public event ColorChangeHandler ColorChange = null;
+        public event HSVChangeHandler HSVChange = null;
+                
         public Color GetColor() => HSV.HSVtoRGB(this.HSV);
         public void SetColor(Color value) => this.HSV = HSV.RGBtoHSV(value);
 
@@ -110,9 +112,11 @@ namespace HSVColorPickers
                 //Palette  
                 this.HorizontalBrush.Color = HSV.HSVtoRGB(value.H);
                 this.HorizontalBrush.SetBrush(this.CanvasControl);
+                             
+                this.ColorChange?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
+                this.HSVChange?.Invoke(this, value);//Delegate
 
                 this.CanvasControl.Invalidate();
-                this.ColorChange?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
 
                 this.hsv = value;
             }
@@ -274,7 +278,11 @@ namespace HSVColorPickers
                 Color color = HSV.HSVtoRGB(angle * 180.0f / (float)Math.PI);
                 ds.FillCircle(vector, this.StrokeWidth, color);
             }
+
+            ds.DrawCircle(this.Center, this.Radio - this.StrokeWidth, this.Stroke.Color);
+            ds.DrawCircle(this.Center, this.Radio + this.StrokeWidth, this.Stroke.Color);
         }
+
 
         //Thumb
         private void DrawThumb(CanvasDrawingSession ds, Vector2 vector)

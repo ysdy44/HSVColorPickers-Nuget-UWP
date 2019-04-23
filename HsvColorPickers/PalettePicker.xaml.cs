@@ -29,6 +29,8 @@ namespace HSVColorPickers
 
         //Delegate
         public event ColorChangeHandler ColorChange = null;
+        public event HSVChangeHandler HSVChange = null;
+
         public Color GetColor() => HSV.HSVtoRGB(this.HSV);
         public void SetColor(Color value) => this.HSV = HSV.RGBtoHSV(value);
 
@@ -42,7 +44,8 @@ namespace HSVColorPickers
             get => this.hsl;
             set
             {
-                this.ColorChange?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));
+                this.ColorChange?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
+                this.HSVChange?.Invoke(this, value);//Delegate
 
                 this.hsl = value;
             }

@@ -6,6 +6,7 @@ namespace HSVColorPickers
     //Delegate
     public delegate void AlphaChangeHandler(object sender, byte value);
     public delegate void ColorChangeHandler(object sender, Color value);
+    public delegate void HSVChangeHandler(object sender, HSV value);
 
     /// <summary> Color form HSV </summary>
     public struct HSV

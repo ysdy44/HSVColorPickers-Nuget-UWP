@@ -34,8 +34,9 @@ namespace HSVColorPickers
             get => this.alpha;
             set
             {
-                this.AlphaChange?.Invoke(this, value);
-                CanvasControl.Invalidate();
+                this.AlphaChange?.Invoke(this, value);//Delegate
+
+                this.CanvasControl.Invalidate();
 
                 this.alpha = value;
             }

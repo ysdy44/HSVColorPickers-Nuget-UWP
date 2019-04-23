@@ -1,5 +1,6 @@
 # HSV Color Pickers
 
+This is a library used to develop the UWP.
 ColorPicker, RGBPicker, HSVPicker, WheelPicker, PalettePicker, StrawPicker, HexPicker, SwatchesPicker.
 
 ![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/ScreenShot001.png)
@@ -7,10 +8,18 @@ ColorPicker, RGBPicker, HSVPicker, WheelPicker, PalettePicker, StrawPicker, HexP
 
 
 ## Getting Started
+
+|Key|Value|
+|:-|:-|
+|System requirements| Windows10 Creators Update or upper|
+|Development tool|Visual Studio 2017|
+|Programing language|C#|
+|Display language|English|
+
   ![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/logo.png)
 
 
-Search 'HSVColorPickers' in Nuget and download it.
+Search 'HSV Color' in Nuget and download it.
 
 
 ### Example

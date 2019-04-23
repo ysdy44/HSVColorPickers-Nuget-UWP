@@ -23,7 +23,7 @@ namespace HSVColorPickers
             get => this.color;
             set
             {
-                this.ColorChange?.Invoke(this, value);
+                this.ColorChange?.Invoke(this, value);//Delegate
 
                 this.color = value;
             }

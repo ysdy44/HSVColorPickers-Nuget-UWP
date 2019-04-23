@@ -16,32 +16,32 @@ namespace HSVColorPickers
     public sealed partial class SwatchesPicker : UserControl, IPicker
     {
 
-    /// <summary> It contains 16 colors. </summary>
-    public class Swatches
-    {
-        public Color Color;
-        public Color[] Colors;
-
-        public Swatches(Color color, bool isGray = false, int count = 16)
+        /// <summary> It contains 16 colors. </summary>
+        public class Swatches
         {
-            this.Color = color;
-            this.Colors = isGray ? this.GetGrayColors(count) : this.GetColorfulColors(color, count);
-        }
+            public Color Color;
+            public Color[] Colors;
 
-        private Color[] GetGrayColors(int count)
-        {
-            Color[] colors = new Color[count];
-
-            double span = 255 / count;
-
-            for (int i = 0; i < count; i++)
+            public Swatches(Color color, bool isGray = false, int count = 16)
             {
-                byte c = (byte)(255 - i * span);
-                colors[i] = Color.FromArgb(255, c, c, c);
+                this.Color = color;
+                this.Colors = isGray ? this.GetGrayColors(count) : this.GetColorfulColors(color, count);
             }
 
-            return colors;
-        }
+            private Color[] GetGrayColors(int count)
+            {
+                Color[] colors = new Color[count];
+
+                double span = 255 / count;
+
+                for (int i = 0; i < count; i++)
+                {
+                    byte c = (byte)(255 - i * span);
+                    colors[i] = Color.FromArgb(255, c, c, c);
+                }
+
+                return colors;
+            }
 
             private Color[] GetColorfulColors(Color color, int count)
             {
@@ -63,49 +63,49 @@ namespace HSVColorPickers
 
         /// <summary> Size. </summary>
         public class RainbowSize
-    {
-        public readonly float Span = 4;
-        public readonly float thiscikneee = 1;
-
-        //ItemBackground
-        public float ItemBackgroundX => this.Span;
-        public float ItemBackgroundY => this.Span;
-        public float ItemBackgroundWidth;
-        public float ItemBackgroundHeight;
-        //Item
-        public float ItemX(int index) => this.Span + this.thiscikneee + index * this.ItemWidth;
-        public float ItemY => this.Span + this.thiscikneee;
-        public float ItemWidth;
-        public float ItemHeight;
-
-        //Current
-        public float CurrentX(int index) => this.thiscikneee + index * this.ItemWidth;
-        public float CurrentY => this.thiscikneee;
-        public float CurrentWidth;
-        public float CurrentHeight;
-        // CurrentBackground
-        public float CurrentBackgroundX(int i) => i * this.ItemWidth;
-        public float CurrentBackgroundY = 0;
-        public float CurrentBackgroundWidth;
-        public float CurrentBackgroundHeight;
-
-        public int Index(float x) => (int)((x - this.Span - this.thiscikneee) / this.ItemWidth);
-
-        public void Change(float width, float height, int count)
         {
-            this.ItemBackgroundWidth = width - this.Span - this.Span;
-            this.ItemBackgroundHeight = height - this.Span - this.Span;
+            public readonly float Span = 4;
+            public readonly float thiscikneee = 1;
 
-            this.ItemWidth = (this.ItemBackgroundWidth - this.thiscikneee - this.thiscikneee) / count;
-            this.ItemHeight = (this.ItemBackgroundHeight - this.thiscikneee - this.thiscikneee);
+            //ItemBackground
+            public float ItemBackgroundX => this.Span;
+            public float ItemBackgroundY => this.Span;
+            public float ItemBackgroundWidth;
+            public float ItemBackgroundHeight;
+            //Item
+            public float ItemX(int index) => this.Span + this.thiscikneee + index * this.ItemWidth;
+            public float ItemY => this.Span + this.thiscikneee;
+            public float ItemWidth;
+            public float ItemHeight;
 
-            this.CurrentWidth = this.ItemWidth + this.Span + this.Span;
-            this.CurrentHeight = height - this.thiscikneee - this.thiscikneee;
+            //Current
+            public float CurrentX(int index) => this.thiscikneee + index * this.ItemWidth;
+            public float CurrentY => this.thiscikneee;
+            public float CurrentWidth;
+            public float CurrentHeight;
+            // CurrentBackground
+            public float CurrentBackgroundX(int i) => i * this.ItemWidth;
+            public float CurrentBackgroundY = 0;
+            public float CurrentBackgroundWidth;
+            public float CurrentBackgroundHeight;
 
-            this.CurrentBackgroundWidth = this.CurrentWidth + this.thiscikneee + this.thiscikneee;
-            this.CurrentBackgroundHeight = height;
+            public int Index(float x) => (int)((x - this.Span - this.thiscikneee) / this.ItemWidth);
+
+            public void Change(float width, float height, int count)
+            {
+                this.ItemBackgroundWidth = width - this.Span - this.Span;
+                this.ItemBackgroundHeight = height - this.Span - this.Span;
+
+                this.ItemWidth = (this.ItemBackgroundWidth - this.thiscikneee - this.thiscikneee) / count;
+                this.ItemHeight = (this.ItemBackgroundHeight - this.thiscikneee - this.thiscikneee);
+
+                this.CurrentWidth = this.ItemWidth + this.Span + this.Span;
+                this.CurrentHeight = height - this.thiscikneee - this.thiscikneee;
+
+                this.CurrentBackgroundWidth = this.CurrentWidth + this.thiscikneee + this.thiscikneee;
+                this.CurrentBackgroundHeight = height;
+            }
         }
-    }
 
 
         //Delegate
