@@ -6,11 +6,9 @@ namespace HSVColorPickers
 {
     public sealed partial class NumberPicker : UserControl
     {
-
         //Delegate
         public delegate void ValueChangeHandler(object sender, int value);
         public event ValueChangeHandler ValueChange = null;
-
 
         #region DependencyProperty
 
@@ -26,8 +24,10 @@ namespace HSVColorPickers
 
             if (e.NewValue is int value)
             {
-                int limite = con.GeLimitedtValue(value);
-                con.SetValue(limite);
+                if (value > con.Maximum) value = con.Maximum;
+                if (value < con.Minimum) value = con.Minimum;
+
+                con.Button.Content = con.GetContent(value);
             }
         })));
 
@@ -59,29 +59,24 @@ namespace HSVColorPickers
 
             if (e.NewValue is string value)
             {
-                con.SetValue(value);
+                con.GetContent(value);
             }
         })));
 
 
         #endregion
 
-        //Flyout
-        private bool IsFlyouted;
+        /// <summary> The Flyout is Flyouted? </summary>
+        private bool IsFlyoutClosed;
+
+        /// <summary> Is this button the first one to be clicked? </summary>
+        private bool IsFirstClickedButton;
+
+        /// <summary> Indicates the positive and negative of <see cref = "CacheValue" />. </summary>
         private bool IsNegative;
 
-        private int cacheValue;
-        private int CacheValue
-        {
-            get => this.cacheValue;
-            set
-            {
-                this.SetValue(this.IsNegative, value);
-
-                this.cacheValue = value;
-            }
-        }
-
+        /// <summary> Temporary values. </summary>
+        private int CacheValue;
 
         public NumberPicker()
         {
@@ -89,68 +84,87 @@ namespace HSVColorPickers
             this.Loaded += (s, e) => this.Button.Content = this.Value.ToString() + " " + this.Unit;
             this.Button.Click += (s, e) =>
             {
-                this.cacheValue = Math.Abs(this.Value);
+                //FirstClicked: Reset the boolean
+                this.IsFirstClickedButton = true;
+
                 this.IsNegative = (this.Value < 0);
+                this.CacheValue = 0;
             };
 
             //Flyout
-            this.Flyout.Opened += (s, e) =>
-            {
-                this.cacheValue = 0;
-                this.IsFlyouted = true;
-            };
+            this.Flyout.Opened += (s, e) => this.IsFlyoutClosed = true;
             this.Flyout.Closed += (s, e) =>
             {
-                if (this.IsFlyouted)
+                if (this.IsFlyoutClosed)
                 {
-                    this.CacheValue = this.Value;
-                    this.IsFlyouted = false;
+                    // The Value will be reset, when the user clicks on the blank and then Flyout closed.
+                    this.SetCacheValue(this.Value);
+
+                    this.IsFlyoutClosed = false;
                 }
             };
 
             //Number
-            this.Zero.Click += (s, e) => this.CacheValue = this.cacheValue * 10;
-            this.One.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 1;
-            this.Two.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 2;
-            this.Three.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 3;
-            this.Four.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 4;
-            this.Five.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 5;
-            this.Six.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 6;
-            this.Seven.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 7;
-            this.Eight.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 8;
-            this.Nine.Click += (s, e) => this.CacheValue = this.cacheValue * 10 + 9;
+            this.Zero.Click += (s, e) => this.SetCacheValue(this.CacheValue * 10);
+            this.One.Click += (s, e) => this.SetCacheValue(this.CacheValue * 10 + 1);
+            this.Two.Click += (s, e) => this.SetCacheValue(this.CacheValue * 10 + 2);
+            this.Three.Click += (s, e) => this.SetCacheValue(this.CacheValue * 10 + 3);
+            this.Four.Click += (s, e) => this.SetCacheValue(this.CacheValue * 10 + 4);
+            this.Five.Click += (s, e) => this.SetCacheValue(this.CacheValue * 10 + 5);
+            this.Six.Click += (s, e) => this.SetCacheValue(this.CacheValue * 10 + 6);
+            this.Seven.Click += (s, e) => this.SetCacheValue(this.CacheValue * 10 + 7);
+            this.Eight.Click += (s, e) => this.SetCacheValue(this.CacheValue * 10 + 8);
+            this.Nine.Click += (s, e) => this.SetCacheValue(this.CacheValue * 10 + 9);
+            this.Decimal.Click += (s, e) => this.SetCacheValue(0);
 
             //Back, Negative
-            this.Back.Click += (s, e) => this.CacheValue = this.cacheValue / 10;
-            this.Negative.Click += (s, e) => this.IsNegative = !this.IsNegative;
-            this.Decimal.Click += (s, e) => this.CacheValue = 0;
+            this.Back.Click += (s, e) =>
+            {
+                //FirstClicked
+                if (this.IsFirstClickedButton) this.CacheValue = Math.Abs(this.Value);
+
+                this.SetCacheValue(this.CacheValue / 10);
+            };
+            this.Negative.Click += (s, e) =>
+            {
+                this.IsNegative = !this.IsNegative;
+
+                //FirstClicked
+                if (this.IsFirstClickedButton) this.CacheValue = Math.Abs(this.Value);
+
+                this.SetCacheValue(this.CacheValue);
+            };
 
             //OK, Cancel
             this.Cancel.Click += (s, e) => this.Flyout.Hide();
             this.OK.Click += (s, e) =>
             {
-                this.IsFlyouted = false;
+                this.IsFlyoutClosed = false;
                 this.Flyout.Hide();
 
-                int value = this.GeLimitedtValue(this.cacheValue);
-                this.Value = value;
-                this.ValueChange?.Invoke(this, value);
+                //FirstClicked
+                if (this.IsFirstClickedButton) return;
+
+                if (this.IsNegative)
+                    this.Value = -this.CacheValue;
+                else
+                    this.Value = this.CacheValue;
+
+                this.ValueChange?.Invoke(this, this.Value); //Delegate
             };
         }
 
-        private void SetValue(int value) => this.Button.Content = value.ToString() + " " + this.Unit;
-        private void SetValue(bool isNegative, int value) => this.Button.Content = (isNegative ? "-" : "") + Math.Abs(value).ToString() + " " + this.Unit;
-        private void SetValue(string unit) => this.Button.Content = (this.IsNegative ? "-" : "") + this.Value.ToString() + " " + unit;
+        private string GetContent(int value) => value.ToString() + " " + this.Unit;
+        private string GetContent(bool isNegative, int value) => (isNegative ? "-" : "") + Math.Abs(value).ToString() + " " + this.Unit;
+        private string GetContent(string unit) => (this.IsNegative ? "-" : "") + this.Value.ToString() + " " + unit;
 
-        private int GeLimitedtValue(int num)
+        private void SetCacheValue(int cacheValue)
         {
-            num = Math.Abs(num);
-            num = this.IsNegative ? -num : num;
+            this.CacheValue = cacheValue;
+            this.Button.Content = this.GetContent(this.IsNegative, this.CacheValue);
 
-            if (num > this.Maximum) return this.Maximum;
-            if (num < this.Minimum) return this.Minimum;
-
-            return num;
+            //FirstClicked
+            this.IsFirstClickedButton = false;
         }
     }
 }

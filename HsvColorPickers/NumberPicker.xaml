@@ -8,6 +8,7 @@
     mc:Ignorable="d"    
     FontSize="14"
     Width="50" 
+    MaxHeight="40" 
     MinHeight="22" 
     HorizontalAlignment="Stretch" 
     VerticalAlignment="Stretch" 
