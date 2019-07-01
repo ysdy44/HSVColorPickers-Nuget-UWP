@@ -122,6 +122,7 @@
     <Compile Include="NumberPicker.xaml.cs">
       <DependentUpon>NumberPicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Palette.cs" />
     <Compile Include="PalettePicker.xaml.cs">
       <DependentUpon>PalettePicker.xaml</DependentUpon>
     </Compile>

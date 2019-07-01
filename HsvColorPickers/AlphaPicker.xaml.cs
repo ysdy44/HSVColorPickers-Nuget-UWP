@@ -81,7 +81,7 @@ namespace HSVColorPickers
                     this.Brush.EndPoint = this.EndPoint;
                 }
             };
-            this.CanvasControl.Draw += (sender, args) =>
+            this.CanvasControl.CreateResources += (sender, args) =>
             {
                 Color[] colors = new Color[]
                 {

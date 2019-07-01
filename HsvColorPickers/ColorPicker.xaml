@@ -44,7 +44,7 @@
         </Grid>
 
         <!--Toggle-->
-        <Border Grid.Row="1" >
+        <Border>
             <ComboBox x:Name="ComboBox" ItemsSource="{x:Bind Pickers}" >
                 <ComboBox.Style>
                     <Style TargetType="ComboBox">
