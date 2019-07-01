@@ -68,6 +68,8 @@ PalettePicker.CreateFormValue();,
 ```
 
 
+## Learn More
+
 You can learn more from the demo application:
 https://www.microsoft.com/store/productId/9PD2JJZQF524
 
