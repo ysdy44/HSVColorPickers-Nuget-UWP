@@ -72,7 +72,8 @@ You can learn more from the demo application:
 https://www.microsoft.com/store/productId/9PD2JJZQF524
 
 
-1.Click on item "Transformers" in the top bar.
+1.Click on item "Colors" in the top bar.
+
   ![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/Thumbnails001.jpg)
 
 
