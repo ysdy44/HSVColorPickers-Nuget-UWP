@@ -19,7 +19,7 @@ ColorPicker, RGBPicker, HSVPicker, WheelPicker, PalettePicker, StrawPicker, HexP
   ![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/logo.png)
 
 
-Search 'HSV Color' in Nuget and download it.
+Search 'HSV Color' in Nuget and download it.  
   ![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/Thumbnails000.jpg)
 
 ### Example
@@ -74,12 +74,11 @@ You can learn more from the demo application:
 https://www.microsoft.com/store/productId/9PD2JJZQF524
 
 
-1.Click on item "Colors" in the top bar.
-
+1.Click on item "Colors" in the top bar.  
   ![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/Thumbnails001.jpg)
 
 
-2.Look for simple examples.
+2.Look for simple examples.  
     ![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/Thumbnails002.jpg)
 
 Enjoy it..
