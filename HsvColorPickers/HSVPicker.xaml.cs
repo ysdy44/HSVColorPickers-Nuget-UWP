@@ -4,17 +4,23 @@ using Windows.UI.Xaml.Controls;
 namespace HSVColorPickers
 {
     /// <summary>
-    /// HSVPicker:
-    ///    HSV of color picker.
+    /// HSV picker.
     /// </summary>
     public sealed partial class HSVPicker : UserControl, IPicker
     {
-        //Delegate
+        //@Delegate
+        /// <summary> Occurs when the color value changes. </summary>
         public event ColorChangeHandler ColorChange = null;
+        /// <summary> Occurs when the hsv value changes. </summary>
         public event HSVChangeHandler HSVChange = null;
 
-        public Color GetColor() => HSV.HSVtoRGB(this.HSV);
-        public void SetColor(Color value) => this.HSV = HSV.RGBtoHSV(value);
+
+        /// <summary> Get or set the current color for the hsv. </summary>
+        public Color Color
+        {
+            get => HSV.HSVtoRGB(this.HSV);
+            set => this.HSV = HSV.RGBtoHSV(value);
+        }
 
 
         #region DependencyProperty
@@ -32,6 +38,8 @@ namespace HSVColorPickers
                 this.hsl = value;
             }
         }
+
+        /// <summary> Get or set the current hsv for a hsv picker. </summary>
         public HSV HSV
         {
             get => this.hsl;
@@ -62,16 +70,12 @@ namespace HSVColorPickers
                 this.hsl = value;
             }
         }
-        public Color Color
-        {
-            get => this.GetColor();
-            set => this.SetColor(value);
-        }
 
 
         #endregion
 
 
+        //@Construct
         public HSVPicker()
         {
             this.InitializeComponent();

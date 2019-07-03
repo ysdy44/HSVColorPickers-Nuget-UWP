@@ -10,7 +10,8 @@
     HorizontalAlignment="Stretch"
     MinWidth="140"
     d:DesignHeight="50"
-    d:DesignWidth="200">
+    d:DesignWidth="200"
+    >
 
     <Grid >
         <Grid.RowDefinitions>

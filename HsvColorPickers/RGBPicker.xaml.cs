@@ -9,25 +9,12 @@ namespace HSVColorPickers
     /// </summary>
     public sealed partial class RGBPicker : UserControl, IPicker
     {
-        //Delegate
+        //@Delegate
+        /// <summary> Occurs when the color value changes. </summary>
         public event ColorChangeHandler ColorChange = null;
-        public Color GetColor() => this.Color;
-        public void SetColor(Color value) => this.Color = value;
-
-        #region DependencyProperty
 
 
-        private Color color = Color.FromArgb(255, 255, 255, 255);
-        private Color _Color
-        {
-            get => this.color;
-            set
-            {
-                this.ColorChange?.Invoke(this, value);//Delegate
-
-                this.color = value;
-            }
-        }
+        /// <summary> Get or set the current hsv for a rgb picker. </summary>
         public Color Color
         {
             get => this.color;
@@ -56,8 +43,26 @@ namespace HSVColorPickers
         }
 
 
+        #region DependencyProperty
+
+
+        private Color color = Color.FromArgb(255, 255, 255, 255);
+        private Color _Color
+        {
+            get => this.color;
+            set
+            {
+                this.ColorChange?.Invoke(this, value);//Delegate
+
+                this.color = value;
+            }
+        }
+
+
         #endregion
 
+               
+        //@Construct
         public RGBPicker()
         {
             this.InitializeComponent();

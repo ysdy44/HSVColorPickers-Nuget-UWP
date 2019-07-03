@@ -4,19 +4,31 @@ using Windows.UI.Xaml.Controls;
 
 namespace HSVColorPickers
 {
+    /// <summary>
+    /// Interface of <see cref="Picker"/>.
+    /// </summary>
     public interface IPicker
     {
         event ColorChangeHandler ColorChange;
-
-        void SetColor(Color value);
-        Color GetColor();
+        Color Color { get; set; }
     }
 
+    /// <summary>
+    /// Represents a basic color picker.
+    /// </summary>
     public class Picker
     {
+        /// <summary> <see cref="Picker">'s name. </summary>
         public string Name;
+        /// <summary> <see cref="Picker">'s control. </summary>
         public IPicker Control;
 
+        //@Construct
+        /// <summary>
+        /// Construct a <see cref="Picker">.
+        /// </summary>
+        /// <param name="name"> name </param>
+        /// <param name="control"> IPicker </param>
         public Picker(string name, IPicker control)
         {
             this.Name = name;
@@ -25,19 +37,19 @@ namespace HSVColorPickers
     }
 
     /// <summary>
-    /// ColorPicker:
-    ///    Color picker (ง •̀_•́)ง
+    /// Color picker (ง •̀_•́)ง
     /// </summary>
     public sealed partial class ColorPicker : UserControl
     {
-        //Delegate
+        //@Delegate
+        /// <summary> Occurs when the color value changes. </summary>
         public event ColorChangeHandler ColorChange;
 
 
         #region Picker
 
-
-        Picker[] Pickers = new Picker[]
+        /// <summary> All pickers. </summary>
+        public Picker[] Pickers = new Picker[]
         {
             new Picker( "Swatches",new SwatchesPicker()),
             new Picker( "Wheel",new WheelPicker()),
@@ -48,7 +60,7 @@ namespace HSVColorPickers
             new Picker( "Palette Value",PalettePicker.CreateFormValue()),
         };
 
-        private int index;
+        /// <summary> Get or set index of the current picker. </summary>
         public int Index
         {
             get => this.index;
@@ -63,13 +75,14 @@ namespace HSVColorPickers
                 }
 
                 this.ContentControl.Content = newControl;
-                newControl.SetColor(this._Color);
+                newControl.Color = this._Color;
 
                 newControl.ColorChange += this.Picker_ColorChange;
 
                 this.index = value;
             }
         }
+        private int index;
 
 
         #endregion
@@ -78,7 +91,7 @@ namespace HSVColorPickers
         #region Color
 
 
-        /// <summary> Color of Color Picker </summary>
+        /// <summary> Get or set current color. </summary>
         public Color Color
         {
             get => Color.FromArgb(this.Alpha, this._color.R, this._color.G, this._color.B);
@@ -90,7 +103,7 @@ namespace HSVColorPickers
                     return;
 
                 Color color = Color.FromArgb(255, value.R, value.G, value.B);
-                this.Pickers[this.Index].Control.SetColor(color);
+                this.Pickers[this.Index].Control.Color = color;
 
                 this._color = color;
             }
@@ -112,12 +125,12 @@ namespace HSVColorPickers
         private Color _color
         {
             get => this.SolidColorBrushName.Color;
-            set=> this.SolidColorBrushName .Color= value;
+            set => this.SolidColorBrushName.Color = value;
         }
 
 
 
-        /// <summary> Alpha of Color Picker </summary>
+        /// <summary> Get or set current color aphla. </summary>
         public byte Alpha
         {
             get => this.AlphaPicker.Alpha;
@@ -132,14 +145,13 @@ namespace HSVColorPickers
                 this.AlphaPicker.Alpha = value;
                 this.ColorChange?.Invoke(this, Color.FromArgb(value, this._color.R, this._color.G, this._color.B)); //Delegate
             }
-        } 
+        }
 
 
         #endregion
 
 
-        //HexOrStraw
-        private bool hexOrStraw;
+        /// <summary> Get or set up display <see cref="HSVColorPickers.HexPicker"> or <see cref="HSVColorPickers.StrawPicker">. </summary>
         public bool HexOrStraw
         {
             get => hexOrStraw;
@@ -160,7 +172,10 @@ namespace HSVColorPickers
                 hexOrStraw = value;
             }
         }
+        private bool hexOrStraw;
 
+
+        //@Construct
         public ColorPicker()
         {
             this.InitializeComponent();
@@ -193,7 +208,7 @@ namespace HSVColorPickers
         private void Picker_ColorChange2(object sender, Color value)
         {
             this._Color = value;
-            this.Pickers[this.Index].Control.SetColor(value);
+            this.Pickers[this.Index].Control.Color = value;
         }
     }
 }

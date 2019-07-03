@@ -18,12 +18,13 @@ using Windows.UI.Xaml.Shapes;
 namespace HSVColorPickers
 {
     /// <summary>
-    ///  StrawPicker:
-    ///     Color straw picker.
+    ///  Extract colors from the app's screen.
     /// </summary>
     public sealed partial class StrawPicker : UserControl
     {
-        /// <summary> A boxed Popup with Postionand Size. </summary>
+        /// <summary> 
+        /// A boxed Popup with Postionand Size. 
+        /// </summary>
         struct PopupSize
         {
             /// <summary> Popup control </summary>
@@ -126,7 +127,9 @@ namespace HSVColorPickers
             }
         }
 
-        /// <summary> Screenshot library. </summary>
+        /// <summary> 
+        /// Screenshot library. 
+        /// </summary>
         class StrawRender
         {
 
@@ -161,7 +164,8 @@ namespace HSVColorPickers
 
 
 
-        //Delegate
+        //@Delegate
+        /// <summary> Occurs when the color value changes. </summary>
         public event ColorChangeHandler ColorChange = null;
 
         //Bitmap
@@ -180,6 +184,7 @@ namespace HSVColorPickers
         };
 
 
+        /// <summary> Get or set the current hsv for a rgb picker. </summary>
         public Color Color
         {
             get => this.SolidColorBrushName.Color;
@@ -187,6 +192,7 @@ namespace HSVColorPickers
         }
 
 
+        //@Construct
         public StrawPicker()
         {
             this.InitializeComponent();

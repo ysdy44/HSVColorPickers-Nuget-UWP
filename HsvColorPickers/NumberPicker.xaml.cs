@@ -6,18 +6,21 @@ namespace HSVColorPickers
 {
     public sealed partial class NumberPicker : UserControl
     {
-        //Delegate
-        public delegate void ValueChangeHandler(object sender, int value);
+        //@Delegate
+        /// <summary> Occurs when the value changes. </summary>
         public event ValueChangeHandler ValueChange = null;
+
 
         #region DependencyProperty
 
 
+        /// <summary> Get or set the current value for a number picker. </summary>
         public int Value
         {
             get { return (int)GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
         }
+        /// <summary> Identifies the <see cref = "NumberPicker.Value" /> dependency property. </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(int), typeof(NumberPicker), new PropertyMetadata(0, new PropertyChangedCallback((sender, e) =>
         {
             NumberPicker con = (NumberPicker)sender;
@@ -32,27 +35,33 @@ namespace HSVColorPickers
         })));
 
 
+        /// <summary> Get or set the minimum desirable Value for range elements. </summary>
         public int Minimum
         {
             get { return (int)GetValue(MinimumProperty); }
             set { SetValue(MinimumProperty, value); }
         }
+        /// <summary> Identifies the <see cref = "NumberPicker.Minimum" /> dependency property. </summary>
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(nameof(Minimum), typeof(int), typeof(NumberPicker), new PropertyMetadata(0));
 
 
+        /// <summary> Get or set the maximum desirable Value for range elements. </summary>
         public int Maximum
         {
             get { return (int)GetValue(MaximumProperty); }
             set { SetValue(MaximumProperty, value); }
         }
+        /// <summary> Identifies the <see cref = "NumberPicker.Maximum" /> dependency property. </summary>
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(nameof(Maximum), typeof(int), typeof(NumberPicker), new PropertyMetadata(100));
 
 
+        /// <summary> Get or set the string Unit for range elements. </summary>
         public string Unit
         {
             get { return (string)GetValue(UnitProperty); }
             set { SetValue(UnitProperty, value); }
         }
+        /// <summary> Identifies the <see cref = "NumberPicker.Unit" /> dependency property. </summary>
         public static readonly DependencyProperty UnitProperty = DependencyProperty.Register(nameof(Unit), typeof(string), typeof(NumberPicker), new PropertyMetadata(string.Empty, new PropertyChangedCallback((sender, e) =>
         {
             NumberPicker con = (NumberPicker)sender;
@@ -66,18 +75,18 @@ namespace HSVColorPickers
 
         #endregion
 
+
         /// <summary> The Flyout is Flyouted? </summary>
-        private bool IsFlyoutClosed;
-
+        bool IsFlyoutClosed;
         /// <summary> Is this button the first one to be clicked? </summary>
-        private bool IsFirstClickedButton;
-
+        bool IsFirstClickedButton;
         /// <summary> Indicates the positive and negative of <see cref = "CacheValue" />. </summary>
-        private bool IsNegative;
-
+        bool IsNegative;
         /// <summary> Temporary values. </summary>
-        private int CacheValue;
+        int CacheValue;
 
+
+        //@Construct
         public NumberPicker()
         {
             this.InitializeComponent();

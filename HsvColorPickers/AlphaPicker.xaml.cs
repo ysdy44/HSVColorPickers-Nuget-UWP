@@ -1,7 +1,6 @@
 ﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Effects;
-using Microsoft.Graphics.Canvas.UI.Xaml;
 using System.Numerics;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
@@ -9,12 +8,12 @@ using Windows.UI.Xaml.Controls;
 namespace HSVColorPickers
 {
     /// <summary>
-    /// AlphaPicker:
-    ///    Color alpha picker.
+    /// Color alpha picker.
     /// </summary>
     public sealed partial class AlphaPicker : UserControl
     {
-        //Delegate
+        //@Delegate
+        /// <summary> Occurs when the alpha value changes. </summary>
         public event AlphaChangeHandler AlphaChange;
 
         float CanvasWidth;
@@ -41,6 +40,8 @@ namespace HSVColorPickers
                 this.alpha = value;
             }
         }
+
+        /// <summary> Get or set the current alpha for a alhpa picker. </summary>
         public byte Alpha
         {
             get => this.alpha;
@@ -56,6 +57,7 @@ namespace HSVColorPickers
 
         #endregion
 
+        //@Construct
         public AlphaPicker()
         {
             this.InitializeComponent();

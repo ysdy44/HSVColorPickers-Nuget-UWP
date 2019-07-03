@@ -16,7 +16,7 @@ namespace HSVColorPickers
     public static class Palette
     {
 
-        //The default color
+        /// <summary> The default color. </summary>
         public static readonly Color FallBackColor = Color.FromArgb(255, 177, 101, 105);
 
         //Size of the cache thumbnail

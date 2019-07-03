@@ -5,7 +5,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace HSVColorPickers
 {
-    /// <summary> Hex color converter. </summary>
+    /// <summary> 
+    /// Hex color converter. 
+    /// </summary>
     public sealed class Hex
     {
         /// <summary> Hex Number To Color </summary>
@@ -32,12 +34,12 @@ namespace HSVColorPickers
 
 
     /// <summary>
-    /// HexPicker
-    ///    Hex code.
+    /// Hex code picker.
     /// </summary>
     public sealed partial class HexPicker : UserControl
     {
-        //Delegate
+        //@Delegate
+        /// <summary> Occurs when the color value changes. </summary>
         public event ColorChangeHandler ColorChange = null;
 
         #region DependencyProperty
@@ -54,6 +56,8 @@ namespace HSVColorPickers
                 this.color = value;
             }
         }
+
+        /// <summary> Get or set current color. </summary>
         public Color Color
         {
             get => this.color;
@@ -67,6 +71,7 @@ namespace HSVColorPickers
 
         #endregion
 
+        //@Construct
         public HexPicker()
         {
             this.InitializeComponent();

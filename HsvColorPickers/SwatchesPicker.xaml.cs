@@ -10,14 +10,15 @@ using Windows.UI.Xaml.Shapes;
 namespace HSVColorPickers
 {
     /// <summary>
-    /// SwatchesPicker:
-    ///    Swatches picker
+    /// Swatches picker
     /// </summary>
     public sealed partial class SwatchesPicker : UserControl, IPicker
     {
 
-        /// <summary> It contains 16 colors. </summary>
-        public class Swatches
+        /// <summary> 
+        /// It contains 16 colors. 
+        /// </summary>
+        class Swatches
         {
             public Color Color;
             public Color[] Colors;
@@ -61,8 +62,10 @@ namespace HSVColorPickers
             }
         }
 
-        /// <summary> Size. </summary>
-        public class RainbowSize
+        /// <summary>
+        /// Size. 
+        /// </summary>
+        class RainbowSize
         {
             public readonly float Span = 4;
             public readonly float thiscikneee = 1;
@@ -108,12 +111,13 @@ namespace HSVColorPickers
         }
 
 
-        //Delegate
+        //@Delegate
+        /// <summary> Occurs when the color value changes. </summary>
         public event ColorChangeHandler ColorChange = null;
 
-        public Color Color = Color.FromArgb(255, 255, 255, 255);
-        public Color GetColor() => this.Color;
-        public void SetColor(Color value) => this.Color = value;
+        /// <summary> Get or set the current hsv for a swatches picker. </summary>
+        public Color Color { get; set; } = Color.FromArgb(255, 255, 255, 255);
+
 
         double CurrentX;
         RainbowSize Size = new RainbowSize();// Size
@@ -122,7 +126,7 @@ namespace HSVColorPickers
         SolidColorBrush[] Brushs;
 
         int Count;// Rainbows count
-        private int index;
+        /// <summary> Get or set index of the current swatches. </summary>
         public int Index
         {
             get => this.index;
@@ -141,6 +145,7 @@ namespace HSVColorPickers
                 this.index = value;
             }
         }
+        private int index;
         Swatches[] Collection = new Swatches[]// Rainbows
         {
             new Swatches(Color.FromArgb(255,0,0,0),true),
@@ -162,6 +167,7 @@ namespace HSVColorPickers
         };
 
 
+        //@Construct
         public SwatchesPicker()
         {
             this.InitializeComponent();

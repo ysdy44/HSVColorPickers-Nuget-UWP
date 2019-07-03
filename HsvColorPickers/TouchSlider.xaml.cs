@@ -5,16 +5,25 @@ using Windows.UI.Xaml.Media;
 namespace HSVColorPickers
 {
     /// <summary>
-    /// TouchSlider: 
-    ///    Touch slider, It has three events : Started, Delta and Completed.
+    /// Touch slider, It has three events : Started, Delta and Completed.
     /// </summary>
     public sealed partial class TouchSlider : UserControl
     {
-        //Delegate
-        public delegate void TouchValueChangeHandler(object sender, double value);
+        //@Delegate
+        /// <summary> Occurs when the value change starts. </summary>
         public event TouchValueChangeHandler ValueChangeStarted;
+        /// <summary> Occurs when value change. </summary>
         public event TouchValueChangeHandler ValueChangeDelta;
+        /// <summary> Occurs when the value change is complete. </summary>
         public event TouchValueChangeHandler ValueChangeCompleted;
+
+
+        //@Content
+        /// <summary> Get or set a UIElement to provide a control background. </summary>
+        public UIElement SliderBackground { get => this.Border.Child; set => this.Border.Child = value; }
+        /// <summary> Get or set a brush to provide a control background. </summary>
+        public Brush SliderBrush { get => this.UserControl.Background; set => this.UserControl.Background = value; }
+
 
         #region DependencyProperty
 
@@ -32,6 +41,8 @@ namespace HSVColorPickers
             }
             set => this.value = value;
         }
+
+        /// <summary> Get or set the current value for a TouchSlider. </summary>
         public double Value
         {
             get => this.value;
@@ -47,7 +58,7 @@ namespace HSVColorPickers
         }
 
 
-        private double offset;
+        /// <summary> Get or set the thumb offset. </summary>
         public double Offset
         {
             set
@@ -58,36 +69,39 @@ namespace HSVColorPickers
                 Canvas.SetLeft(this.Ellipse, width);
             }
         }
+        private double offset;
 
 
+        /// <summary> Get or set the minimum desirable Value for range elements. </summary>
         public double Minimum
         {
             get { return (double)GetValue(MinimumProperty); }
             set { SetValue(MinimumProperty, value); }
         }
+        /// <summary> Identifies the <see cref = "TouchSlider.Minimum" /> dependency property. </summary>
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(nameof(Minimum), typeof(double), typeof(NumberPicker), new PropertyMetadata(0.0));
 
+
+        /// <summary> Get or set the maximum desirable Value for range elements. </summary>
         public double Maximum
         {
             get { return (double)GetValue(MaximumProperty); }
             set { SetValue(MaximumProperty, value); }
         }
+        /// <summary> Identifies the <see cref = "TouchSlider.Minimum" /> dependency property. </summary>
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(nameof(Maximum), typeof(double), typeof(NumberPicker), new PropertyMetadata(100.0));
-
-
-        public UIElement SliderBackground { get => this.Border.Child; set => this.Border.Child = value; }
-        public Brush SliderBrush { get => this.UserControl.Background; set => this.UserControl.Background = value; }
 
 
         #endregion
 
 
+        //@Construct
         public TouchSlider()
         {
             this.InitializeComponent();
             this.Loaded += (s, e) => this.Value = this.value;
             this.SizeChanged += (s, e) => this.Value = this.value;
-
+      
             this.Value = this.value;
 
             this.Thumb.CanDrag = true;
