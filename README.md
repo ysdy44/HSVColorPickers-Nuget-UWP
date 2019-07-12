@@ -30,18 +30,18 @@ Run the "TestApp".
 ```xaml
 
 
-xmlns:pickers="using:HSVColorPickers"
+xmlns:hSVColorPickers="using:HSVColorPickers"
 
 
-<pickers:ColorPicker/>
+<hSVColorPickers:ColorPicker/>
 
-<pickers:RGBPicker/>
-<pickers:HSVPicker/>
-<pickers:WheelPicker/>
+<hSVColorPickers:RGBPicker/>
+<hSVColorPickers:HSVPicker/>
+<hSVColorPickers:WheelPicker/>
 
-<pickers:SwatchesPicker/>
-<pickers:HexPicker/>
-<pickers:AlphaPicker/>
+<hSVColorPickers:SwatchesPicker/>
+<hSVColorPickers:HexPicker/>
+<hSVColorPickers:AlphaPicker/>
  
 
 ```

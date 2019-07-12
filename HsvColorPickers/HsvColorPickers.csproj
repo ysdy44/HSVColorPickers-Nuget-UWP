@@ -91,6 +91,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
+    <DocumentationFile>bin\x64\Debug\HSVColorPickers.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -115,6 +116,7 @@
     <Compile Include="ColorPicker.xaml.cs">
       <DependentUpon>ColorPicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Hex.cs" />
     <Compile Include="HexPicker.xaml.cs">
       <DependentUpon>HexPicker.xaml</DependentUpon>
     </Compile>
@@ -123,6 +125,9 @@
     <Compile Include="HSVPicker.xaml.cs">
       <DependentUpon>HSVPicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Interface\IAlphaPicker.cs" />
+    <Compile Include="Interface\IColorPicker.cs" />
+    <Compile Include="Interface\IHSVPicker.cs" />
     <Compile Include="NumberPicker.xaml.cs">
       <DependentUpon>NumberPicker.xaml</DependentUpon>
     </Compile>
