@@ -33,7 +33,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid >
-                <Ellipse Width="22" Height="22" Fill="{StaticResource SolidColorBrushKey}" />
+                <Ellipse Width="22" Height="22" Fill="{StaticResource SolidColorBrushKey}"/>
                 <Ellipse StrokeThickness="4" Width="25" Height="25" Stroke="Gray"/>
                 <Ellipse StrokeThickness="2" Width="23" Height="23" Stroke="White"/>
             </Grid>
@@ -43,32 +43,34 @@
             <local:StrawPicker x:Name="StrawPicker" Grid.Column="2" HorizontalAlignment="Right" Background="Transparent"/>
         </Grid>
 
-        <!--Toggle-->
+        <!--ComboBox-->
         <Border>
-            <ComboBox x:Name="ComboBox" ItemsSource="{x:Bind Pickers}" >
+            <ComboBox x:Name="ComboBox">
                 <ComboBox.Style>
                     <Style TargetType="ComboBox">
-                        <Setter Property="Background" Value="{ThemeResource AppBarBackgroundThemeBrush}" />
-                        <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundListLowBrush}" />
-                        <Setter Property="BorderThickness" Value="1" />
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="HorizontalAlignment" Value="Stretch" />
-                        <Setter Property="VerticalAlignment" Value="Top" />
+                        <Setter Property="Background" Value="{ThemeResource AppBarBackgroundThemeBrush}"/>
+                        <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundListLowBrush}"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalAlignment" Value="Top"/>
                     </Style>
                 </ComboBox.Style>
                 <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="local:Picker">
-                        <TextBlock Text="{x:Bind Name}"/>
+                    <DataTemplate x:DataType="x:String">
+                        <TextBlock Text="{x:Bind}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
         </Border>
 
+        <ContentControl Height="4"/>
+        
         <!--Body-->
-        <ContentControl x:Name="ContentControl" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
+        <Border x:Name="ContentBorder" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
         <!--Alpha-->
-        <local:AlphaPicker x:Name="AlphaPicker" />
+        <local:AlphaPicker x:Name="AlphaPicker"/>
 
         <ContentControl Height="12"/>
 

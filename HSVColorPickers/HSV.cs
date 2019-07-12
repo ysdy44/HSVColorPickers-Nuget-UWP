@@ -52,15 +52,14 @@ namespace HSVColorPickers
         private float v;
 
 
-
         //@Construct
         /// <summary>
-        /// Construct a <see cref="HSV">.
+        /// Construct a HSV.
         /// </summary>
         /// <param name="a"> Alpha </param>
         /// <param name="h"> hue </param>
         /// <param name="s"> Saturation </param>
-        /// <param name="v"> Value </param>
+        /// <param name="v"> Value </param>   
         public HSV(byte a, float h, float s, float v)
         {
             this.A = a;
@@ -75,7 +74,7 @@ namespace HSVColorPickers
 
 
         /// <summary>
-        /// <see cref="HSV"> to <see cref="Color">.
+        /// HSV to Color.
         /// </summary>
         /// <param name="h"> Hue </param>
         /// <returns> Color </returns>
@@ -93,14 +92,14 @@ namespace HSVColorPickers
         }
 
         /// <summary>
-        /// <see cref="Color"> to <see cref="HSV">.
+        /// Color to HSV.
         /// </summary>
         /// <param name="hsl"> HSV </param>
         /// <returns> Color </returns>
         public static Color HSVtoRGB(HSV hsl) => HSV.HSVtoRGB(hsl.A, hsl.H, hsl.S, hsl.V);
 
         /// <summary> 
-        /// <see cref="Color"> to <see cref="HSV">.
+        /// Color to HSV.
         /// </summary>
         /// <param name="a"> Alpha </param>
         /// <param name="h"> Hue </param>
@@ -155,14 +154,14 @@ namespace HSVColorPickers
 
 
         /// <summary> 
-        /// <see cref="Color"> to <see cref="HSV">.
+        /// Color to HSV.
         /// </summary>
         /// <param name="color"> Color </param>
         /// <returns> HSV </returns>
         public static HSV RGBtoHSV(Color color) => HSV.RGBtoHSV(color.A, color.R, color.G, color.B);
 
         /// <summary> 
-        /// <see cref="Color"> to <see cref="HSV">.
+        /// Color to HSV.
         /// </summary>
         /// <param name="a"> Alpha </param>
         /// <param name="r"> Red </param>

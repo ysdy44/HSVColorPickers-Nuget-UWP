@@ -10,38 +10,28 @@ namespace HSVColorPickers
     /// <summary>
     /// Color alpha picker.
     /// </summary>
-    public sealed partial class AlphaPicker : UserControl
+    public sealed partial class AlphaPicker : UserControl, IColorPicker, IAlphaPicker
     {
         //@Delegate
+        /// <summary> Occurs when the color value changes. </summary>
+        public event ColorChangeHandler ColorChange;
         /// <summary> Occurs when the alpha value changes. </summary>
         public event AlphaChangeHandler AlphaChange;
 
-        float CanvasWidth;
-        float CanvasHeight;
-        CanvasBitmap Bitmap;
 
-        CanvasLinearGradientBrush Brush;
-        Vector2 StartPoint;
-        Vector2 EndPoint;
+        /// <summary> Gets picker's type name. </summary>
+        public string Type => "Alpha";
+        /// <summary> Gets picker self. </summary>
+        public UserControl Self => this;
 
-        #region DependencyProperty
-
-
-        private byte alpha = 255;
-        private byte _Alpha
+        /// <summary> Gets or Sets picker's color. </summary>
+        public Color Color
         {
-            get => this.alpha;
-            set
-            {
-                this.AlphaChange?.Invoke(this, value);//Delegate
-
-                this.CanvasControl.Invalidate();
-
-                this.alpha = value;
-            }
+            get => Color.FromArgb(this.Alpha, 255, 255, 255);
+            set => this.Alpha = value.A;
         }
 
-        /// <summary> Get or set the current alpha for a alhpa picker. </summary>
+        /// <summary> Gets or Sets picker's alpha. </summary>
         public byte Alpha
         {
             get => this.alpha;
@@ -54,10 +44,35 @@ namespace HSVColorPickers
             }
         }
 
+        private byte alpha = 255;
+        private byte _Alpha
+        {
+            get => this.alpha;
+            set
+            {
+                this.ColorChange?.Invoke(this, Color.FromArgb(value, 255, 255, 255));//Delegate
+                this.AlphaChange?.Invoke(this, value);//Delegate
 
-        #endregion
+                this.CanvasControl.Invalidate();
+
+                this.alpha = value;
+            }
+        }
+ 
+
+        float CanvasWidth;
+        float CanvasHeight;
+        CanvasBitmap Bitmap;
+
+        CanvasLinearGradientBrush Brush;
+        Vector2 StartPoint;
+        Vector2 EndPoint;
+
 
         //@Construct
+        /// <summary>
+        /// Construct a AlphaPicker.
+        /// </summary>
         public AlphaPicker()
         {
             this.InitializeComponent();

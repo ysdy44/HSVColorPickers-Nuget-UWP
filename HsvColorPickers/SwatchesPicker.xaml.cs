@@ -12,13 +12,12 @@ namespace HSVColorPickers
     /// <summary>
     /// Swatches picker
     /// </summary>
-    public sealed partial class SwatchesPicker : UserControl, IPicker
+    public sealed partial class SwatchesPicker : UserControl, IColorPicker
     {
-
         /// <summary> 
         /// It contains 16 colors. 
         /// </summary>
-        class Swatches
+        private sealed class Swatches
         {
             public Color Color;
             public Color[] Colors;
@@ -65,7 +64,7 @@ namespace HSVColorPickers
         /// <summary>
         /// Size. 
         /// </summary>
-        class RainbowSize
+        private sealed class RainbowSize
         {
             public readonly float Span = 4;
             public readonly float thiscikneee = 1;
@@ -115,7 +114,13 @@ namespace HSVColorPickers
         /// <summary> Occurs when the color value changes. </summary>
         public event ColorChangeHandler ColorChange = null;
 
-        /// <summary> Get or set the current hsv for a swatches picker. </summary>
+
+        /// <summary> Gets picker's type name. </summary>
+        public string Type => "Swatches";
+        /// <summary> Gets picker self. </summary>
+        public UserControl Self => this;
+
+        /// <summary> Gets or Sets picker's color. </summary>
         public Color Color { get; set; } = Color.FromArgb(255, 255, 255, 255);
 
 
@@ -168,6 +173,9 @@ namespace HSVColorPickers
 
 
         //@Construct
+        /// <summary>
+        /// Construct a SwatchesPicker.
+        /// </summary>
         public SwatchesPicker()
         {
             this.InitializeComponent();

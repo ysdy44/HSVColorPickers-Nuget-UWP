@@ -6,7 +6,7 @@ namespace HSVColorPickers
     /// <summary>
     /// HSV picker.
     /// </summary>
-    public sealed partial class HSVPicker : UserControl, IPicker
+    public sealed partial class HSVPicker : UserControl, IColorPicker, IHSVPicker
     {
         //@Delegate
         /// <summary> Occurs when the color value changes. </summary>
@@ -15,7 +15,12 @@ namespace HSVColorPickers
         public event HSVChangeHandler HSVChange = null;
 
 
-        /// <summary> Get or set the current color for the hsv. </summary>
+        /// <summary> Gets picker's type name. </summary>
+        public string Type => "HSV";
+        /// <summary> Gets picker self. </summary>
+        public UserControl Self => this;
+
+        /// <summary> Gets or Sets picker's color. </summary>
         public Color Color
         {
             get => HSV.HSVtoRGB(this.HSV);
@@ -26,20 +31,7 @@ namespace HSVColorPickers
         #region DependencyProperty
 
 
-        private HSV hsl = new HSV { A = 255, H = 0, S = 1, V = 1 };
-        private HSV _HSL
-        {
-            get => this.hsl;
-            set
-            {                 
-                this.ColorChange?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
-                this.HSVChange?.Invoke(this, value);//Delegate
-
-                this.hsl = value;
-            }
-        }
-
-        /// <summary> Get or set the current hsv for a hsv picker. </summary>
+        /// <summary> Gets or Sets picker's hsv. </summary>
         public HSV HSV
         {
             get => this.hsl;
@@ -71,11 +63,27 @@ namespace HSVColorPickers
             }
         }
 
+        private HSV hsl = new HSV { A = 255, H = 0, S = 1, V = 1 };
+        private HSV _HSL
+        {
+            get => this.hsl;
+            set
+            {                 
+                this.ColorChange?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
+                this.HSVChange?.Invoke(this, value);//Delegate
+
+                this.hsl = value;
+            }
+        }
+
 
         #endregion
 
 
         //@Construct
+        /// <summary>
+        /// Construct a HSVPicker.
+        /// </summary>
         public HSVPicker()
         {
             this.InitializeComponent();

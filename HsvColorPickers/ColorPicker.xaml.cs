@@ -1,97 +1,45 @@
 ﻿using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using System.Linq;
 
 namespace HSVColorPickers
 {
     /// <summary>
-    /// Interface of <see cref="Picker"/>.
-    /// </summary>
-    public interface IPicker
-    {
-        event ColorChangeHandler ColorChange;
-        Color Color { get; set; }
-    }
-
-    /// <summary>
-    /// Represents a basic color picker.
-    /// </summary>
-    public class Picker
-    {
-        /// <summary> <see cref="Picker">'s name. </summary>
-        public string Name;
-        /// <summary> <see cref="Picker">'s control. </summary>
-        public IPicker Control;
-
-        //@Construct
-        /// <summary>
-        /// Construct a <see cref="Picker">.
-        /// </summary>
-        /// <param name="name"> name </param>
-        /// <param name="control"> IPicker </param>
-        public Picker(string name, IPicker control)
-        {
-            this.Name = name;
-            this.Control = control;
-        }
-    }
-
-    /// <summary>
     /// Color picker (ง •̀_•́)ง
     /// </summary>
-    public sealed partial class ColorPicker : UserControl
+    public sealed partial class ColorPicker : UserControl, IColorPicker, IAlphaPicker
     {
         //@Delegate
         /// <summary> Occurs when the color value changes. </summary>
         public event ColorChangeHandler ColorChange;
+        /// <summary> Occurs when the alpha value changes. </summary>
+        public event AlphaChangeHandler AlphaChange;
 
 
-        #region Picker
+        /// <summary> Gets picker's type name. </summary>
+        public string Type => "Color";
+        /// <summary> Gets picker self. </summary>
+        public UserControl Self => this;
 
         /// <summary> All pickers. </summary>
-        public Picker[] Pickers = new Picker[]
+        public IColorPicker[] Pickers = new IColorPicker[]
         {
-            new Picker( "Swatches",new SwatchesPicker()),
-            new Picker( "Wheel",new WheelPicker()),
-            new Picker( "RGB",new RGBPicker()),
-            new Picker( "HSV",new HSVPicker()),
-            new Picker( "Palette Hue",PalettePicker.CreateFormHue()),
-            new Picker( "Palette Saturation",PalettePicker.CreateFormSaturation()),
-            new Picker( "Palette Value",PalettePicker.CreateFormValue()),
+            new SwatchesPicker(),
+            new WheelPicker(),
+            new RGBPicker(),
+            new HSVPicker(),
+
+            PalettePicker.CreateFormHue(),
+            PalettePicker.CreateFormSaturation(),
+            PalettePicker.CreateFormValue(),
         };
-
-        /// <summary> Get or set index of the current picker. </summary>
-        public int Index
-        {
-            get => this.index;
-            set
-            {
-                IPicker newControl = this.Pickers[value].Control;
-
-                if (value != this.index)
-                {
-                    IPicker oldControl = this.Pickers[this.index].Control;
-                    oldControl.ColorChange -= this.Picker_ColorChange;
-                }
-
-                this.ContentControl.Content = newControl;
-                newControl.Color = this._Color;
-
-                newControl.ColorChange += this.Picker_ColorChange;
-
-                this.index = value;
-            }
-        }
-        private int index;
-
-
-        #endregion
 
 
         #region Color
 
 
-        /// <summary> Get or set current color. </summary>
+        /// <summary> Gets or Sets picker's color. </summary>
         public Color Color
         {
             get => Color.FromArgb(this.Alpha, this._color.R, this._color.G, this._color.B);
@@ -103,7 +51,7 @@ namespace HSVColorPickers
                     return;
 
                 Color color = Color.FromArgb(255, value.R, value.G, value.B);
-                this.Pickers[this.Index].Control.Color = color;
+                this.Pickers[this.Index].Color = color;
 
                 this._color = color;
             }
@@ -128,9 +76,8 @@ namespace HSVColorPickers
             set => this.SolidColorBrushName.Color = value;
         }
 
-
-
-        /// <summary> Get or set current color aphla. </summary>
+        
+        /// <summary> Gets or Sets picker's alpha. </summary>
         public byte Alpha
         {
             get => this.AlphaPicker.Alpha;
@@ -143,15 +90,75 @@ namespace HSVColorPickers
             set
             {
                 this.AlphaPicker.Alpha = value;
+                this.AlphaChange?.Invoke(this, value);//Delegate
                 this.ColorChange?.Invoke(this, Color.FromArgb(value, this._color.R, this._color.G, this._color.B)); //Delegate
             }
         }
 
 
         #endregion
+                              
+
+        #region DependencyProperty
+      
+
+        /// <summary> Get or set index of the current picker. </summary>
+        public int Index
+        {
+            get { return (int)GetValue(IndexProperty); }
+            set { SetValue(IndexProperty, value); }
+        }
+        /// <summary> Identifies the <see cref = "ColorPicker.Index" /> dependency property. </summary>
+        public static readonly DependencyProperty IndexProperty = DependencyProperty.Register(nameof(Index), typeof(int), typeof(ColorPicker), new PropertyMetadata(0, (sender, e) =>
+        {
+            ColorPicker con = (ColorPicker)sender;
+
+            if (e.NewValue is int value)
+            {
+                if (e.OldValue is int oldValue)
+                {
+                    con.IndexChanged(value, oldValue);
+                }
+                else
+                {
+                    con.IndexChanged(value);
+                }
+            }
+        }));
+
+        private void IndexChanged(int value)
+        {
+            IColorPicker newPicker = this.Pickers[value];
+
+            UserControl control = newPicker.Self;
+            this.ContentBorder.Child = control;
+
+            newPicker.Color = this._Color;
+            newPicker.ColorChange += this.Picker_ColorChange;
+        }
+
+        private void IndexChanged(int newValue, int oldvalue)
+        {
+            IColorPicker newPicker = this.Pickers[newValue];
+
+            if (newValue != oldvalue)
+            {
+                IColorPicker oldPicker = this.Pickers[oldvalue];
+                oldPicker.ColorChange -= this.Picker_ColorChange;
+            }
+
+            UserControl control = newPicker.Self;
+            this.ContentBorder.Child = control;
+
+            newPicker.Color = this._Color;
+            newPicker.ColorChange += this.Picker_ColorChange;
+        }
 
 
-        /// <summary> Get or set up display <see cref="HSVColorPickers.HexPicker"> or <see cref="HSVColorPickers.StrawPicker">. </summary>
+        #endregion
+
+
+        /// <summary> Get or set up display <see cref="HSVColorPickers.HexPicker"/> or <see cref="HSVColorPickers.StrawPicker"/>. </summary>
         public bool HexOrStraw
         {
             get => hexOrStraw;
@@ -176,14 +183,22 @@ namespace HSVColorPickers
 
 
         //@Construct
+        /// <summary>
+        /// Construct a ColorPicker.
+        /// </summary>
         public ColorPicker()
         {
             this.InitializeComponent();
-
+            
             //Picker
-            this.Index = 0;
-            this.ComboBox.SelectedIndex = this.Index;
-            this.ComboBox.SelectionChanged += (s, e) => this.Index = this.ComboBox.SelectedIndex;
+            if (this.Index == 0) this.IndexChanged(this.Index);
+            this.ComboBox.ItemsSource = from item in this.Pickers select item.Type;
+
+            this.Loaded += (s2, e2) =>
+            {
+                this.ComboBox.SelectedIndex = this.Index;
+                this.ComboBox.SelectionChanged += (s, e) => this.Index = this.ComboBox.SelectedIndex;
+            };
 
             //Alpha
             this.Alpha = 255;
@@ -208,7 +223,7 @@ namespace HSVColorPickers
         private void Picker_ColorChange2(object sender, Color value)
         {
             this._Color = value;
-            this.Pickers[this.Index].Control.Color = value;
+            this.Pickers[this.Index].Color = value;
         }
     }
 }

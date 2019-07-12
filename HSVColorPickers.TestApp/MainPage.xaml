@@ -1,0 +1,49 @@
+﻿<Page
+    x:Class="HSVColorPickers.TestApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"   
+    xmlns:hSVColorPickers="using:HSVColorPickers"    
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    >
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <StackPanel VerticalAlignment="Center">
+            <Ellipse Width="50" Height="50" Margin="22" StrokeThickness="1" Stroke="White">
+                <Ellipse.Fill>
+                    <SolidColorBrush x:Name="SolidColorBrush" Color="DodgerBlue"/>
+                </Ellipse.Fill>
+            </Ellipse>
+            <ListBox 
+                 ItemsSource="{x:Bind Pickers}"
+                 SelectedIndex="{x:Bind Index,Mode=TwoWay}"
+                 >
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="hSVColorPickers:IColorPicker">
+                        <TextBlock Text="{x:Bind Type}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+        
+        <Border x:Name="Border" 
+                Grid.Column="1"
+                Width="240"
+                Padding="2,4"
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"
+                Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
+                >
+        </Border>
+        
+    </Grid>
+</Page>

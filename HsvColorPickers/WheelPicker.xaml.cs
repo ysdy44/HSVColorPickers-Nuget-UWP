@@ -14,12 +14,12 @@ namespace HSVColorPickers
     /// <summary>
     /// Pick a color in the wheel.
     /// </summary>
-    public sealed partial class WheelPicker : UserControl, IPicker
+    public sealed partial class WheelPicker : UserControl, IColorPicker, IHSVPicker
     {
         /// <summary> 
         /// Size. 
         /// </summary>
-         class WheelSize
+        private sealed class WheelSize
         {
             public static float VectorToH(Vector2 vector) => ((((float)Math.Atan2(vector.Y, vector.X)) * 180.0f / (float)Math.PI) + 360.0f) % 360.0f;
             public static float VectorToS(float vectorX, float squareRadio) => vectorX * 50 / squareRadio + 50;
@@ -33,7 +33,7 @@ namespace HSVColorPickers
         /// <summary> 
         /// Brush. 
         /// </summary>
-         class PaletteBrush
+        private sealed class PaletteBrush
         {
             public CanvasLinearGradientBrush Brush;
             public Color Color = Colors.Black;
@@ -82,12 +82,67 @@ namespace HSVColorPickers
         public event HSVChangeHandler HSVChange = null;
 
 
-        /// <summary> Get or set the current color for the hsv. </summary>
+        /// <summary> Gets picker's type name. </summary>
+        public string Type => "Wheel";
+        /// <summary> Gets picker self. </summary>
+        public UserControl Self => this;
+
+        /// <summary> Gets or Sets picker's color. </summary>
         public Color Color
         {
             get => HSV.HSVtoRGB(this.HSV);
             set => this.HSV = HSV.RGBtoHSV(value);
         }
+
+        #region DependencyProperty
+
+
+        /// <summary> Gets or Sets picker's hsv. </summary>
+        public HSV HSV
+        {
+            get => this.hsv;
+            set
+            {
+                //Palette                
+                this.HorizontalBrush.Color = HSV.HSVtoRGB(value.H);
+                this.HorizontalBrush.SetBrush(this.CanvasControl);
+
+                this.CanvasControl.Invalidate();
+                this.hsv = value;
+            }
+        }
+
+        private HSV hsv = new HSV(255, 0, 1, 1);
+        private HSV _HSV
+        {
+            get => this.hsv;
+            set
+            {
+                //Palette  
+                this.HorizontalBrush.Color = HSV.HSVtoRGB(value.H);
+                this.HorizontalBrush.SetBrush(this.CanvasControl);
+
+                this.ColorChange?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
+                this.HSVChange?.Invoke(this, value);//Delegate
+
+                this.CanvasControl.Invalidate();
+
+                this.hsv = value;
+            }
+        }
+
+        /// <summary>  Gets or sets a brush that describes the border fill of the control. </summary>
+        public SolidColorBrush Stroke
+        {
+            get { return (SolidColorBrush)GetValue(StrokeProperty); }
+            set { SetValue(StrokeProperty, value); }
+        }
+
+        /// <summary> Identifies the <see cref = "WheelPicker.Stroke" /> dependency property. </summary>
+        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(WheelPicker), new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.Gray)));
+
+
+        #endregion
 
 
         readonly float StrokeWidth = 8;
@@ -110,58 +165,12 @@ namespace HSVColorPickers
         bool IsWheel;
         bool IsPalette;
         Vector2 Position;
-        
-        #region DependencyProperty
-
-
-        private HSV hsv = new HSV(255, 0, 1, 1);
-        private HSV _HSV
-        {
-            get => this.hsv;
-            set
-            {
-                //Palette  
-                this.HorizontalBrush.Color = HSV.HSVtoRGB(value.H);
-                this.HorizontalBrush.SetBrush(this.CanvasControl);
-                             
-                this.ColorChange?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
-                this.HSVChange?.Invoke(this, value);//Delegate
-
-                this.CanvasControl.Invalidate();
-
-                this.hsv = value;
-            }
-        }        
-        
-        /// <summary> Get or set the current hsv for a wheel picker. </summary>
-        public HSV HSV
-        {
-            get => this.hsv;
-            set
-            {
-                //Palette                
-                this.HorizontalBrush.Color = HSV.HSVtoRGB(value.H);
-                this.HorizontalBrush.SetBrush(this.CanvasControl);
-
-                this.CanvasControl.Invalidate();
-                this.hsv = value;
-            }
-        }
-
-        /// <summary>  Gets or sets a brush that describes the border fill of the control. </summary>
-        public SolidColorBrush Stroke
-        {
-            get { return (SolidColorBrush)GetValue(StrokeProperty); }
-            set { SetValue(StrokeProperty, value); }
-        }
-        /// <summary> Identifies the <see cref = "WheelPicker.Stroke" /> dependency property. </summary>
-        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(WheelPicker), new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.Gray)));
-
-
-        #endregion
 
 
         //@Construct
+        /// <summary>
+        /// Construct a WheelPicker.
+        /// </summary>
         public WheelPicker()
         {
             this.InitializeComponent();

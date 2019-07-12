@@ -96,6 +96,9 @@ namespace HSVColorPickers
 
 
         //@Construct
+        /// <summary>
+        /// Construct a TouchSlider.
+        /// </summary>
         public TouchSlider()
         {
             this.InitializeComponent();

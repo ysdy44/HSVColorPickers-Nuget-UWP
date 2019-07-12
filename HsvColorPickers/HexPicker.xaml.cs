@@ -1,49 +1,34 @@
 ﻿using System;
 using Windows.UI;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace HSVColorPickers
-{
-    /// <summary> 
-    /// Hex color converter. 
-    /// </summary>
-    public sealed class Hex
-    {
-        /// <summary> Hex Number To Color </summary>
-        public static Color IntToColor(int hexNumber) => Color.FromArgb(255, (byte)((hexNumber >> 16) & 0xff), (byte)((hexNumber >> 8) & 0xff), (byte)((hexNumber >> 0) & 0xff));
-
-        /// <summary> String To Hex Number </summary>
-        public static int StringToInt(string hex) => int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
-
-        /// <summary> String To Color </summary>
-        public static string ColorToString(Color color) => color.R.ToString("x2") + color.G.ToString("x2") + color.B.ToString("x2").ToString();
-
-        /// <summary> Subste </summary>
-        public static string TextSubstring(string text)
-        {
-            if (text == null) return null;
-
-            if (text.Length < 6) return null;
-
-            if (text.Length == 6) return text;
-
-            return text.Substring(text.Length - 6, 6);
-        }
-    }
-
-
+{    
     /// <summary>
     /// Hex code picker.
     /// </summary>
-    public sealed partial class HexPicker : UserControl
+    public sealed partial class HexPicker : UserControl,IColorPicker
     {
         //@Delegate
         /// <summary> Occurs when the color value changes. </summary>
         public event ColorChangeHandler ColorChange = null;
 
-        #region DependencyProperty
 
+        /// <summary> Gets picker's type name. </summary>
+        public string Type => "Hex";
+        /// <summary> Gets picker self. </summary>
+        public UserControl Self => this;
+
+        /// <summary> Gets or Sets picker's color. </summary>
+        public Color Color
+        {
+            get => this.color;
+            set
+            {
+                this.TextBox.Text = Hex.ColorToString(value).ToUpper();
+                this.color = value;
+            }
+        }
 
         private Color color = Color.FromArgb(255, 255, 255, 255);
         private Color _Color
@@ -57,21 +42,11 @@ namespace HSVColorPickers
             }
         }
 
-        /// <summary> Get or set current color. </summary>
-        public Color Color
-        {
-            get => this.color;
-            set
-            {
-                this.TextBox.Text = Hex.ColorToString(value).ToUpper();
-                this.color = value;
-            }
-        }
-
-
-        #endregion
 
         //@Construct
+        /// <summary>
+        /// Construct a HexPicker.
+        /// </summary>
         public HexPicker()
         {
             this.InitializeComponent();

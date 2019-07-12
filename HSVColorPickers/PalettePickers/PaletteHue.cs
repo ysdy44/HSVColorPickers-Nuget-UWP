@@ -13,23 +13,29 @@ namespace HSVColorPickers
     public class PaletteHue : PaletteBase
     {
         //@Construct
+        /// <summary>
+        /// Construct a PaletteHue.
+        /// </summary>
         public PaletteHue()
         {
-            this.Name = "Hue";
+            this.Type = "Palette Hue";
             this.Unit = "º";
             this.Minimum = 0;
             this.Maximum = 360;
         }
 
-        public override HSV GetHSL(HSV HSV, float value) => new HSV(HSV.A, value, HSV.S, HSV.V);
+        /// <summary> Override <see cref="PaletteBase.GetHSL"/>. </summary>
+        public override HSV GetHSL(HSV hsv, float value) => new HSV(hsv.A, value, hsv.S, hsv.V);
+        /// <summary> Override <see cref="PaletteBase.GetValue"/>. </summary>
         public override float GetValue(HSV HSV) => HSV.H;
 
-        public override GradientStopCollection GetSliderBrush(HSV HSV)
+        /// <summary> Override <see cref="PaletteBase.GetSliderBrush"/>. </summary>
+        public override GradientStopCollection GetSliderBrush(HSV hsv)
         {
-            byte A = HSV.A;
-            float H = HSV.H;
-            float S = HSV.S;
-            float L = HSV.V;
+            byte A = hsv.A;
+            float H = hsv.H;
+            float S = hsv.S;
+            float L = hsv.V;
 
             return new GradientStopCollection()
             {
@@ -71,26 +77,28 @@ namespace HSVColorPickers
             };
         }
 
-        public override void Draw(CanvasControl CanvasControl, CanvasDrawingSession ds, HSV HSV, Vector2 Center, float SquareHalfWidth, float SquareHalfHeight)
+        /// <summary> Override <see cref="PaletteBase.Draw"/>. </summary>
+        public override void Draw(CanvasControl sender, CanvasDrawingSession ds, HSV hsv, Vector2 Center, float squareHalfWidth, float squareHalfHeight)
         {
             //Palette
-            Rect rect = new Rect(Center.X - SquareHalfWidth, Center.Y - SquareHalfHeight, SquareHalfWidth * 2, SquareHalfHeight * 2);
-            ds.FillRoundedRectangle(rect, 4, 4, new CanvasLinearGradientBrush(CanvasControl, Windows.UI.Colors.White, HSV.HSVtoRGB(HSV.H)) { StartPoint = new Vector2(Center.X - SquareHalfWidth, Center.Y), EndPoint = new Vector2(Center.X + SquareHalfWidth, Center.Y) });
-            ds.FillRoundedRectangle(rect, 4, 4, new CanvasLinearGradientBrush(CanvasControl, Windows.UI.Colors.Transparent, Windows.UI.Colors.Black) { StartPoint = new Vector2(Center.X, Center.Y - SquareHalfHeight), EndPoint = new Vector2(Center.X, Center.Y + SquareHalfHeight) });
+            Rect rect = new Rect(Center.X - squareHalfWidth, Center.Y - squareHalfHeight, squareHalfWidth * 2, squareHalfHeight * 2);
+            ds.FillRoundedRectangle(rect, 4, 4, new CanvasLinearGradientBrush(sender, Windows.UI.Colors.White, HSV.HSVtoRGB(hsv.H)) { StartPoint = new Vector2(Center.X - squareHalfWidth, Center.Y), EndPoint = new Vector2(Center.X + squareHalfWidth, Center.Y) });
+            ds.FillRoundedRectangle(rect, 4, 4, new CanvasLinearGradientBrush(sender, Windows.UI.Colors.Transparent, Windows.UI.Colors.Black) { StartPoint = new Vector2(Center.X, Center.Y - squareHalfHeight), EndPoint = new Vector2(Center.X, Center.Y + squareHalfHeight) });
             ds.DrawRoundedRectangle(rect, 4, 4, Windows.UI.Colors.Gray);
 
             //Thumb 
-            float px = ((float)HSV.S - 50) * SquareHalfWidth / 50 + Center.X;
-            float py = (50 - (float)HSV.V) * SquareHalfHeight / 50 + Center.Y;
+            float px = ((float)hsv.S - 50) * squareHalfWidth / 50 + Center.X;
+            float py = (50 - (float)hsv.V) * squareHalfHeight / 50 + Center.Y;
             ds.DrawCircle(px, py, 9, Windows.UI.Colors.Black, 5);
             ds.DrawCircle(px, py, 9, Windows.UI.Colors.White, 3);
         }
-        public override HSV Delta(HSV HSV, Vector2 v, float SquareHalfWidth, float SquareHalfHeight)
+        /// <summary> Override <see cref="PaletteBase.Delta"/>. </summary>
+        public override HSV Delta(HSV hsv, Vector2 position, float squareHalfWidth, float squareHalfHeight)
         {
-            float S = 50 + v.X * 50 / SquareHalfWidth;
-            float L = 50 - v.Y * 50 / SquareHalfHeight;
+            float S = 50 + position.X * 50 / squareHalfWidth;
+            float L = 50 - position.Y * 50 / squareHalfHeight;
 
-            return new HSV(HSV.A, HSV.H, S, L);
+            return new HSV(hsv.A, hsv.H, S, L);
         }
     }
 }

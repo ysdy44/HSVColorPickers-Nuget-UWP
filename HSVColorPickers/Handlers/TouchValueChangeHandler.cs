@@ -2,7 +2,7 @@
 {
     //@Delegate
     /// <summary>
-    /// Get or set the current settings for the range control.
+    /// Method that represents the handling of the HSVChaTouchValueChangenge event.
     /// </summary>
     /// <param name="sender"> The object to which the event handler is attached. </param>
     /// <param name="value"> Event data. </param>

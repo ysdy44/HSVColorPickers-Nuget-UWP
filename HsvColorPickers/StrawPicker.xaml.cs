@@ -20,7 +20,7 @@ namespace HSVColorPickers
     /// <summary>
     ///  Extract colors from the app's screen.
     /// </summary>
-    public sealed partial class StrawPicker : UserControl
+    public sealed partial class StrawPicker : UserControl, IColorPicker, IDisposable
     {
         /// <summary> 
         /// A boxed Popup with Postionand Size. 
@@ -69,7 +69,9 @@ namespace HSVColorPickers
             /// </summary>
             /// <param name="canvasControl"> The CanvasControl. </param>
             /// <param name="textBlock"> The TextBlock. </param>
+            /// <param name="brush"> The source brush.</param>
             /// <param name="size">the width and height of popup control</param>
+            /// <param name="toolTipSize"></param>
             public PopupSize(UIElement canvasControl, UIElement textBlock, SolidColorBrush brush, float size = 100, float toolTipSize = 20)
             {
                 this.postion = Vector2.Zero;
@@ -82,6 +84,7 @@ namespace HSVColorPickers
 
                 this.Popup = new Popup
                 {
+                    IsHitTestVisible = false,
                     IsOpen = false,
                     Child = new Border
                     {
@@ -162,11 +165,24 @@ namespace HSVColorPickers
 
         }
 
-
-
+        
         //@Delegate
         /// <summary> Occurs when the color value changes. </summary>
         public event ColorChangeHandler ColorChange = null;
+
+
+        /// <summary> Gets picker's type name. </summary>
+        public string Type => "Straw";
+        /// <summary> Gets picker self. </summary>
+        public UserControl Self => this;
+
+        /// <summary> Gets or Sets picker's color. </summary>
+        public Color Color
+        {
+            get => this.SolidColorBrushName.Color;
+            set => this.SolidColorBrushName.Color = value;
+        }
+
 
         //Bitmap
         CanvasDevice Device = new CanvasDevice();
@@ -182,17 +198,12 @@ namespace HSVColorPickers
             Foreground = new SolidColorBrush(Windows.UI.Colors.White),
             VerticalAlignment = VerticalAlignment.Center
         };
-
-
-        /// <summary> Get or set the current hsv for a rgb picker. </summary>
-        public Color Color
-        {
-            get => this.SolidColorBrushName.Color;
-            set => this.SolidColorBrushName.Color = value;
-        }
-
+        
 
         //@Construct
+        /// <summary>
+        /// Construct a StrawPicker.
+        /// </summary>
         public StrawPicker()
         {
             this.InitializeComponent();
@@ -245,6 +256,9 @@ namespace HSVColorPickers
             };
         }
 
+        /// <summary>
+        /// Performs the task defined by the application associated with releasing or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             if (this.Bitmap == null) return;

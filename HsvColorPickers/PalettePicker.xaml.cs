@@ -9,7 +9,7 @@ namespace HSVColorPickers
     /// <summary>
     /// Color palette picker.
     /// </summary>
-    public partial class PalettePicker : UserControl, IPicker
+    public partial class PalettePicker : UserControl, IColorPicker, IHSVPicker
     {
         private class PaletteSquare
         {
@@ -27,7 +27,13 @@ namespace HSVColorPickers
         /// <summary> Occurs when the hsv value changes. </summary>
         public event HSVChangeHandler HSVChange = null;
 
-        /// <summary> Get or set the current color for the hsv. </summary>
+
+        /// <summary> Gets picker's type name. </summary>
+        public string Type { get; set; } = "Palette";
+        /// <summary> Gets picker self. </summary>
+        public UserControl Self => this;
+
+        /// <summary> Gets or Sets picker's color. </summary>
         public Color Color
         {
             get => HSV.HSVtoRGB(this.HSV);
@@ -36,6 +42,19 @@ namespace HSVColorPickers
 
         #region DependencyProperty
 
+
+        /// <summary> Gets or Sets picker's hsv. </summary>
+        public HSV HSV
+        {
+            get => this.hsl;
+            set
+            {
+                this.Action(value);
+                this.hsl = value;
+
+                this.CanvasControl.Invalidate();
+            }
+        }
 
         private HSV hsl = new HSV { A = 255, H = 0, S = 1, V = 1 };
         private HSV _HSL
@@ -50,19 +69,6 @@ namespace HSVColorPickers
             }
         }
 
-        /// <summary> Get or set the current hsv for a palette picker. </summary>
-        public HSV HSV
-        {
-            get => this.hsl;
-            set
-            {
-                this.Action(value);
-                this.hsl = value;
-
-                this.CanvasControl.Invalidate();
-            }
-        }
-
 
         #endregion
 
@@ -74,9 +80,14 @@ namespace HSVColorPickers
 
 
         //@Construct
+        /// <summary>
+        /// Construct a PalettePicker.
+        /// </summary>
+        /// <param name="paletteBase"> The source base. </param>
         public PalettePicker(PaletteBase paletteBase)
         {
             this.InitializeComponent();
+            this.Type = paletteBase.Type;
 
             //Picker
             this.Slider.Minimum = paletteBase.Minimum;
@@ -132,17 +143,17 @@ namespace HSVColorPickers
 
         //@Static
         /// <summary>
-        ///  Create form <see cref="PaletteHue">.
+        ///  Create form PaletteHue.
         /// </summary>
         /// <returns> PalettePicker </returns>
         public static PalettePicker CreateFormHue() => new PalettePicker(new PaletteHue());
         /// <summary>
-        ///  Create form <see cref="PaletteSaturation">.
+        ///  Create form PaletteSaturation.
         /// </summary>
         /// <returns> PalettePicker </returns>
         public static PalettePicker CreateFormSaturation() => new PalettePicker(new PaletteSaturation());
         /// <summary>
-        ///  Create form <see cref="PaletteValue">.
+        ///  Create form PaletteValue.
         /// </summary>
         /// <returns> PalettePicker </returns>
         public static PalettePicker CreateFormValue() => new PalettePicker(new PaletteValue());

@@ -22,7 +22,10 @@ ColorPicker, RGBPicker, HSVPicker, WheelPicker, PalettePicker, StrawPicker, HexP
 Search 'HSV Color' in Nuget and download it.  
   ![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/Thumbnails000.jpg)
 
+
 ### Example
+
+Run the "TestApp".
 
 ```xaml
 

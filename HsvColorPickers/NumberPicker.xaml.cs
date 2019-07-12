@@ -4,6 +4,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace HSVColorPickers
 {
+    /// <summary>
+    /// Provide a numeric keypad to enter numbers.
+    /// </summary>
     public sealed partial class NumberPicker : UserControl
     {
         //@Delegate
@@ -87,6 +90,9 @@ namespace HSVColorPickers
 
 
         //@Construct
+        /// <summary>
+        /// Construct a NumberPicker.
+        /// </summary>
         public NumberPicker()
         {
             this.InitializeComponent();
