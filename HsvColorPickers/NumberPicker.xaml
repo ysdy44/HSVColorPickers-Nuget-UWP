@@ -26,9 +26,10 @@
             BorderThickness="{x:Bind UserControl.BorderThickness,Mode=OneWay}"
             BorderBrush="{x:Bind UserControl.BorderBrush,Mode=OneWay}"
             Background="{x:Bind UserControl.Background,Mode=OneWay}"
+            Foreground="{x:Bind UserControl.Foreground,Mode=OneWay}"
             >
         <Button.Flyout>
-            <Flyout x:Name="Flyout" Placement="Bottom">
+            <Flyout x:Name="Flyout" Placement="{x:Bind Placement}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle}">
                 <Grid Width="180" Height="180" Margin="-10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
