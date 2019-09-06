@@ -21,7 +21,7 @@
 
         <!--A-->
         <TextBlock Text="A" Opacity="0.8" VerticalAlignment="Center"/>
-        <local:NumberPicker x:Name="APicker" Minimum="0" Maximum="255" HorizontalAlignment="Right" />
+        <local:NumberPicker x:Name="APicker" Minimum="0" Maximum="255" HorizontalAlignment="Right" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}"/>
         <local:TouchSlider  x:Name="ASlider" Grid.Row="1" Minimum="0" Maximum="255">
             <local:TouchSlider.SliderBackground>
                 <canvas:CanvasControl x:Name="CanvasControl"/>

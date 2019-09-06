@@ -139,23 +139,5 @@ namespace HSVColorPickers
 
             this.CanvasControl.Invalidate();
         }
-
-
-        //@Static
-        /// <summary>
-        ///  Create form PaletteHue.
-        /// </summary>
-        /// <returns> PalettePicker </returns>
-        public static PalettePicker CreateFormHue() => new PalettePicker(new PaletteHue());
-        /// <summary>
-        ///  Create form PaletteSaturation.
-        /// </summary>
-        /// <returns> PalettePicker </returns>
-        public static PalettePicker CreateFormSaturation() => new PalettePicker(new PaletteSaturation());
-        /// <summary>
-        ///  Create form PaletteValue.
-        /// </summary>
-        /// <returns> PalettePicker </returns>
-        public static PalettePicker CreateFormValue() => new PalettePicker(new PaletteValue());
     }
 }

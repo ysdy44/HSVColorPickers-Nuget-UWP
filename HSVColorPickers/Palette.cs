@@ -166,7 +166,7 @@ namespace HSVColorPickers
         }
 
         /// <summary>
-        /// get CanvasBitmap form uri
+        /// get CanvasBitmap from uri
         /// </summary>
         /// <param name="uri">web or file path</param>
         /// <returns></returns>

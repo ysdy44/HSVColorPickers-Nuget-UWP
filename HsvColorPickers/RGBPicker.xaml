@@ -46,17 +46,17 @@
 
         <!--R-->
         <TextBlock Grid.Row="0" Text="R" Opacity="0.8" VerticalAlignment="Center"/>
-        <Colors:NumberPicker x:Name="RPicker" Grid.Row="0" Minimum="0" Maximum="255" HorizontalAlignment="Right"/>
+        <Colors:NumberPicker x:Name="RPicker" Grid.Row="0" Minimum="0" Maximum="255" HorizontalAlignment="Right" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}"/>
         <Colors:TouchSlider x:Name="RSlider" Grid.Row="1" Minimum="0" Maximum="255" SliderBrush="{StaticResource RBrush}" />
 
         <!--G-->
         <TextBlock Grid.Row="2" Text="G" Opacity="0.8" VerticalAlignment="Center"/>
-        <Colors:NumberPicker x:Name="GPicker" Grid.Row="2" Minimum="0" Maximum="255" HorizontalAlignment="Right"/>
+        <Colors:NumberPicker x:Name="GPicker" Grid.Row="2" Minimum="0" Maximum="255" HorizontalAlignment="Right" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}"/>
         <Colors:TouchSlider x:Name="GSlider" Grid.Row="3" Minimum="0" Maximum="255" SliderBrush="{StaticResource GBrush}"/>
 
         <!--B-->
         <TextBlock Grid.Row="4" Text="B" Opacity="0.8" VerticalAlignment="Center"/>
-        <Colors:NumberPicker x:Name="BPicker" Grid.Row="4" Minimum="0" Maximum="255" HorizontalAlignment="Right"/>
+        <Colors:NumberPicker x:Name="BPicker" Grid.Row="4" Minimum="0" Maximum="255" HorizontalAlignment="Right" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}"/>
         <Colors:TouchSlider x:Name="BSlider" Grid.Row="5" Minimum="0" Maximum="255" SliderBrush="{StaticResource BBrush}"/>
 
     </Grid>

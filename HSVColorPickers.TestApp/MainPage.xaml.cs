@@ -1,33 +1,32 @@
-﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Windows.UI;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace HSVColorPickers.TestApp
 {
     public sealed partial class MainPage : Page
     {
-
-        public IColorPicker[] Pickers = new IColorPicker[]
+        private IEnumerable<IColorPicker> Pickers()
         {
-             new ColorPicker()
-             {
-                 Index = 1,
-                 Background = new SolidColorBrush(Colors.Transparent)
-             },
+            yield return this.ColorPicker;
 
-             new RGBPicker(),
-             new HSVPicker(),
-             new WheelPicker(),
+            yield return this.SwatchesPicker;
+            yield return this.WheelPicker;
+            yield return this.RGBPicker;
+            yield return this.HSVPicker;
 
-             new SwatchesPicker(),
-             new HexPicker(),
-             new AlphaPicker(),
+            yield return this.PaletteHuePicker;
+            yield return this.PaletteSaturationPicker;
+            yield return this.PaletteValuePicker;
+        }
 
-             PalettePicker.CreateFormHue(),
-             PalettePicker.CreateFormSaturation(),
-             PalettePicker.CreateFormValue(),
-        };
+        private Color _Color
+        {
+            get => this.SolidColorBrush.Color;
+            set => this.SolidColorBrush.Color = value;
+        }
 
         #region DependencyProperty
 
@@ -42,28 +41,57 @@ namespace HSVColorPickers.TestApp
 
             if (e.NewValue is int value)
             {
-                con.IndexChanged(value);
+                con.SetVisibilityWithCurrentPicker(value);
             }
         }));
-
-        private void IndexChanged(int value)
-        {
-            IColorPicker picker = this.Pickers[value];
-
-            UserControl control = picker.Self;
-            this.Border.Child = control;
-
-            picker.Color = this.SolidColorBrush.Color;
-            picker.ColorChange += (s, color) => this.SolidColorBrush.Color = color;
-        }
-
+        
         #endregion
 
         //@Construct
         public MainPage()
         {
             this.InitializeComponent();
-            this.Loaded += (s, e) => this.IndexChanged(0);
+            this.Loaded += (s, e) => this.SetVisibilityWithCurrentPicker(this.Index);
+
+            this.ListBox.ItemsSource = from picker in this.Pickers() select picker.Type;
+
+            //Pickers
+            foreach (IColorPicker picker in this.Pickers())
+            {
+                picker.ColorChange += (s, value) =>
+                {
+                    this._Color = value;
+                };
+            }
+        }
+
+
+        private void SetColorWithCurrentPicker(Color color)
+        {
+            foreach (IColorPicker picker in this.Pickers())
+            {
+                if (picker.Self.Visibility == Visibility.Visible)
+                {
+                    picker.Color = color;
+                }
+            }
+        }
+
+        private void SetVisibilityWithCurrentPicker(int index)
+        {
+            foreach (IColorPicker picker in this.Pickers())
+            {
+                bool isSelf = index == picker.Self.TabIndex;
+                if (isSelf)
+                {
+                    picker.Self.Visibility = Visibility.Visible;
+                    picker.Color = this._Color;
+                }
+                else
+                {
+                    picker.Self.Visibility = Visibility.Collapsed;
+                }
+            }
         }
     }
 }

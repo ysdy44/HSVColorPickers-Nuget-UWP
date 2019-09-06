@@ -1,7 +1,9 @@
-﻿using Windows.UI;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using System.Linq;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace HSVColorPickers
 {
@@ -22,18 +24,18 @@ namespace HSVColorPickers
         /// <summary> Gets picker self. </summary>
         public UserControl Self => this;
 
-        /// <summary> All pickers. </summary>
-        public IColorPicker[] Pickers = new IColorPicker[]
-        {
-            new SwatchesPicker(),
-            new WheelPicker(),
-            new RGBPicker(),
-            new HSVPicker(),
 
-            PalettePicker.CreateFormHue(),
-            PalettePicker.CreateFormSaturation(),
-            PalettePicker.CreateFormValue(),
-        };
+        private IEnumerable<IColorPicker> Pickers()
+        {
+            yield return this.SwatchesPicker;
+            yield return this.WheelPicker;
+            yield return this.RGBPicker;
+            yield return this.HSVPicker;
+
+            yield return this.PaletteHuePicker;
+            yield return this.PaletteSaturationPicker;
+            yield return this.PaletteValuePicker;
+        }
 
 
         #region Color
@@ -42,41 +44,35 @@ namespace HSVColorPickers
         /// <summary> Gets or Sets picker's color. </summary>
         public Color Color
         {
-            get => Color.FromArgb(this.Alpha, this._color.R, this._color.G, this._color.B);
+            get => Color.FromArgb(this.Alpha, this.SolidColorBrushName.Color.R, this.SolidColorBrushName.Color.G, this.SolidColorBrushName.Color.B);
             set
             {
                 if (value.A != this.Alpha) this.Alpha = value.A;
 
-                if (value.A == this.Alpha && value.R == this._color.R && value.G == this._color.G && value.B == this._color.B)
+                if (value.A == this.Alpha && value.R == this.SolidColorBrushName.Color.R && value.G == this.SolidColorBrushName.Color.G && value.B == this.SolidColorBrushName.Color.B)
                     return;
 
                 Color color = Color.FromArgb(255, value.R, value.G, value.B);
-                this.Pickers[this.Index].Color = color;
-
-                this._color = color;
+                this.SetColorWithCurrentPicker(color);
+                this.SolidColorBrushName.Color = color;
             }
         }
 
         private Color _Color
         {
-            get => this._color;
+            get => this.SolidColorBrushName.Color;
             set
             {
-                if (value.A == this.Alpha && value.R == this._color.R && value.G == this._color.G && value.B == this._color.B)
+                if (value.A == this.Alpha && value.R == this.SolidColorBrushName.Color.R && value.G == this.SolidColorBrushName.Color.G && value.B == this.SolidColorBrushName.Color.B)
                     return;
 
-                this._color = Color.FromArgb(255, value.R, value.G, value.B);
+                this.SolidColorBrushName.Color = Color.FromArgb(255, value.R, value.G, value.B);
                 this.ColorChange?.Invoke(this, Color.FromArgb(this.Alpha, value.R, value.G, value.B));//Delegate
             }
         }
+         
 
-        private Color _color
-        {
-            get => this.SolidColorBrushName.Color;
-            set => this.SolidColorBrushName.Color = value;
-        }
 
-        
         /// <summary> Gets or Sets picker's alpha. </summary>
         public byte Alpha
         {
@@ -91,16 +87,16 @@ namespace HSVColorPickers
             {
                 this.AlphaPicker.Alpha = value;
                 this.AlphaChange?.Invoke(this, value);//Delegate
-                this.ColorChange?.Invoke(this, Color.FromArgb(value, this._color.R, this._color.G, this._color.B)); //Delegate
+                this.ColorChange?.Invoke(this, Color.FromArgb(value, this.SolidColorBrushName.Color.R, this.SolidColorBrushName.Color.G, this.SolidColorBrushName.Color.B)); //Delegate
             }
         }
 
 
         #endregion
-                              
+
 
         #region DependencyProperty
-      
+
 
         /// <summary> Get or set index of the current picker. </summary>
         public int Index
@@ -115,44 +111,29 @@ namespace HSVColorPickers
 
             if (e.NewValue is int value)
             {
-                if (e.OldValue is int oldValue)
-                {
-                    con.IndexChanged(value, oldValue);
-                }
-                else
-                {
-                    con.IndexChanged(value);
-                }
+                con.SetVisibilityWithCurrentPicker(value);
             }
         }));
 
-        private void IndexChanged(int value)
+
+        /// <summary> Get or set the flyout style. </summary>
+        public Style FlyoutPresenterStyle
         {
-            IColorPicker newPicker = this.Pickers[value];
-
-            UserControl control = newPicker.Self;
-            this.ContentBorder.Child = control;
-
-            newPicker.Color = this._Color;
-            newPicker.ColorChange += this.Picker_ColorChange;
+            get { return (Style)GetValue(FlyoutPresenterStyleProperty); }
+            set { SetValue(FlyoutPresenterStyleProperty, value); }
         }
+        /// <summary> Identifies the <see cref = "NumberPicker.FlyoutPresenterStyle" /> dependency property. </summary>
+        public static readonly DependencyProperty FlyoutPresenterStyleProperty = DependencyProperty.Register(nameof(FlyoutPresenterStyle), typeof(Style), typeof(ColorPicker), new PropertyMetadata(null));
 
-        private void IndexChanged(int newValue, int oldvalue)
+
+        /// <summary> Get or set the flyout placement. </summary>
+        public FlyoutPlacementMode Placement
         {
-            IColorPicker newPicker = this.Pickers[newValue];
-
-            if (newValue != oldvalue)
-            {
-                IColorPicker oldPicker = this.Pickers[oldvalue];
-                oldPicker.ColorChange -= this.Picker_ColorChange;
-            }
-
-            UserControl control = newPicker.Self;
-            this.ContentBorder.Child = control;
-
-            newPicker.Color = this._Color;
-            newPicker.ColorChange += this.Picker_ColorChange;
+            get { return (FlyoutPlacementMode)GetValue(PlacementProperty); }
+            set { SetValue(PlacementProperty, value); }
         }
+        /// <summary> Identifies the <see cref = "NumberPicker.Placement" /> dependency property. </summary>
+        public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(ColorPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
 
 
         #endregion
@@ -189,16 +170,10 @@ namespace HSVColorPickers
         public ColorPicker()
         {
             this.InitializeComponent();
-            
-            //Picker
-            if (this.Index == 0) this.IndexChanged(this.Index);
-            this.ComboBox.ItemsSource = from item in this.Pickers select item.Type;
+            this.Loaded += (s, e) => this.SetVisibilityWithCurrentPicker(this.Index);
 
-            this.Loaded += (s2, e2) =>
-            {
-                this.ComboBox.SelectedIndex = this.Index;
-                this.ComboBox.SelectionChanged += (s, e) => this.Index = this.ComboBox.SelectedIndex;
-            };
+            //Picker
+            this.ComboBox.ItemsSource = from picker in this.Pickers() select picker.Type;
 
             //Alpha
             this.Alpha = 255;
@@ -209,21 +184,62 @@ namespace HSVColorPickers
             this.HexOrStrawButton.Tapped += (s, e) => this.HexOrStraw = !this.HexOrStraw;
             //Hex
             this.HexPicker.Color = this.Color;
-            this.HexPicker.ColorChange += this.Picker_ColorChange2;
+            this.HexPicker.ColorChange += (s, color) =>
+            {
+                this._Color = color;
+                this.SetColorWithCurrentPicker(color);
+            };
             //Straw
             this.StrawPicker.Color = this.Color;
-            this.StrawPicker.ColorChange += this.Picker_ColorChange2;
+            this.StrawPicker.ColorChange += (s, color) =>
+            {
+                this._Color = color;
+                this.SetColorWithCurrentPicker(color);
+            };
+
+            //Pickers
+            foreach (IColorPicker picker in this.Pickers())
+            {
+                picker.ColorChange += (s, value) =>
+                {
+                    this._Color = value;
+
+                    if (this.HexOrStraw)
+                        this.HexPicker.Color = value;
+                    else
+                        this.StrawPicker.Color = value;
+                };
+            }
         }
 
-        private void Picker_ColorChange(object sender, Color value)
+
+
+        private void SetColorWithCurrentPicker(Color color)
         {
-            this._Color = value;
-            this.HexPicker.Color = value;
+            foreach (IColorPicker picker in this.Pickers())
+            {
+                if (picker.Self.Visibility == Visibility.Visible)
+                {
+                    picker.Color = color;
+                }
+            }
         }
-        private void Picker_ColorChange2(object sender, Color value)
+
+        private void SetVisibilityWithCurrentPicker(int index)
         {
-            this._Color = value;
-            this.Pickers[this.Index].Color = value;
+            foreach (IColorPicker picker in this.Pickers())
+            {
+                bool isSelf = index == picker.Self.TabIndex;
+                if (isSelf)
+                {
+                    picker.Self.Visibility = Visibility.Visible;
+                    picker.Color = this.SolidColorBrushName.Color;
+                }
+                else
+                {
+                    picker.Self.Visibility = Visibility.Collapsed;
+                }
+            }
         }
     }
 }

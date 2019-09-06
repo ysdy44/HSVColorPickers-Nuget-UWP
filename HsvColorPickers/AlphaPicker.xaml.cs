@@ -4,6 +4,10 @@ using Microsoft.Graphics.Canvas.Effects;
 using System.Numerics;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
+using Windows.UI;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace HSVColorPickers
 {
@@ -30,6 +34,10 @@ namespace HSVColorPickers
             get => Color.FromArgb(this.Alpha, 255, 255, 255);
             set => this.Alpha = value.A;
         }
+
+
+        #region DependencyProperty 
+
 
         /// <summary> Gets or Sets picker's alpha. </summary>
         public byte Alpha
@@ -58,9 +66,31 @@ namespace HSVColorPickers
                 this.alpha = value;
             }
         }
- 
+        
+        /// <summary> Get or set the flyout style. </summary>
+        public Style FlyoutPresenterStyle
+    {
+        get { return (Style)GetValue(FlyoutPresenterStyleProperty); }
+        set { SetValue(FlyoutPresenterStyleProperty, value); }
+    }
+    /// <summary> Identifies the <see cref = "NumberPicker.FlyoutPresenterStyle" /> dependency property. </summary>
+    public static readonly DependencyProperty FlyoutPresenterStyleProperty = DependencyProperty.Register(nameof(FlyoutPresenterStyle), typeof(Style), typeof(AlphaPicker), new PropertyMetadata(null));
 
-        float CanvasWidth;
+
+    /// <summary> Get or set the flyout placement. </summary>
+    public FlyoutPlacementMode Placement
+    {
+        get { return (FlyoutPlacementMode)GetValue(PlacementProperty); }
+        set { SetValue(PlacementProperty, value); }
+    }
+    /// <summary> Identifies the <see cref = "NumberPicker.Placement" /> dependency property. </summary>
+    public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(AlphaPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
+
+
+    #endregion
+
+
+    float CanvasWidth;
         float CanvasHeight;
         CanvasBitmap Bitmap;
 

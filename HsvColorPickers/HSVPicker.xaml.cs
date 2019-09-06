@@ -1,5 +1,7 @@
 ﻿using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace HSVColorPickers
 {
@@ -68,13 +70,33 @@ namespace HSVColorPickers
         {
             get => this.hsl;
             set
-            {                 
+            {
                 this.ColorChange?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
                 this.HSVChange?.Invoke(this, value);//Delegate
 
                 this.hsl = value;
             }
         }
+
+
+        /// <summary> Get or set the flyout style. </summary>
+        public Style FlyoutPresenterStyle
+        {
+            get { return (Style)GetValue(FlyoutPresenterStyleProperty); }
+            set { SetValue(FlyoutPresenterStyleProperty, value); }
+        }
+        /// <summary> Identifies the <see cref = "NumberPicker.FlyoutPresenterStyle" /> dependency property. </summary>
+        public static readonly DependencyProperty FlyoutPresenterStyleProperty = DependencyProperty.Register(nameof(FlyoutPresenterStyle), typeof(Style), typeof(HSVPicker), new PropertyMetadata(null));
+
+
+        /// <summary> Get or set the flyout placement. </summary>
+        public FlyoutPlacementMode Placement
+        {
+            get { return (FlyoutPlacementMode)GetValue(PlacementProperty); }
+            set { SetValue(PlacementProperty, value); }
+        }
+        /// <summary> Identifies the <see cref = "NumberPicker.Placement" /> dependency property. </summary>
+        public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(HSVPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
 
 
         #endregion

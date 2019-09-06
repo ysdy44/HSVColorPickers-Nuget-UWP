@@ -22,20 +22,17 @@
                     <SolidColorBrush x:Name="SolidColorBrush" Color="DodgerBlue"/>
                 </Ellipse.Fill>
             </Ellipse>
-            <ListBox 
-                 ItemsSource="{x:Bind Pickers}"
-                 SelectedIndex="{x:Bind Index,Mode=TwoWay}"
-                 >
+            <ListBox x:Name="ListBox" SelectedIndex="{x:Bind Index, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
-                    <DataTemplate x:DataType="hSVColorPickers:IColorPicker">
-                        <TextBlock Text="{x:Bind Type}"/>
+                    <DataTemplate x:DataType="x:String">
+                        <TextBlock Text="{x:Bind}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </StackPanel>
 
         
-        <Border x:Name="Border" 
+        <Grid 
                 Grid.Column="1"
                 Width="240"
                 Padding="2,4"
@@ -43,7 +40,26 @@
                 VerticalAlignment="Center"
                 Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
                 >
-        </Border>
+
+            <hSVColorPickers:ColorPicker x:Name="ColorPicker" TabIndex="0" Background="Transparent">
+                <hSVColorPickers:ColorPicker.FlyoutPresenterStyle>
+                    <Style TargetType="FlyoutPresenter">
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                    </Style>
+                </hSVColorPickers:ColorPicker.FlyoutPresenterStyle>
+            </hSVColorPickers:ColorPicker>
+
+            <hSVColorPickers:SwatchesPicker x:Name="SwatchesPicker" TabIndex="1"/>
+            <hSVColorPickers:WheelPicker x:Name="WheelPicker" TabIndex="2"/>
+            <hSVColorPickers:RGBPicker x:Name="RGBPicker" TabIndex="3"/>
+            <hSVColorPickers:HSVPicker x:Name="HSVPicker" TabIndex="4"/>
+
+            <hSVColorPickers:PaletteHuePicker x:Name="PaletteHuePicker" TabIndex="5"/>
+            <hSVColorPickers:PaletteSaturationPicker x:Name="PaletteSaturationPicker" TabIndex="6"/>
+            <hSVColorPickers:PaletteValuePicker x:Name="PaletteValuePicker" TabIndex="7"/>
+
+
+        </Grid>
         
     </Grid>
 </Page>

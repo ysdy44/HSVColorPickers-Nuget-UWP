@@ -18,8 +18,8 @@
     <UserControl.Resources>
         <SolidColorBrush x:Name="SolidColorBrushName" x:Key="SolidColorBrushKey" Color="White"/>
     </UserControl.Resources>
-
-
+    
+    
     <StackPanel 
         Background="{x:Bind UserControl.Background,Mode=OneWay}"
         Padding="{x:Bind UserControl.Padding,Mode=OneWay}"
@@ -45,7 +45,7 @@
 
         <!--ComboBox-->
         <Border>
-            <ComboBox x:Name="ComboBox">
+            <ComboBox x:Name="ComboBox" SelectedIndex="{x:Bind Index, Mode=TwoWay}">
                 <ComboBox.Style>
                     <Style TargetType="ComboBox">
                         <Setter Property="Background" Value="{ThemeResource AppBarBackgroundThemeBrush}"/>
@@ -67,10 +67,21 @@
         <ContentControl Height="4"/>
         
         <!--Body-->
-        <Border x:Name="ContentBorder" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <Grid Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+            <local:SwatchesPicker x:Name="SwatchesPicker" TabIndex="0"/>
+            <local:WheelPicker x:Name="WheelPicker" TabIndex="1"/>
+            <local:RGBPicker x:Name="RGBPicker" TabIndex="2" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}"/>
+            <local:HSVPicker x:Name="HSVPicker" TabIndex="3" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}"/>
+
+            <local:PaletteHuePicker x:Name="PaletteHuePicker" TabIndex="4"/>
+            <local:PaletteSaturationPicker x:Name="PaletteSaturationPicker" TabIndex="5"/>
+            <local:PaletteValuePicker x:Name="PaletteValuePicker" TabIndex="6"/>
+
+        </Grid>
 
         <!--Alpha-->
-        <local:AlphaPicker x:Name="AlphaPicker"/>
+        <local:AlphaPicker x:Name="AlphaPicker" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}"/>
 
         <ContentControl Height="12"/>
 
