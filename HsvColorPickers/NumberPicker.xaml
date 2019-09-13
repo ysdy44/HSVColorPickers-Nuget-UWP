@@ -30,7 +30,7 @@
             >
         <Button.Flyout>
             <Flyout x:Name="Flyout" Placement="{x:Bind Placement}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle}">
-                <Grid Width="180" Height="180" Margin="-10">
+                <Grid Width="180" Height="180">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
@@ -72,6 +72,7 @@
                 </Grid>
             </Flyout>
         </Button.Flyout>
+        
     </Button>
 
 </UserControl>
