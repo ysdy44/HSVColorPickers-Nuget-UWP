@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Numerics;
 using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 
 namespace HSVColorPickers
 {
@@ -11,6 +13,10 @@ namespace HSVColorPickers
     /// </summary>
     public partial class PalettePicker : UserControl, IColorPicker, IHSVPicker
     {
+
+        #region Helper
+
+
         private class PaletteSquare
         {
             public Vector2 Center = new Vector2(50, 50);
@@ -20,6 +26,10 @@ namespace HSVColorPickers
             public float HalfHeight => this.Height / 2;
             public float StrokePadding = 12;
         }
+
+
+        #endregion
+
 
         //@Delegate
         /// <summary> Occurs when the color value changes. </summary>
@@ -33,45 +43,65 @@ namespace HSVColorPickers
         /// <summary> Gets picker self. </summary>
         public UserControl Self => this;
 
-        /// <summary> Gets or Sets picker's color. </summary>
+
+
+        #region Color
+
+
+        /// <summary> Gets or sets picker's color. </summary>
         public Color Color
         {
             get => HSV.HSVtoRGB(this.HSV);
             set => this.HSV = HSV.RGBtoHSV(value);
         }
 
-        #region DependencyProperty
 
-
-        /// <summary> Gets or Sets picker's hsv. </summary>
+        /// <summary> Gets or sets picker's hsv. </summary>
         public HSV HSV
         {
-            get => this.hsl;
+            get => this.hsv;
             set
             {
                 this.Action(value);
-                this.hsl = value;
+                this.hsv = value;
 
                 this.CanvasControl.Invalidate();
             }
         }
+        private HSV hsv = new HSV(255, 0, 100, 100);
 
-        private HSV hsl = new HSV { A = 255, H = 0, S = 1, V = 1 };
-        private HSV _HSL
+
+        private HSV _HSV
         {
-            get => this.hsl;
+            get => this.hsv;
             set
             {
                 this.ColorChange?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
                 this.HSVChange?.Invoke(this, value);//Delegate
 
-                this.hsl = value;
+                this.hsv = value;
             }
         }
 
 
         #endregion
 
+
+        #region DependencyProperty
+
+
+        /// <summary>  Gets or sets a brush that describes the border fill of the control. </summary>
+        public SolidColorBrush Stroke
+        {
+            get { return (SolidColorBrush)GetValue(StrokeProperty); }
+            set { SetValue(StrokeProperty, value); }
+        }
+
+        /// <summary> Identifies the <see cref = "WheelPicker.Stroke" /> dependency property. </summary>
+        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(WheelPicker), new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.Gray)));
+
+
+        #endregion
 
         bool IsPalette = false;
         Vector2 Vector;
@@ -93,16 +123,16 @@ namespace HSVColorPickers
             this.Slider.Minimum = paletteBase.Minimum;
             this.Slider.Maximum = paletteBase.Maximum;
 
-            this.Slider.Value = paletteBase.GetValue(this.hsl);
-            this.LinearGradientBrush.GradientStops = paletteBase.GetSliderBrush(this.hsl);
+            this.Slider.Value = paletteBase.GetValue(this.hsv);
+            this.LinearGradientBrush.GradientStops = paletteBase.GetSliderBrush(this.hsv);
 
-            this.Slider.ValueChangeDelta += (sender, value) => this.HSV = this._HSL = paletteBase.GetHSL(this.hsl, (float)value);
+            this.Slider.ValueChangeDelta += (sender, value) => this.HSV = this._HSV = paletteBase.GetHSV(this.hsv, (float)value);
 
             //Action
-            this.Action = (HSV hsl) =>
+            this.Action = (HSV hsv) =>
             {
-                this.Slider.Value = paletteBase.GetValue(hsl);
-                this.LinearGradientBrush.GradientStops = paletteBase.GetSliderBrush(hsl);
+                this.Slider.Value = paletteBase.GetValue(hsv);
+                this.LinearGradientBrush.GradientStops = paletteBase.GetSliderBrush(hsv);
             };
 
             //Canvas
@@ -113,7 +143,7 @@ namespace HSVColorPickers
                 this.Square.Width = (float)e.NewSize.Width - this.Square.StrokePadding * 2;
                 this.Square.Height = (float)e.NewSize.Height - this.Square.StrokePadding * 2;
             };
-            this.CanvasControl.Draw += (sender, args) => paletteBase.Draw(this.CanvasControl, args.DrawingSession, this.hsl, this.Square.Center, this.Square.HalfWidth, this.Square.HalfHeight);
+            this.CanvasControl.Draw += (sender, args) => paletteBase.Draw(this.CanvasControl, args.DrawingSession, this.hsv, this.Square.Center, this.Square.HalfWidth, this.Square.HalfHeight, this.Stroke);
 
 
 
@@ -125,16 +155,15 @@ namespace HSVColorPickers
 
                 this.IsPalette = Math.Abs(Vector.X) < this.Square.Width && Math.Abs(this.Vector.Y) < this.Square.Height;
 
-                if (this.IsPalette) this.HSV = this._HSL = paletteBase.Delta(this.hsl, this.Vector, this.Square.HalfWidth, this.Square.HalfHeight);
+                if (this.IsPalette) this.HSV = this._HSV = paletteBase.Delta(this.hsv, this.Vector, this.Square.HalfWidth, this.Square.HalfHeight);
             };
             this.CanvasControl.ManipulationDelta += (sender, e) =>
             {
                 this.Vector += e.Delta.Translation.ToVector2();
 
-                if (this.IsPalette) this.HSV = this._HSL = paletteBase.Delta(this.hsl, this.Vector, this.Square.HalfWidth, this.Square.HalfHeight);
+                if (this.IsPalette) this.HSV = this._HSV = paletteBase.Delta(this.hsv, this.Vector, this.Square.HalfWidth, this.Square.HalfHeight);
             };
             this.CanvasControl.ManipulationCompleted += (sender, e) => this.IsPalette = false;
-
 
 
             this.CanvasControl.Invalidate();

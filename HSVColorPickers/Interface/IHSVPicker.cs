@@ -13,7 +13,7 @@ namespace HSVColorPickers
         /// <summary> Gets picker self. </summary>
         UserControl Self { get; }
 
-        /// <summary> Gets or Sets picker's hsv. </summary>
+        /// <summary> Gets or sets picker's hsv. </summary>
         HSV HSV { get; set; }
 
         /// <summary> Occurs when the hsv value changes. </summary>

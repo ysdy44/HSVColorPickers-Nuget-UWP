@@ -16,9 +16,10 @@ namespace HSVColorPickers
     /// </summary>
     public sealed partial class WheelPicker : UserControl, IColorPicker, IHSVPicker
     {
-        /// <summary> 
-        /// Size. 
-        /// </summary>
+
+        #region Helpher
+
+
         private sealed class WheelSize
         {
             public static float VectorToH(Vector2 vector) => ((((float)Math.Atan2(vector.Y, vector.X)) * 180.0f / (float)Math.PI) + 360.0f) % 360.0f;
@@ -27,12 +28,10 @@ namespace HSVColorPickers
 
             public static Vector2 HToVector(float h, float radio, Vector2 center) => new Vector2((float)Math.Cos(h) * radio + center.X, (float)Math.Sin(h) * radio + center.Y);
             public static float SToVector(float s, float squareRadio, float centerX) => ((float)s - 50) * squareRadio / 50 + centerX;
-            public static float VToVector(float l, float squareRadio, float centerY) => (50 - (float)l) * squareRadio / 50 + centerY;
+            public static float VToVector(float v, float squareRadio, float centerY) => (50 - (float)v) * squareRadio / 50 + centerY;
         }
 
-        /// <summary> 
-        /// Brush. 
-        /// </summary>
+
         private sealed class PaletteBrush
         {
             public CanvasLinearGradientBrush Brush;
@@ -75,6 +74,9 @@ namespace HSVColorPickers
         }
 
 
+        #endregion
+
+
         //@Delegate
         /// <summary> Occurs when the color value changes. </summary>
         public event ColorChangeHandler ColorChange = null;
@@ -87,49 +89,55 @@ namespace HSVColorPickers
         /// <summary> Gets picker self. </summary>
         public UserControl Self => this;
 
-        /// <summary> Gets or Sets picker's color. </summary>
+        /// <summary> Gets or sets picker's color. </summary>
         public Color Color
         {
             get => HSV.HSVtoRGB(this.HSV);
             set => this.HSV = HSV.RGBtoHSV(value);
         }
 
-        #region DependencyProperty
+
+        #region Color
 
 
-        /// <summary> Gets or Sets picker's hsv. </summary>
+        /// <summary> Gets or sets picker's hsv. </summary>
         public HSV HSV
         {
             get => this.hsv;
             set
             {
                 //Palette                
-                this.HorizontalBrush.Color = HSV.HSVtoRGB(value.H);
-                this.HorizontalBrush.SetBrush(this.CanvasControl);
-
+                this._horizontalBrush.Color = HSV.HSVtoRGB(value.H);
+                this._horizontalBrush.SetBrush(this.CanvasControl);
                 this.CanvasControl.Invalidate();
+
                 this.hsv = value;
             }
         }
 
-        private HSV hsv = new HSV(255, 0, 1, 1);
+        private HSV hsv = new HSV(255, 0, 100, 100);
         private HSV _HSV
         {
             get => this.hsv;
             set
             {
-                //Palette  
-                this.HorizontalBrush.Color = HSV.HSVtoRGB(value.H);
-                this.HorizontalBrush.SetBrush(this.CanvasControl);
-
                 this.ColorChange?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
                 this.HSVChange?.Invoke(this, value);//Delegate
 
+                //Palette  
+                this._horizontalBrush.Color = HSV.HSVtoRGB(value.H);
+                this._horizontalBrush.SetBrush(this.CanvasControl);
                 this.CanvasControl.Invalidate();
 
                 this.hsv = value;
             }
         }
+
+
+        #endregion
+
+        #region DependencyProperty
+
 
         /// <summary>  Gets or sets a brush that describes the border fill of the control. </summary>
         public SolidColorBrush Stroke
@@ -141,30 +149,30 @@ namespace HSVColorPickers
         /// <summary> Identifies the <see cref = "WheelPicker.Stroke" /> dependency property. </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(WheelPicker), new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.Gray)));
 
-
+        
         #endregion
 
 
-        readonly float StrokeWidth = 8;
-        float CanvasWidth;
-        float CanvasHeight;
+        readonly float _strokeWidth = 8;
+        float _canvasWidth;
+        float _canvasHeight;
         
         //Wheel
-        Vector2 Center;// Wheel's center
-        float Radio;// Wheel's radio
-        float RadioSpace;
-        CanvasRenderTarget WheelCanvas;
+        Vector2 _center;// Wheel's center
+        float _radio;// Wheel's radio
+        float _radioSpace; 
+         CanvasRenderTarget _wheelCanvas;
 
         //Palette  
-        float Square;
-        Rect Rect;
-        PaletteBrush HorizontalBrush = new PaletteBrush();
-        PaletteBrush VerticalBrush = new PaletteBrush();
+        float _square;
+        Rect _rect;
+        PaletteBrush _horizontalBrush = new PaletteBrush();
+        PaletteBrush _verticalBrush = new PaletteBrush();
         
         //Manipulation
-        bool IsWheel;
-        bool IsPalette;
-        Vector2 Position;
+        bool _isWheel;
+        bool _isPalette;
+        Vector2 _position;
 
 
         //@Construct
@@ -183,75 +191,75 @@ namespace HSVColorPickers
                 float width = (float)e.NewSize.Width;
                 float height = (float)e.NewSize.Height;
 
-                if (this.WheelCanvas!=null)
+                if (this._wheelCanvas!=null)
                 {
-                    if (this.CanvasWidth != width || this.CanvasHeight != height)
+                    if (this._canvasWidth != width || this._canvasHeight != height)
                     {
                         //Wheel
-                        this.WheelCanvas = new CanvasRenderTarget(this.CanvasControl, width, height);
+                        this._wheelCanvas = new CanvasRenderTarget(this.CanvasControl, width, height);
                     }
                 }
-                this.CanvasWidth = width;
-                this.CanvasHeight = height;
+                this._canvasWidth = width;
+                this._canvasHeight = height;
 
                 //Wheel
-                this.Center.X = width / 2;
-                this.Center.Y = height / 2;
-                this.Radio = Math.Min(width, height) / 2 - this.StrokeWidth;
-                this.Radio = Math.Max(this.Radio, 20);
-                this.RadioSpace = (float)(2 * Math.PI) / (int)(Math.PI * this.Radio * 2 / this.StrokeWidth);
-                if (this.WheelCanvas != null)
+                this._center.X = width / 2;
+                this._center.Y = height / 2;
+                this._radio = Math.Min(width, height) / 2 - this._strokeWidth;
+                this._radio = Math.Max(this._radio, 20);
+                this._radioSpace = (float)(2 * Math.PI) / (int)(Math.PI * this._radio * 2 / this._strokeWidth);
+                if (this._wheelCanvas != null)
                 {
-                    using (CanvasDrawingSession ds = this.WheelCanvas.CreateDrawingSession())
+                    using (CanvasDrawingSession ds = this._wheelCanvas.CreateDrawingSession())
                     {
                         this.DrawWheelCanvas(ds); 
                     }
                 }
 
                 // Palette          
-                this.Square = (this.Radio - this.StrokeWidth) / 1.414213562373095f;
-                this.Square = Math.Max(this.Square, 20);
-                this.Rect = new Rect(this.Center.X - this.Square, this.Center.Y - this.Square, this.Square * 2, this.Square * 2);
+                this._square = (this._radio - this._strokeWidth) / 1.414213562373095f;
+                this._square = Math.Max(this._square, 20);
+                this._rect = new Rect(this._center.X - this._square, this._center.Y - this._square, this._square * 2, this._square * 2);
 
-                this.HorizontalBrush.StartPoint = new Vector2(this.Center.X - this.Square, this.Center.Y);//Left
-                this.HorizontalBrush.EndPoint = new Vector2(this.Center.X + this.Square, this.Center.Y);//Right
-                this.HorizontalBrush.SetBrush(this.CanvasControl);
+                this._horizontalBrush.StartPoint = new Vector2(this._center.X - this._square, this._center.Y);//Left
+                this._horizontalBrush.EndPoint = new Vector2(this._center.X + this._square, this._center.Y);//Right
+                this._horizontalBrush.SetBrush(this.CanvasControl);
 
-                this.VerticalBrush.StartPoint = new Vector2(this.Center.X, this.Center.Y - this.Square);//Top
-                this.VerticalBrush.EndPoint = new Vector2(this.Center.X, this.Center.Y + this.Square);//Bottom
+                this._verticalBrush.StartPoint = new Vector2(this._center.X, this._center.Y - this._square);//Top
+                this._verticalBrush.EndPoint = new Vector2(this._center.X, this._center.Y + this._square);//Bottom
             };
             this.CanvasControl.CreateResources += (sender, args) =>
             {
                 //Wheel
-                this.WheelCanvas = new CanvasRenderTarget(sender, this.CanvasWidth, this.CanvasHeight);
-                using (CanvasDrawingSession ds = this.WheelCanvas.CreateDrawingSession())
+                this._wheelCanvas = new CanvasRenderTarget(sender, this._canvasWidth, this._canvasHeight);
+                using (CanvasDrawingSession ds = this._wheelCanvas.CreateDrawingSession())
                 {
                     this.DrawWheelCanvas(ds);
                 }
 
                 // Palette       
-                this.HorizontalBrush.Color = HSV.HSVtoRGB(this.hsv.H);
-                this.HorizontalBrush.Brush = this.HorizontalBrush.GetBrush(sender);
-                this.VerticalBrush.Brush = this.VerticalBrush.GetBrush(sender);
+                this._horizontalBrush.Color = HSV.HSVtoRGB(this.hsv.H);
+                this._horizontalBrush.Brush = this._horizontalBrush.GetBrush(sender);
+                this._verticalBrush.Brush = this._verticalBrush.GetBrush(sender);
             };
             this.CanvasControl.Draw += (sender, args) =>
             {
                 //Wheel           
-                args.DrawingSession.DrawImage(this.WheelCanvas);
+                args.DrawingSession.DrawImage(this._wheelCanvas);
 
                 //Thumb
-                Vector2 wheel = WheelSize.HToVector((float)((this.HSV.H + 360.0) * Math.PI / 180.0), this.Radio, this.Center);
+                Vector2 wheel = WheelSize.HToVector((float)((this.HSV.H + 360.0) * Math.PI / 180.0), this._radio, this._center);
                 this.DrawThumb(args.DrawingSession, wheel);
                 
                 //Palette
-                args.DrawingSession.FillRoundedRectangle(this.Rect, 4, 4, Colors.White);
-                args.DrawingSession.FillRoundedRectangle(this.Rect, 4, 4, this.HorizontalBrush.Brush);
-                args.DrawingSession.FillRoundedRectangle(this.Rect, 4, 4, this.VerticalBrush.Brush);
-                args.DrawingSession.DrawRoundedRectangle(this.Rect, 4, 4, this.Stroke.Color);
+                args.DrawingSession.FillRoundedRectangle(this._rect, 4, 4, Colors.White);
+                args.DrawingSession.FillRoundedRectangle(this._rect, 4, 4, this._horizontalBrush.Brush);
+                args.DrawingSession.FillRoundedRectangle(this._rect, 4, 4, this._verticalBrush.Brush);
+                args.DrawingSession.DrawRoundedRectangle(this._rect, 4, 4, this.Stroke.Color);
 
                 //Thumb 
-                float paletteX = WheelSize.SToVector(this.HSV.S, this.Square, this.Center.X);
-                float paletteY = WheelSize.VToVector(this.HSV.V, this.Square, this.Center.Y);
+                float paletteX = WheelSize.SToVector(this.HSV.S, this._square, this._center.X);
+                float paletteY = WheelSize.VToVector(this.HSV.V, this._square, this._center.Y);
                 this.DrawThumb(args.DrawingSession, new Vector2(paletteX, paletteY));
             };
 
@@ -260,25 +268,25 @@ namespace HSVColorPickers
             this.CanvasControl.ManipulationMode = ManipulationModes.All;
             this.CanvasControl.ManipulationStarted += (s, e) =>
             {
-                this.Position = e.Position.ToVector2() - this.Center;
+                this._position = e.Position.ToVector2() - this._center;
 
-                this.IsWheel = this.Position.Length() + this.StrokeWidth > this.Radio && this.Position.Length() - this.StrokeWidth < this.Radio;
-                this.IsPalette = Math.Abs(this.Position.X) < this.Square && Math.Abs(this.Position.Y) < this.Square;
+                this._isWheel = this._position.Length() + this._strokeWidth > this._radio && this._position.Length() - this._strokeWidth < this._radio;
+                this._isPalette = Math.Abs(this._position.X) < this._square && Math.Abs(this._position.Y) < this._square;
 
-                if (this.IsWheel) this._HSV = new HSV(hsv.A, WheelSize.VectorToH(this.Position), hsv.S, hsv.V);
-                if (this.IsPalette) this._HSV = new HSV(hsv.A, hsv.H, WheelSize.VectorToS(this.Position.X, this.Square), WheelSize.VectorToV(this.Position.Y, this.Square));
+                if (this._isWheel) this._HSV = new HSV(this.hsv.A, WheelSize.VectorToH(this._position), this.hsv.S, this.hsv.V);
+                if (this._isPalette) this._HSV = new HSV(this.hsv.A, this.hsv.H, WheelSize.VectorToS(this._position.X, this._square), WheelSize.VectorToV(this._position.Y, this._square));
             };
             this.CanvasControl.ManipulationDelta += (s, e) =>
             {
-                this.Position += e.Delta.Translation.ToVector2();
+                this._position += e.Delta.Translation.ToVector2();
 
-                if (this.IsWheel) this._HSV = new HSV(hsv.A, WheelSize.VectorToH(this.Position), hsv.S, hsv.V);
-                if (this.IsPalette) this._HSV = new HSV(hsv.A, hsv.H, WheelSize.VectorToS(this.Position.X, this.Square), WheelSize.VectorToV(this.Position.Y, this.Square));
+                if (this._isWheel) this._HSV = new HSV(this.hsv.A, WheelSize.VectorToH(this._position), this.hsv.S, this.hsv.V);
+                if (this._isPalette) this._HSV = new HSV(this.hsv.A, this.hsv.H, WheelSize.VectorToS(this._position.X, this._square), WheelSize.VectorToV(this._position.Y, this._square));
             };
             this.CanvasControl.ManipulationCompleted += (s, e) =>
             {
-                this.IsWheel = false;
-                this.IsPalette = false;
+                this._isWheel = false;
+                this._isPalette = false;
             };
         }
 
@@ -286,17 +294,17 @@ namespace HSVColorPickers
         private void DrawWheelCanvas(CanvasDrawingSession ds)
         {
             ds.Clear(Windows.UI.Colors.Transparent);
-            ds.DrawCircle(this.Center, this.Radio, this.Stroke.Color, this.StrokeWidth * 2);
+            ds.DrawCircle(this._center, this._radio, this.Stroke.Color, this._strokeWidth * 2);
 
-            for (float angle = 0; angle < 6.2831853071795862f; angle += this.RadioSpace)
+            for (float angle = 0; angle < 6.2831853071795862f; angle += this._radioSpace)
             {
-                Vector2 vector = WheelSize.HToVector(angle, this.Radio, this.Center);
+                Vector2 vector = WheelSize.HToVector(angle, this._radio, this._center);
                 Color color = HSV.HSVtoRGB(angle * 180.0f / (float)Math.PI);
-                ds.FillCircle(vector, this.StrokeWidth, color);
+                ds.FillCircle(vector, this._strokeWidth, color);
             }
 
-            ds.DrawCircle(this.Center, this.Radio - this.StrokeWidth, this.Stroke.Color);
-            ds.DrawCircle(this.Center, this.Radio + this.StrokeWidth, this.Stroke.Color);
+            ds.DrawCircle(this._center, this._radio - this._strokeWidth, this.Stroke.Color);
+            ds.DrawCircle(this._center, this._radio + this._strokeWidth, this.Stroke.Color);
         }
 
 

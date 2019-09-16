@@ -20,6 +20,8 @@ namespace HSVColorPickers.TestApp
             yield return this.PaletteHuePicker;
             yield return this.PaletteSaturationPicker;
             yield return this.PaletteValuePicker;
+
+            yield return this.CirclePicker;
         }
 
         private Color _Color

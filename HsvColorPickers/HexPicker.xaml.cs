@@ -3,11 +3,11 @@ using Windows.UI;
 using Windows.UI.Xaml.Controls;
 
 namespace HSVColorPickers
-{    
+{
     /// <summary>
     /// Hex code picker.
     /// </summary>
-    public sealed partial class HexPicker : UserControl,IColorPicker
+    public sealed partial class HexPicker : UserControl, IColorPicker
     {
         //@Delegate
         /// <summary> Occurs when the color value changes. </summary>
@@ -19,7 +19,8 @@ namespace HSVColorPickers
         /// <summary> Gets picker self. </summary>
         public UserControl Self => this;
 
-        /// <summary> Gets or Sets picker's color. </summary>
+
+        /// <summary> Gets or sets picker's color. </summary>
         public Color Color
         {
             get => this.color;
@@ -29,8 +30,12 @@ namespace HSVColorPickers
                 this.color = value;
             }
         }
-
         private Color color = Color.FromArgb(255, 255, 255, 255);
+
+
+        #region Color
+
+
         private Color _Color
         {
             get => this.color;
@@ -41,6 +46,9 @@ namespace HSVColorPickers
                 this.color = value;
             }
         }
+
+
+        #endregion
 
 
         //@Construct

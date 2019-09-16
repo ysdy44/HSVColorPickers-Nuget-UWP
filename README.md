@@ -28,8 +28,6 @@ Search 'HSV Color' in Nuget and download it.
 Run the "TestApp".
 
 ```xaml
-
-
 xmlns:hSVColorPickers="using:HSVColorPickers"
 
 
@@ -42,32 +40,34 @@ xmlns:hSVColorPickers="using:HSVColorPickers"
 <hSVColorPickers:SwatchesPicker/>
 <hSVColorPickers:HexPicker/>
 <hSVColorPickers:AlphaPicker/>
- 
 
+<hSVColorPickers:PaletteHuePicker/>
+<hSVColorPickers:PaletteSaturationPicker/>
+<hSVColorPickers:PaletteValuePicker/>
+ 
+<hSVColorPickers:CirclePicker/>
 ```
 or 
 
 ```csharp
-
-
 using HSVColorPickers;
 
 
- new ColorPicker();
+new ColorPicker();
 
- new RGBPicker();
- new HSVPicker();
- new WheelPicker();
+new RGBPicker();
+new HSVPicker();
+new WheelPicker();
 
- new SwatchesPicker();
- new HexPicker();
- new AlphaPicker();
+new SwatchesPicker();
+new HexPicker();
+new AlphaPicker();
 
-PalettePicker.CreateFormHue();
-PalettePicker.CreateFormSaturation();
-PalettePicker.CreateFormValue();,
-
-
+new PaletteHuePicker();
+new PaletteSaturationPicker();
+new PaletteValuePicker();
+ 
+new CirclePicker(); 
 ```
 
 

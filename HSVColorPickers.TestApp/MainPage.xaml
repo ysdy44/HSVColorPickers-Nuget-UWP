@@ -58,6 +58,8 @@
             <hSVColorPickers:PaletteSaturationPicker x:Name="PaletteSaturationPicker" TabIndex="6"/>
             <hSVColorPickers:PaletteValuePicker x:Name="PaletteValuePicker" TabIndex="7"/>
 
+            <hSVColorPickers:CirclePicker x:Name="CirclePicker" TabIndex="8"/>
+
 
         </Grid>
         

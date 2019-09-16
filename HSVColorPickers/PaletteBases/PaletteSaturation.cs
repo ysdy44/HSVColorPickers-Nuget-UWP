@@ -9,9 +9,9 @@ using Windows.UI.Xaml.Media;
 namespace HSVColorPickers
 {
     /// <summary> 
-    /// Palette Value. 
+    /// Palette Saturation. 
     /// </summary>
-    public class PaletteValue : PaletteBase
+    public class PaletteSaturation : PaletteBase
     {
         private readonly CanvasGradientStop[] BackgroundStops = new CanvasGradientStop[]
         {
@@ -25,26 +25,26 @@ namespace HSVColorPickers
         };
         private readonly CanvasGradientStop[] ForegroundStops = new CanvasGradientStop[]
         {
-            new CanvasGradientStop { Position = 0.0f, Color = Color.FromArgb(0,128,128,128) },
-            new CanvasGradientStop { Position = 1.0f, Color = Windows.UI.Colors.White }
+            new CanvasGradientStop { Position = 0.0f, Color = Windows.UI.Colors.Transparent },
+            new CanvasGradientStop { Position = 1.0f, Color = Windows.UI.Colors.Black }
         };
 
         //@Construct
         /// <summary>
-        /// Construct a PaletteValue.
+        /// Construct a PaletteSaturation.
         /// </summary>
-        public PaletteValue()
+        public PaletteSaturation()
         {
-            this.Type = "Palette Value";
+            this.Type = "Palette Saturation";
             this.Unit = "%";
             this.Minimum = 0;
             this.Maximum = 100;
         }
 
-        /// <summary> Override <see cref="PaletteBase.GetHSL"/>. </summary>
-        public override HSV GetHSL(HSV hsv, float value) => new HSV(hsv.A, hsv.H, hsv.S, value);
+        /// <summary> Override <see cref="PaletteBase.GetHSV"/>. </summary>
+        public override HSV GetHSV(HSV hsv, float value) => new HSV(hsv.A, hsv.H, value, hsv.V);
         /// <summary> Override <see cref="PaletteBase.GetValue"/>. </summary>
-        public override float GetValue(HSV hsv) => hsv.V;
+        public override float GetValue(HSV hsv) => hsv.S;
 
         /// <summary> Override <see cref="PaletteBase.GetSliderBrush"/>. </summary>
         public override GradientStopCollection GetSliderBrush(HSV HSV)
@@ -52,25 +52,25 @@ namespace HSVColorPickers
             byte A = HSV.A;
             float H = HSV.H;
             float S = HSV.S;
-            float L = HSV.V;
+            float V = HSV.V;
 
             return new GradientStopCollection()
             {
                 new GradientStop()
                 {
-                    Offset = 0.0f ,
-                    Color = HSV.HSVtoRGB(A, H, S, 0)
+                    Offset = 0,
+                    Color = HSV.HSVtoRGB(A, H, 0.0f, V)
                 },
-                new GradientStop()
+               new GradientStop()
                 {
-                    Offset = 1.0f,
-                    Color = HSV.HSVtoRGB(A, H, S, 100)
+                    Offset = 1,
+                    Color =HSV.HSVtoRGB(A, H, 100.0f, V)
                 },
-           };
+            };
         }
 
         /// <summary> Override <see cref="PaletteBase.Draw"/>. </summary>
-        public override void Draw(CanvasControl sender, CanvasDrawingSession ds, HSV hsv, Vector2 center, float squareHalfWidth, float squareHalfHeight)
+        public override void Draw(CanvasControl sender, CanvasDrawingSession ds, HSV HSV, Vector2 center, float squareHalfWidth, float squareHalfHeight, SolidColorBrush stroke)
         {
             //Palette
             Rect rect = new Rect(center.X - squareHalfWidth, center.Y - squareHalfHeight, squareHalfWidth * 2, squareHalfHeight * 2);
@@ -86,11 +86,11 @@ namespace HSVColorPickers
                 brush.EndPoint = new Vector2(center.X, center.Y + squareHalfHeight);
                 ds.FillRoundedRectangle(rect, 4, 4, brush);
             }
-            ds.DrawRoundedRectangle(rect, 4, 4, Windows.UI.Colors.Gray);
+            ds.DrawRoundedRectangle(rect, 4, 4, stroke.Color);
 
             //Thumb 
-            float px = ((float)hsv.H - 180) * squareHalfWidth / 180 + center.X;
-            float py = (50 - (float)hsv.S) * squareHalfHeight / 50 + center.Y;
+            float px = ((float)HSV.H - 180) * squareHalfWidth / 180 + center.X;
+            float py = ((float)(50 - HSV.V)) * squareHalfHeight / 50 + center.Y;
             ds.DrawCircle(px, py, 9, Windows.UI.Colors.Black, 5);
             ds.DrawCircle(px, py, 9, Windows.UI.Colors.White, 3);
         }
@@ -98,8 +98,8 @@ namespace HSVColorPickers
         public override HSV Delta(HSV hsv, Vector2 position, float squareHalfWidth, float squareHalfHeight)
         {
             float H = position.X * 180 / squareHalfWidth + 180;
-            float S = 50 - position.Y * 50 / squareHalfHeight;
-            return new HSV(hsv.A, H, S, hsv.V);
+            float V = 50 - position.Y * 50 / squareHalfHeight;
+            return new HSV(hsv.A, H, hsv.S, V);
         }
     }
 }

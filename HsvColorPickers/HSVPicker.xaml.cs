@@ -2,6 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media;
 
 namespace HSVColorPickers
 {
@@ -22,61 +23,44 @@ namespace HSVColorPickers
         /// <summary> Gets picker self. </summary>
         public UserControl Self => this;
 
-        /// <summary> Gets or Sets picker's color. </summary>
+
+        #region Color
+
+
+        /// <summary> Gets or sets picker's color. </summary>
         public Color Color
         {
             get => HSV.HSVtoRGB(this.HSV);
             set => this.HSV = HSV.RGBtoHSV(value);
         }
-
-
-        #region DependencyProperty
-
-
-        /// <summary> Gets or Sets picker's hsv. </summary>
+        /// <summary> Gets or sets picker's hsv. </summary>
         public HSV HSV
         {
-            get => this.hsl;
+            get => this.hsv;
             set
             {
-                byte A = value.A;
-                float H = value.H;
-                float S = value.S;
-                float L = value.V;
-
-                //H          
-                this.HSlider.Value = this.HPicker.Value = (int)H;
-                this.HG.Color = this.HA.Color = HSV.HSVtoRGB(A, 0, S, L);
-                this.HB.Color = HSV.HSVtoRGB(A, 60, S, L);
-                this.HC.Color = HSV.HSVtoRGB(A, 120, S, L);
-                this.HD.Color = HSV.HSVtoRGB(A, 180, S, L);
-                this.HE.Color = HSV.HSVtoRGB(A, 240, S, L);
-                this.HF.Color = HSV.HSVtoRGB(A, 300, S, L);
-                //S
-                this.SSlider.Value = SPicker.Value = (int)S;
-                this.SLeft.Color = HSV.HSVtoRGB(A, H, 0.0f, L);
-                this.SRight.Color = HSV.HSVtoRGB(A, H, 100.0f, L);
-                //L
-                this.VSlider.Value = VPicker.Value = (int)L;
-                this.VLeft.Color = HSV.HSVtoRGB(A, H, S, 0.0f);
-                this.VRight.Color = HSV.HSVtoRGB(A, H, S, 100.0f);
-
-                this.hsl = value;
+                this.Change(value);
+                this.hsv = value;            
             }
         }
+        private HSV hsv = new HSV(255, 0, 100, 100);
+               
 
-        private HSV hsl = new HSV { A = 255, H = 0, S = 1, V = 1 };
-        private HSV _HSL
+        private HSV _HSV
         {
-            get => this.hsl;
             set
             {
                 this.ColorChange?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
                 this.HSVChange?.Invoke(this, value);//Delegate
 
-                this.hsl = value;
+                this.hsv = value;
             }
         }
+        
+
+        #endregion
+        
+        #region DependencyProperty
 
 
         /// <summary> Get or set the flyout style. </summary>
@@ -97,6 +81,17 @@ namespace HSVColorPickers
         }
         /// <summary> Identifies the <see cref = "NumberPicker.Placement" /> dependency property. </summary>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(HSVPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
+     
+        
+        /// <summary>  Gets or sets a brush that describes the border fill of the control. </summary>
+        public SolidColorBrush Stroke
+        {
+            get { return (SolidColorBrush)GetValue(StrokeProperty); }
+            set { SetValue(StrokeProperty, value); }
+        }
+
+        /// <summary> Identifies the <see cref = "HSVPicker.Stroke" /> dependency property. </summary>
+        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(HSVPicker), new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.Gray)));
 
 
         #endregion
@@ -111,14 +106,86 @@ namespace HSVColorPickers
             this.InitializeComponent();
 
             //Slider
-            this.HSlider.ValueChangeDelta += (sender, value) => this.HSV = this._HSL = new HSV(this.hsl.A, (float)value, this.hsl.S, this.hsl.V);
-            this.SSlider.ValueChangeDelta += (sender, value) => this.HSV = this._HSL = new HSV(this.hsl.A, this.hsl.H, (float)value, this.hsl.V);
-            this.VSlider.ValueChangeDelta += (sender, value) => this.HSV = this._HSL = new HSV(this.hsl.A, this.hsl.H, this.hsl.S, (float)value);
+            this.HSlider.ValueChangeDelta += (sender, value) => this._HSV = this.Change((float)value, HSVMode.NotH, false);
+            this.SSlider.ValueChangeDelta += (sender, value) => this._HSV = this.Change((float)value, HSVMode.NotS, false);
+            this.VSlider.ValueChangeDelta += (sender, value) => this._HSV = this.Change((float)value, HSVMode.NotV, false);
 
             //Picker
-            this.HPicker.ValueChange += (sender, Value) => this.HSV = this._HSL = new HSV(this.hsl.A, Value, this.hsl.S, this.HSV.V);
-            this.SPicker.ValueChange += (sender, Value) => this.HSV = this._HSL = new HSV(this.hsl.A, this.hsl.H, Value, this.hsl.V);
-            this.VPicker.ValueChange += (sender, Value) => this.HSV = this._HSL = new HSV(this.hsl.A, this.hsl.H, this.hsl.S, Value);
+            this.HPicker.ValueChange += (sender, value) => this._HSV = this.Change(value, HSVMode.NotH, true);
+            this.SPicker.ValueChange += (sender, value) => this._HSV = this.Change(value, HSVMode.NotS, true);
+            this.VPicker.ValueChange += (sender, value) => this._HSV = this.Change(value, HSVMode.NotV, true);
         }
+
+        #region Change
+
+
+        private HSV Change(float value, HSVMode hsvMode = HSVMode.All, bool? sliderOrPicker = null)
+        {
+            HSV hsv = this.hsv;
+
+            switch (hsvMode)
+            {
+                case HSVMode.NotH: hsv.H = value; break;
+                case HSVMode.NotS: hsv.S = value; break;
+                case HSVMode.NotV: hsv.V = value; break;
+            }
+
+            this.Change(hsv, hsvMode, sliderOrPicker);
+            return hsv;
+        }
+         
+        private void Change(HSV hsv, HSVMode hsvMode = HSVMode.All, bool? sliderOrPicker = null)
+        {
+            float H = hsv.H;
+            float S = hsv.S;
+            float V = hsv.V;
+
+            //Brush
+            {
+                if (hsvMode != HSVMode.NotH)
+                {
+                    this.HG.Color = this.HA.Color = HSV.HSVtoRGB(255, 0, S, V);
+                    this.HB.Color = HSV.HSVtoRGB(255, 60, S, V);
+                    this.HC.Color = HSV.HSVtoRGB(255, 120, S, V);
+                    this.HD.Color = HSV.HSVtoRGB(255, 180, S, V);
+                    this.HE.Color = HSV.HSVtoRGB(255, 240, S, V);
+                    this.HF.Color = HSV.HSVtoRGB(255, 300, S, V);
+                }
+                if (hsvMode != HSVMode.NotS)
+                {
+                    this.SLeft.Color = HSV.HSVtoRGB(255, H, 0.0f, V);
+                    this.SRight.Color = HSV.HSVtoRGB(255, H, 100.0f, V);
+                }
+                if (hsvMode != HSVMode.NotV)
+                {
+                    this.VLeft.Color = HSV.HSVtoRGB(255, H, S, 0.0f);
+                    this.VRight.Color = HSV.HSVtoRGB(255, H, S, 100.0f);
+                }
+            }
+
+
+            //Value
+            {
+                if (hsvMode == HSVMode.All || hsvMode == HSVMode.NotH)
+                {
+                    if (sliderOrPicker != false) this.HSlider.Value = H;
+                    if (sliderOrPicker != true) this.HPicker.Value = (int)H;
+                }
+                if (hsvMode == HSVMode.All || hsvMode == HSVMode.NotS)
+                {
+                    if (sliderOrPicker != false) this.SSlider.Value = S;
+                    if (sliderOrPicker != true) this.SPicker.Value = (int)S;
+                }
+                if (hsvMode == HSVMode.All || hsvMode == HSVMode.NotV)
+                {
+                    if (sliderOrPicker != false) this.VSlider.Value = V;
+                    if (sliderOrPicker != true) this.VPicker.Value = (int)V;
+                }
+            }
+        }
+
+
+        #endregion
+
     }
 }

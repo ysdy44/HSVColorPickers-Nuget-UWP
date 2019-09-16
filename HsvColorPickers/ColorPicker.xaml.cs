@@ -4,6 +4,7 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media;
 
 namespace HSVColorPickers
 {
@@ -25,7 +26,7 @@ namespace HSVColorPickers
         public UserControl Self => this;
 
 
-        private IEnumerable<IColorPicker> Pickers()
+        private IEnumerable<IColorPicker> _pickers()
         {
             yield return this.SwatchesPicker;
             yield return this.WheelPicker;
@@ -35,13 +36,15 @@ namespace HSVColorPickers
             yield return this.PaletteHuePicker;
             yield return this.PaletteSaturationPicker;
             yield return this.PaletteValuePicker;
+
+            yield return this.CirclePicker;
         }
 
 
         #region Color
 
 
-        /// <summary> Gets or Sets picker's color. </summary>
+        /// <summary> Gets or sets picker's color. </summary>
         public Color Color
         {
             get => Color.FromArgb(this.Alpha, this.SolidColorBrushName.Color.R, this.SolidColorBrushName.Color.G, this.SolidColorBrushName.Color.B);
@@ -73,7 +76,7 @@ namespace HSVColorPickers
          
 
 
-        /// <summary> Gets or Sets picker's alpha. </summary>
+        /// <summary> Gets or sets picker's alpha. </summary>
         public byte Alpha
         {
             get => this.AlphaPicker.Alpha;
@@ -136,6 +139,17 @@ namespace HSVColorPickers
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(ColorPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
 
 
+        /// <summary>  Gets or sets a brush that describes the border fill of the control. </summary>
+        public SolidColorBrush Stroke
+        {
+            get { return (SolidColorBrush)GetValue(StrokeProperty); }
+            set { SetValue(StrokeProperty, value); }
+        }
+
+        /// <summary> Identifies the <see cref = "ColorPicker.Stroke" /> dependency property. </summary>
+        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(ColorPicker), new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.Gray)));
+
+
         #endregion
 
 
@@ -173,7 +187,7 @@ namespace HSVColorPickers
             this.Loaded += (s, e) => this.SetVisibilityWithCurrentPicker(this.Index);
 
             //Picker
-            this.ComboBox.ItemsSource = from picker in this.Pickers() select picker.Type;
+            this.ComboBox.ItemsSource = from picker in this._pickers() select picker.Type;
 
             //Alpha
             this.Alpha = 255;
@@ -198,7 +212,7 @@ namespace HSVColorPickers
             };
 
             //Pickers
-            foreach (IColorPicker picker in this.Pickers())
+            foreach (IColorPicker picker in this._pickers())
             {
                 picker.ColorChange += (s, value) =>
                 {
@@ -216,7 +230,7 @@ namespace HSVColorPickers
 
         private void SetColorWithCurrentPicker(Color color)
         {
-            foreach (IColorPicker picker in this.Pickers())
+            foreach (IColorPicker picker in this._pickers())
             {
                 if (picker.Self.Visibility == Visibility.Visible)
                 {
@@ -227,7 +241,7 @@ namespace HSVColorPickers
 
         private void SetVisibilityWithCurrentPicker(int index)
         {
-            foreach (IColorPicker picker in this.Pickers())
+            foreach (IColorPicker picker in this._pickers())
             {
                 bool isSelf = index == picker.Self.TabIndex;
                 if (isSelf)

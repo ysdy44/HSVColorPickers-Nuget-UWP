@@ -2,12 +2,12 @@
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Effects;
 using System.Numerics;
-using Windows.UI;
-using Windows.UI.Xaml.Controls;
+using Windows.Graphics.Effects;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media;
 
 namespace HSVColorPickers
 {
@@ -16,6 +16,55 @@ namespace HSVColorPickers
     /// </summary>
     public sealed partial class AlphaPicker : UserControl, IColorPicker, IAlphaPicker
     {
+
+        #region Helpher
+
+
+        private static class AlphaGridHelpher
+        {
+            public static CanvasBitmap GetGreyAndWhite(ICanvasResourceCreator resourceCreator)
+            {
+                Color[] colors = new Color[]
+                {
+                     Windows.UI.Colors.LightGray, Windows.UI.Colors.White,
+                     Windows.UI.Colors.White, Windows.UI.Colors.LightGray
+                };
+                return CanvasBitmap.CreateFromColors(resourceCreator, colors, 2, 2);
+            }
+
+            public static CanvasLinearGradientBrush GetBrush(ICanvasResourceCreator resourceCreator, Vector2 startPoint, Vector2 endPoint)
+            {
+                return new CanvasLinearGradientBrush(resourceCreator, Windows.UI.Colors.Transparent, Windows.UI.Colors.DimGray)
+                {
+                    StartPoint = startPoint,
+                    EndPoint = endPoint
+                };
+            }
+
+            public static ICanvasImage GetEffect(float scale, IGraphicsEffectSource source)
+            {
+                return new DpiCompensationEffect
+                {
+                    Source = new ScaleEffect
+                    {
+                        Scale = new Vector2(scale),
+                        InterpolationMode = CanvasImageInterpolation.NearestNeighbor,
+                        Source = new BorderEffect
+                        {
+                            ExtendX = CanvasEdgeBehavior.Wrap,
+                            ExtendY = CanvasEdgeBehavior.Wrap,
+                            Source = source
+                        }
+                    }
+                };
+            }
+
+        }
+
+
+        #endregion
+
+
         //@Delegate
         /// <summary> Occurs when the color value changes. </summary>
         public event ColorChangeHandler ColorChange;
@@ -28,7 +77,11 @@ namespace HSVColorPickers
         /// <summary> Gets picker self. </summary>
         public UserControl Self => this;
 
-        /// <summary> Gets or Sets picker's color. </summary>
+        
+        #region Color
+
+
+        /// <summary> Gets or sets picker's color. </summary>
         public Color Color
         {
             get => Color.FromArgb(this.Alpha, 255, 255, 255);
@@ -36,67 +89,78 @@ namespace HSVColorPickers
         }
 
 
-        #region DependencyProperty 
-
-
-        /// <summary> Gets or Sets picker's alpha. </summary>
+        /// <summary> Gets or sets picker's alpha. </summary>
         public byte Alpha
         {
             get => this.alpha;
             set
             {
-                //A
-                this.ASlider.Value = this.APicker.Value = (int)value;
-
+                this.Change(value);
                 this.alpha = value;
             }
         }
-
         private byte alpha = 255;
+        
+
         private byte _Alpha
         {
-            get => this.alpha;
             set
             {
                 this.ColorChange?.Invoke(this, Color.FromArgb(value, 255, 255, 255));//Delegate
                 this.AlphaChange?.Invoke(this, value);//Delegate
 
-                this.CanvasControl.Invalidate();
-
                 this.alpha = value;
             }
         }
-        
+
+
+        #endregion
+
+
+        #region DependencyProperty 
+
+
         /// <summary> Get or set the flyout style. </summary>
         public Style FlyoutPresenterStyle
-    {
-        get { return (Style)GetValue(FlyoutPresenterStyleProperty); }
-        set { SetValue(FlyoutPresenterStyleProperty, value); }
-    }
-    /// <summary> Identifies the <see cref = "NumberPicker.FlyoutPresenterStyle" /> dependency property. </summary>
-    public static readonly DependencyProperty FlyoutPresenterStyleProperty = DependencyProperty.Register(nameof(FlyoutPresenterStyle), typeof(Style), typeof(AlphaPicker), new PropertyMetadata(null));
+        {
+            get { return (Style)GetValue(FlyoutPresenterStyleProperty); }
+            set { SetValue(FlyoutPresenterStyleProperty, value); }
+        }
+        /// <summary> Identifies the <see cref = "NumberPicker.FlyoutPresenterStyle" /> dependency property. </summary>
+        public static readonly DependencyProperty FlyoutPresenterStyleProperty = DependencyProperty.Register(nameof(FlyoutPresenterStyle), typeof(Style), typeof(AlphaPicker), new PropertyMetadata(null));
 
 
-    /// <summary> Get or set the flyout placement. </summary>
-    public FlyoutPlacementMode Placement
-    {
-        get { return (FlyoutPlacementMode)GetValue(PlacementProperty); }
-        set { SetValue(PlacementProperty, value); }
-    }
-    /// <summary> Identifies the <see cref = "NumberPicker.Placement" /> dependency property. </summary>
-    public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(AlphaPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
+        /// <summary> Get or set the flyout placement. </summary>
+        public FlyoutPlacementMode Placement
+        {
+            get { return (FlyoutPlacementMode)GetValue(PlacementProperty); }
+            set { SetValue(PlacementProperty, value); }
+        }
+        /// <summary> Identifies the <see cref = "NumberPicker.Placement" /> dependency property. </summary>
+        public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(AlphaPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
+    
+        
+        /// <summary>  Gets or sets a brush that describes the border fill of the control. </summary>
+        public SolidColorBrush Stroke
+        {
+            get { return (SolidColorBrush)GetValue(StrokeProperty); }
+            set { SetValue(StrokeProperty, value); }
+        }
+
+        /// <summary> Identifies the <see cref = "AlphaPicker.Stroke" /> dependency property. </summary>
+        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(AlphaPicker), new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.Gray)));
 
 
-    #endregion
+        #endregion
 
 
-    float CanvasWidth;
-        float CanvasHeight;
-        CanvasBitmap Bitmap;
+        float _canvasWidth;
+        float _canvasHeight;
+        CanvasBitmap _bitmap;
 
-        CanvasLinearGradientBrush Brush;
-        Vector2 StartPoint;
-        Vector2 EndPoint;
+        CanvasLinearGradientBrush _brush;
+        Vector2 _startPoint;
+        Vector2 _endPoint;
 
 
         //@Construct
@@ -108,60 +172,55 @@ namespace HSVColorPickers
             this.InitializeComponent();
 
             //Slider
-            this.ASlider.ValueChangeDelta += (object sender, double value) => this.Alpha = this._Alpha = (byte)value;
+            this.ASlider.ValueChangeDelta += (s, value) => this._Alpha = this.Change((byte)value, false);
+
             //Picker
-            this.APicker.ValueChange += (object sender, int value) => this.Alpha = this._Alpha = (byte)value;
+            this.APicker.ValueChange += (s, value) => this._Alpha = this.Change((byte)value, true);
 
             //Canvas
             this.CanvasControl.SizeChanged += (s, e) =>
             {
                 if (e.NewSize == e.PreviousSize) return;
-                this.CanvasWidth = (float)e.NewSize.Width;
-                this.CanvasHeight = (float)e.NewSize.Height;
+                this._canvasWidth = (float)e.NewSize.Width;
+                this._canvasHeight = (float)e.NewSize.Height;
 
-                this.StartPoint = new Vector2(0, this.CanvasHeight / 2);
-                this.EndPoint = new Vector2(this.CanvasWidth, this.CanvasHeight / 2);
+                this._startPoint = new Vector2(0, this._canvasHeight / 2);
+                this._endPoint = new Vector2(this._canvasWidth, this._canvasHeight / 2);
 
-                if (this.Brush != null)
+                if (this._brush != null)
                 {
-                    this.Brush.StartPoint = this.StartPoint;
-                    this.Brush.EndPoint = this.EndPoint;
+                    this._brush.StartPoint = this._startPoint;
+                    this._brush.EndPoint = this._endPoint;
                 }
             };
             this.CanvasControl.CreateResources += (sender, args) =>
             {
-                Color[] colors = new Color[]
-                {
-                     Windows.UI.Colors.LightGray, Windows.UI.Colors.White,
-                     Windows.UI.Colors.White, Windows.UI.Colors.LightGray
-                };
-                this.Bitmap = CanvasBitmap.CreateFromColors(sender, colors, 2, 2);
-
-                this.Brush = new CanvasLinearGradientBrush(sender, Windows.UI.Colors.Transparent, Windows.UI.Colors.DimGray)
-                {
-                    StartPoint = this.StartPoint,
-                    EndPoint = this.EndPoint
-                };
+                this._bitmap = AlphaGridHelpher.GetGreyAndWhite(sender);
+                this._brush = AlphaGridHelpher.GetBrush(sender, this._startPoint, this._endPoint);
             };
             this.CanvasControl.Draw += (sender, args) =>
             {
-                args.DrawingSession.DrawImage(new DpiCompensationEffect
-                {
-                    Source = new ScaleEffect
-                    {
-                        Scale = new Vector2(this.CanvasHeight / 3),
-                        InterpolationMode = CanvasImageInterpolation.NearestNeighbor,
-                        Source = new BorderEffect
-                        {
-                            ExtendX = CanvasEdgeBehavior.Wrap,
-                            ExtendY = CanvasEdgeBehavior.Wrap,
-                            Source = this.Bitmap
-                        }
-                    }
-                });
-
-                args.DrawingSession.FillRectangle(0, 0, this.CanvasWidth, this.CanvasHeight, this.Brush);
+                args.DrawingSession.DrawImage(AlphaGridHelpher.GetEffect(this._canvasHeight / 3, this._bitmap));
+                args.DrawingSession.FillRectangle(0, 0, this._canvasWidth, this._canvasHeight, this._brush);
             };
         }
+
+        #region Change
+
+
+        private byte Change(byte value, bool? sliderOrPicker = null)
+        {
+            byte A = value;
+
+            if (sliderOrPicker != false) this.ASlider.Value = A;
+            if (sliderOrPicker != true) this.APicker.Value = A;
+            
+            this.CanvasControl.Invalidate();
+            return A;
+        }
+
+
+        #endregion
+
     }
 }

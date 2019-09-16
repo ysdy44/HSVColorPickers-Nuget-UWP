@@ -25,7 +25,7 @@ namespace HSVColorPickers
         /// <param name="hsv"> HSV</param>
         /// <param name="value"> The source value. </param>
         /// <returns> HSV </returns>
-        public abstract HSV GetHSL(HSV hsv, float value);
+        public abstract HSV GetHSV(HSV hsv, float value);
         /// <summary>
         /// Get the corresponding value from HSV
         /// </summary>
@@ -49,7 +49,8 @@ namespace HSVColorPickers
         /// <param name="center"> Center </param>
         /// <param name="squareHalfWidth"> Palette square half width. </param>
         /// <param name="squareHalfHeight"> Palette square half height. </param>
-        public abstract void Draw(CanvasControl sender, CanvasDrawingSession ds, HSV hsv, Vector2 center, float squareHalfWidth, float squareHalfHeight);
+        /// <param name="stroke"> The stroke brush. </param>
+        public abstract void Draw(CanvasControl sender, CanvasDrawingSession ds, HSV hsv, Vector2 center, float squareHalfWidth, float squareHalfHeight, SolidColorBrush stroke);
         /// <summary>
         /// Occurs when dragging on a palette.
         /// </summary>

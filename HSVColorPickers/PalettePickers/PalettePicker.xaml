@@ -4,7 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Colors="using:HSVColorPickers"
+    xmlns:hsvColorPickers="using:HSVColorPickers"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
     MinHeight="240" >
@@ -21,9 +21,9 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <Colors:TouchSlider x:Name="Slider" Grid.Row="1" SliderBrush="{StaticResource LinearGradientBrush}"/>
+        <hsvColorPickers:TouchSlider x:Name="Slider" Grid.Row="1" SliderBrush="{StaticResource LinearGradientBrush}" BorderBrush="{x:Bind Stroke, Mode=OneWay}"/>
 
-        <canvas:CanvasControl  x:Name="CanvasControl" />
+        <canvas:CanvasControl x:Name="CanvasControl"/>
 
     </Grid>
 </UserControl>

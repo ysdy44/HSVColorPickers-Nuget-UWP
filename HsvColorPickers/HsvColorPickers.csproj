@@ -108,6 +108,11 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CirclePicker.xaml.cs">
+      <DependentUpon>CirclePicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Enums\RGBMode.cs" />
+    <Compile Include="Enums\HSVMode.cs" />
     <Compile Include="Handlers\AlphaChangeHandler.cs" />
     <Compile Include="AlphaPicker.xaml.cs">
       <DependentUpon>AlphaPicker.xaml</DependentUpon>
@@ -132,16 +137,16 @@
       <DependentUpon>NumberPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Palette.cs" />
-    <Compile Include="PaletteHuePicker.cs" />
-    <Compile Include="PalettePickers\PaletteBase.cs" />
-    <Compile Include="PalettePickers\PaletteHue.cs" />
-    <Compile Include="PalettePicker.xaml.cs">
+    <Compile Include="PaletteBases\PaletteBase.cs" />
+    <Compile Include="PaletteBases\PaletteHue.cs" />
+    <Compile Include="PalettePickers\PaletteHuePicker.cs" />
+    <Compile Include="PalettePickers\PalettePicker.xaml.cs">
       <DependentUpon>PalettePicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PalettePickers\PaletteSaturation.cs" />
-    <Compile Include="PalettePickers\PaletteValue.cs" />
-    <Compile Include="PaletteSaturationPicker.cs" />
-    <Compile Include="PaletteValuePicker.cs" />
+    <Compile Include="PaletteBases\PaletteSaturation.cs" />
+    <Compile Include="PaletteBases\PaletteValue.cs" />
+    <Compile Include="PalettePickers\PaletteSaturationPicker.cs" />
+    <Compile Include="PalettePickers\PaletteValuePicker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RGBPicker.xaml.cs">
       <DependentUpon>RGBPicker.xaml</DependentUpon>
@@ -175,6 +180,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="CirclePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ColorPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -191,7 +200,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PalettePicker.xaml">
+    <Page Include="PalettePickers\PalettePicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

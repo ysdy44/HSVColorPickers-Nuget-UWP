@@ -52,9 +52,9 @@ namespace HSVColorPickers
 
                 for (int i = 0; i < count; i++)
                 {
-                    float l = 100 - i * span;
+                    float v = 100 - i * span;
                     float s = i % 4 * 20 + 20;
-                    colors[i] = HSV.HSVtoRGB(255, h, s, l);
+                    colors[i] = HSV.HSVtoRGB(255, h, s, v);
                 }
 
                 return colors;
@@ -120,7 +120,7 @@ namespace HSVColorPickers
         /// <summary> Gets picker self. </summary>
         public UserControl Self => this;
 
-        /// <summary> Gets or Sets picker's color. </summary>
+        /// <summary> Gets or sets picker's color. </summary>
         public Color Color { get; set; } = Color.FromArgb(255, 255, 255, 255);
 
 

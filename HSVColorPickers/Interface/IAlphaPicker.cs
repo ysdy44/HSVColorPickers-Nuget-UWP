@@ -13,7 +13,7 @@ namespace HSVColorPickers
         /// <summary> Gets picker self. </summary>
         UserControl Self { get; }
 
-        /// <summary> Gets or Sets picker's alpha. </summary>
+        /// <summary> Gets or sets picker's alpha. </summary>
         byte Alpha { get; set; }
 
         /// <summary> Occurs when the alpha value changes. </summary>

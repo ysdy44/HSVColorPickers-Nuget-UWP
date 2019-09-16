@@ -2,6 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media;
 
 namespace HSVColorPickers
 {
@@ -21,39 +22,23 @@ namespace HSVColorPickers
         /// <summary> Gets picker self. </summary>
         public UserControl Self => this;
 
+
+        #region Color
+
+
         /// <summary> Get or set the current hsv for a rgb picker. </summary>
         public Color Color
         {
             get => this.color;
             set
             {
-                //R
-                this.RSlider.Value = value.R;
-                this.RPicker.Value = value.R;
-                this.RLeft.Color = Color.FromArgb(255, 0, value.G, value.B);
-                this.RRight.Color = Color.FromArgb(255, 255, value.G, value.B);
-
-                //G
-                this.GSlider.Value = value.G;
-                this.GPicker.Value = value.G;
-                this.GLeft.Color = Color.FromArgb(255, value.R, 0, value.B);
-                this.GRight.Color = Color.FromArgb(255, value.R, 255, value.B);
-
-                //B
-                this.BSlider.Value = value.B;
-                this.BPicker.Value = value.B;
-                this.BLeft.Color = Color.FromArgb(255, value.R, value.G, 0);
-                this.BRight.Color = Color.FromArgb(255, value.R, value.G, 255);
-
+                this.Change(value);
                 this.color = value;
             }
         }
-
-
-        #region DependencyProperty
-
-
         private Color color = Color.FromArgb(255, 255, 255, 255);
+
+
         private Color _Color
         {
             get => this.color;
@@ -64,6 +49,12 @@ namespace HSVColorPickers
                 this.color = value;
             }
         }
+
+
+        #endregion
+
+        #region DependencyProperty
+
 
         /// <summary> Get or set the flyout style. </summary>
         public Style FlyoutPresenterStyle
@@ -85,6 +76,17 @@ namespace HSVColorPickers
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(RGBPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
 
 
+        /// <summary>  Gets or sets a brush that describes the border fill of the control. </summary>
+        public SolidColorBrush Stroke
+        {
+            get { return (SolidColorBrush)GetValue(StrokeProperty); }
+            set { SetValue(StrokeProperty, value); }
+        }
+
+        /// <summary> Identifies the <see cref = "WheelPicker.Stroke" /> dependency property. </summary>
+        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(WheelPicker), new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.Gray)));
+
+
         #endregion
 
 
@@ -97,14 +99,82 @@ namespace HSVColorPickers
             this.InitializeComponent();
 
             //Slider
-            this.RSlider.ValueChangeDelta += (sender, value) => this.Color = this._Color = Color.FromArgb(this.color.A, (byte)value, this.color.G, this.color.B);
-            this.GSlider.ValueChangeDelta += (sender, value) => this.Color = this._Color = Color.FromArgb(this.color.A, this.color.R, (byte)value, this.color.B);
-            this.BSlider.ValueChangeDelta += (sender, value) => this.Color = this._Color = Color.FromArgb(this.color.A, this.color.R, this.color.G, (byte)value);
+            this.RSlider.ValueChangeDelta += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotR, false);
+            this.GSlider.ValueChangeDelta += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotG, false);
+            this.BSlider.ValueChangeDelta += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotB, false);
 
             //Picker
-            this.RPicker.ValueChange += (sender, Value) => this.Color = this._Color = Color.FromArgb(this.color.A, (byte)Value, this.color.G, this.color.B);
-            this.GPicker.ValueChange += (sender, Value) => this.Color = this._Color = Color.FromArgb(this.color.A, this.color.R, (byte)Value, this.color.B);
-            this.BPicker.ValueChange += (sender, Value) => this.Color = this._Color = Color.FromArgb(this.color.A, this.color.R, this.color.G, (byte)Value);
+            this.RPicker.ValueChange += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotR, true);
+            this.GPicker.ValueChange += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotG, true);
+            this.BPicker.ValueChange += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotB, true);
         }
+
+        #region Change
+
+
+        private Color Change(byte value, RGBMode RGBMode = RGBMode.All, bool? sliderOrPicker = null)
+        {
+            Color color = this.color;
+
+            switch (RGBMode)
+            {
+                case RGBMode.NotR: color.R = value; break;
+                case RGBMode.NotG: color.G = value; break;
+                case RGBMode.NotB: color.B = value; break;
+            }
+
+            this.Change(color, RGBMode, sliderOrPicker);
+            return color;
+        }
+
+        private void Change(Color color, RGBMode RGBMode = RGBMode.All, bool? sliderOrPicker = null)
+        {
+            byte R = color.R;
+            byte G = color.G;
+            byte B = color.B;
+
+            //Brush
+            {
+                if (RGBMode != RGBMode.NotR)
+                {
+                    this.RLeft.Color = Color.FromArgb(255, 0, G, B);
+                    this.RRight.Color = Color.FromArgb(255, 255, G, B);
+                }
+                if (RGBMode != RGBMode.NotG)
+                {
+                    this.GLeft.Color = Color.FromArgb(255, R, 0, B);
+                    this.GRight.Color = Color.FromArgb(255, R, 255, B);
+                }
+                if (RGBMode != RGBMode.NotB)
+                {
+                    this.BLeft.Color = Color.FromArgb(255, R, G, 0);
+                    this.BRight.Color = Color.FromArgb(255, R, G, 255);
+                }
+            }
+
+
+            //Value
+            {
+                if (RGBMode == RGBMode.All || RGBMode == RGBMode.NotR)
+                {
+                    if (sliderOrPicker != false) this.RSlider.Value = R;
+                    if (sliderOrPicker != true) this.RPicker.Value = (int)R;
+                }
+                if (RGBMode == RGBMode.All || RGBMode == RGBMode.NotG)
+                {
+                    if (sliderOrPicker != false) this.GSlider.Value = G;
+                    if (sliderOrPicker != true) this.GPicker.Value = (int)G;
+                }
+                if (RGBMode == RGBMode.All || RGBMode == RGBMode.NotB)
+                {
+                    if (sliderOrPicker != false) this.BSlider.Value = B;
+                    if (sliderOrPicker != true) this.BPicker.Value = (int)B;
+                }
+            }
+        }
+
+
+        #endregion
+
     }
 }

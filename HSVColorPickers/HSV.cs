@@ -94,9 +94,9 @@ namespace HSVColorPickers
         /// <summary>
         /// Color to HSV.
         /// </summary>
-        /// <param name="hsl"> HSV </param>
+        /// <param name="hsv"> HSV </param>
         /// <returns> Color </returns>
-        public static Color HSVtoRGB(HSV hsl) => HSV.HSVtoRGB(hsl.A, hsl.H, hsl.S, hsl.V);
+        public static Color HSVtoRGB(HSV hsv) => HSV.HSVtoRGB(hsv.A, hsv.H, hsv.S, hsv.V);
 
         /// <summary> 
         /// Color to HSV.

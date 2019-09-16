@@ -14,7 +14,7 @@ namespace HSVColorPickers
         /// <summary> Gets picker self. </summary>
         UserControl Self { get; }
 
-        /// <summary> Gets or Sets picker's color. </summary>
+        /// <summary> Gets or sets picker's color. </summary>
         Color Color { get; set; }
 
         /// <summary> Occurs when the color value changes. </summary>

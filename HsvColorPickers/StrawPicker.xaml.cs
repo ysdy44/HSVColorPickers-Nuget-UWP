@@ -176,7 +176,7 @@ namespace HSVColorPickers
         /// <summary> Gets picker self. </summary>
         public UserControl Self => this;
 
-        /// <summary> Gets or Sets picker's color. </summary>
+        /// <summary> Gets or sets picker's color. </summary>
         public Color Color
         {
             get => this.SolidColorBrushName.Color;
