@@ -323,9 +323,17 @@ namespace HSVColorPickers
         private void UpdateEllipse(int size) => this.HSEllipse.Width = this.HSEllipse.Height = size;
         private async Task UpdateImage(int size)
         {
-            WriteableBitmap bmp = new WriteableBitmap(size, size);
-            await HueWheelHelpher.CreateHueCircle(bmp);
-            this.ImageBrush.ImageSource = bmp;
+            if (size < 32) return;
+
+            try
+            {
+                WriteableBitmap bmp = new WriteableBitmap(size, size);
+                await HueWheelHelpher.CreateHueCircle(bmp);
+                this.ImageBrush.ImageSource = bmp;
+            }
+            catch (Exception)
+            {
+            }
         }
 
 
