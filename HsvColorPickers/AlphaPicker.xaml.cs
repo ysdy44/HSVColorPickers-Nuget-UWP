@@ -17,54 +17,6 @@ namespace HSVColorPickers
     public sealed partial class AlphaPicker : UserControl, IColorPicker, IAlphaPicker
     {
 
-        #region Helpher
-
-
-        private static class AlphaGridHelpher
-        {
-            public static CanvasBitmap GetGreyAndWhite(ICanvasResourceCreator resourceCreator)
-            {
-                Color[] colors = new Color[]
-                {
-                     Windows.UI.Colors.LightGray, Windows.UI.Colors.White,
-                     Windows.UI.Colors.White, Windows.UI.Colors.LightGray
-                };
-                return CanvasBitmap.CreateFromColors(resourceCreator, colors, 2, 2);
-            }
-
-            public static CanvasLinearGradientBrush GetBrush(ICanvasResourceCreator resourceCreator, Vector2 startPoint, Vector2 endPoint)
-            {
-                return new CanvasLinearGradientBrush(resourceCreator, Windows.UI.Colors.Transparent, Windows.UI.Colors.DimGray)
-                {
-                    StartPoint = startPoint,
-                    EndPoint = endPoint
-                };
-            }
-
-            public static ICanvasImage GetEffect(float scale, IGraphicsEffectSource source)
-            {
-                return new DpiCompensationEffect
-                {
-                    Source = new ScaleEffect
-                    {
-                        Scale = new Vector2(scale),
-                        InterpolationMode = CanvasImageInterpolation.NearestNeighbor,
-                        Source = new BorderEffect
-                        {
-                            ExtendX = CanvasEdgeBehavior.Wrap,
-                            ExtendY = CanvasEdgeBehavior.Wrap,
-                            Source = source
-                        }
-                    }
-                };
-            }
-
-        }
-
-
-        #endregion
-
-
         //@Delegate
         /// <summary> Occurs when the color value changes. </summary>
         public event ColorChangeHandler ColorChange;
@@ -195,12 +147,12 @@ namespace HSVColorPickers
             };
             this.CanvasControl.CreateResources += (sender, args) =>
             {
-                this._bitmap = AlphaGridHelpher.GetGreyAndWhite(sender);
-                this._brush = AlphaGridHelpher.GetBrush(sender, this._startPoint, this._endPoint);
+                this._bitmap = GreyWhiteMeshHelpher.GetGreyWhiteMesh(sender);
+                this._brush = GreyWhiteMeshHelpher.GetLinearGradientBrush(sender, this._startPoint, this._endPoint);
             };
             this.CanvasControl.Draw += (sender, args) =>
             {
-                args.DrawingSession.DrawImage(AlphaGridHelpher.GetEffect(this._canvasHeight / 3, this._bitmap));
+                args.DrawingSession.DrawImage(GreyWhiteMeshHelpher.GetBorderExtendMesh(this._canvasHeight / 3, this._bitmap));
                 args.DrawingSession.FillRectangle(0, 0, this._canvasWidth, this._canvasHeight, this._brush);
             };
         }
