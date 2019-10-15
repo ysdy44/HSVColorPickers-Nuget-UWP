@@ -111,6 +111,7 @@ namespace HSVColorPickers
         public static readonly DependencyProperty IndexProperty = DependencyProperty.Register(nameof(Index), typeof(int), typeof(ColorPicker), new PropertyMetadata(0, (sender, e) =>
         {
             ColorPicker con = (ColorPicker)sender;
+            if (con._isLoad == false) return;
 
             if (e.NewValue is int value)
             {
@@ -176,7 +177,7 @@ namespace HSVColorPickers
         }
         private bool hexOrStraw;
 
-
+        bool _isLoad;
         //@Construct
         /// <summary>
         /// Construct a ColorPicker.
@@ -184,7 +185,11 @@ namespace HSVColorPickers
         public ColorPicker()
         {
             this.InitializeComponent();
-            this.Loaded += (s, e) => this.SetVisibilityWithCurrentPicker(this.Index);
+            this.Loaded += (s, e) => 
+            {
+                this._isLoad = true;
+                this.SetVisibilityWithCurrentPicker(this.Index);
+            };
 
             //Picker
             this.ComboBox.ItemsSource = from picker in this._pickers() select picker.Type;

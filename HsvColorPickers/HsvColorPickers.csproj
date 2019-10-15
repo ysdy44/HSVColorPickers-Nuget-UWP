@@ -113,6 +113,7 @@
     </Compile>
     <Compile Include="Enums\RGBMode.cs" />
     <Compile Include="Enums\HSVMode.cs" />
+    <Compile Include="GreyWhiteMeshHelpher.cs" />
     <Compile Include="Handlers\AlphaChangeHandler.cs" />
     <Compile Include="AlphaPicker.xaml.cs">
       <DependentUpon>AlphaPicker.xaml</DependentUpon>
