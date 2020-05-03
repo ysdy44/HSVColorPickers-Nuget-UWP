@@ -77,6 +77,16 @@ namespace HSVColorPickers
         })));
 
 
+        /// <summary> Get or set the button style. </summary>
+        public Style ButtonStyle
+        {
+            get { return (Style)GetValue(ButtonStyleProperty); }
+            set { SetValue(ButtonStyleProperty, value); }
+        }
+        /// <summary> Identifies the <see cref = "NumberPicker.ButtonStyleProperty" /> dependency property. </summary>
+        public static readonly DependencyProperty ButtonStyleProperty = DependencyProperty.Register(nameof(ButtonStyleProperty), typeof(Style), typeof(NumberPicker), new PropertyMetadata(null));
+
+
         /// <summary> Get or set the flyout style. </summary>
         public Style FlyoutPresenterStyle
         {

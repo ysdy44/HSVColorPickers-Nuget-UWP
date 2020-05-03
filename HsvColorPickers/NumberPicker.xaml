@@ -6,28 +6,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"    
-    FontSize="14"
-    Width="50" 
-    MaxHeight="40" 
-    MinHeight="22" 
-    HorizontalAlignment="Stretch" 
-    VerticalAlignment="Stretch" 
-    BorderThickness="0" 
-    BorderBrush="Transparent" 
-    Background="Transparent"
     >
 
-    <Button x:Name="Button" 
-            FontSize="{x:Bind UserControl.FontSize,Mode=OneWay}"
-            Width="{x:Bind UserControl.Width,Mode=OneWay}"
-            Height="{x:Bind UserControl.Height,Mode=OneWay}"
-            HorizontalAlignment="{x:Bind UserControl.HorizontalAlignment,Mode=OneWay}"
-            VerticalAlignment="{x:Bind UserControl.VerticalAlignment,Mode=OneWay}"
-            BorderThickness="{x:Bind UserControl.BorderThickness,Mode=OneWay}"
-            BorderBrush="{x:Bind UserControl.BorderBrush,Mode=OneWay}"
-            Background="{x:Bind UserControl.Background,Mode=OneWay}"
-            Foreground="{x:Bind UserControl.Foreground,Mode=OneWay}"
-            >
+    <Button x:Name="Button" Style="{x:Bind ButtonStyle}">
         <Button.Flyout>
             <Flyout x:Name="Flyout" Placement="{x:Bind Placement}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle}">
                 <Grid Width="180" Height="180">
@@ -44,29 +25,29 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button  x:Name="Seven" Grid.Row="0" Grid.Column="0" Content="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent" />
-                    <Button x:Name="Eight" Grid.Row="0" Grid.Column="1" Content="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
-                    <Button x:Name="Nine" Grid.Row="0" Grid.Column="2" Content="9" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
-                    <Button x:Name="Back" Grid.Row="0" Grid.Column="3" Content="&#xEB96;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
+                    <Button x:Name="Seven" Grid.Row="0" Grid.Column="0" Content="7" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent" />
+                    <Button x:Name="Eight" Grid.Row="0" Grid.Column="1" Content="8" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
+                    <Button x:Name="Nine" Grid.Row="0" Grid.Column="2" Content="9" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
+                    <Button x:Name="Back" Grid.Row="0" Grid.Column="3" Content="&#xEB96;" FontWeight="Bold" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
 
-                    <Button x:Name="Four" Grid.Row="1" Grid.Column="0" Content="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
-                    <Button  x:Name="Five" Grid.Row="1" Grid.Column="1" Content="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
-                    <Button x:Name="Six" Grid.Row="1" Grid.Column="2" Content="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
-                    <Button x:Name="Decimal" Grid.Row="1" Grid.Column="3" Content="C" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
+                    <Button x:Name="Four" Grid.Row="1" Grid.Column="0" Content="4" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
+                    <Button x:Name="Five" Grid.Row="1" Grid.Column="1" Content="5" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
+                    <Button x:Name="Six" Grid.Row="1" Grid.Column="2" Content="6" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
+                    <Button x:Name="Decimal" Grid.Row="1" Grid.Column="3" Content="C" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
 
-                    <Button  x:Name="One" Grid.Row="2" Grid.Column="0" Content="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
-                    <Button x:Name="Two" Grid.Row="2" Grid.Column="1" Content="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
-                    <Button x:Name="Three" Grid.Row="2" Grid.Column="2" Content="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
-                    <Button x:Name="Negative" Grid.Row="2" Grid.Column="3" Content="-" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
+                    <Button x:Name="One" Grid.Row="2" Grid.Column="0" Content="1" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
+                    <Button x:Name="Two" Grid.Row="2" Grid.Column="1" Content="2" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
+                    <Button x:Name="Three" Grid.Row="2" Grid.Column="2" Content="3" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
+                    <Button x:Name="Negative" Grid.Row="2" Grid.Column="3" Content="-" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
 
-                    <Button x:Name="Zero" Grid.Row="3" Grid.Column="0" Content="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
+                    <Button x:Name="Zero" Grid.Row="3" Grid.Column="0" Content="0" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
                     <Grid Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="OK" FontSize="22" Grid.Column="0" Content="&#xEC61;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
-                        <Button x:Name="Cancel" FontSize="22" Grid.Column="1" Content="&#xEB90;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
+                        <Button x:Name="OK" FontSize="22" Grid.Column="0" Content="&#xEC61;" FontWeight="Bold" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
+                        <Button x:Name="Cancel" FontSize="22" Grid.Column="1" Content="&#xEB90;" FontWeight="Bold" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="Transparent"/>
                     </Grid>
 
                 </Grid>

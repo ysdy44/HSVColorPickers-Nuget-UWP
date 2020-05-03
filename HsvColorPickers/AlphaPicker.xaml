@@ -15,13 +15,13 @@
 
     <Grid >
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--A-->
         <TextBlock Text="A" Opacity="0.8" VerticalAlignment="Center"/>
-        <local:NumberPicker x:Name="APicker" Minimum="0" Maximum="255" HorizontalAlignment="Right" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}"/>
+        <local:NumberPicker x:Name="APicker" Minimum="0" Maximum="255" HorizontalAlignment="Right" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle,Mode=OneWay}"/>
         <local:TouchSlider  x:Name="ASlider" Grid.Row="1" Minimum="0" Maximum="255" BorderBrush="{x:Bind Stroke, Mode=OneWay}">
             <local:TouchSlider.SliderBackground>
                 <canvas:CanvasControl x:Name="CanvasControl"/>

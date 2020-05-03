@@ -56,11 +56,21 @@ namespace HSVColorPickers
                 this.hsv = value;
             }
         }
-        
+
 
         #endregion
-        
+
         #region DependencyProperty
+
+
+        /// <summary> Get or set the button style. </summary>
+        public Style ButtonStyle
+        {
+            get { return (Style)GetValue(ButtonStyleProperty); }
+            set { SetValue(ButtonStyleProperty, value); }
+        }
+        /// <summary> Identifies the <see cref = "HSVPicker.ButtonStyle" /> dependency property. </summary>
+        public static readonly DependencyProperty ButtonStyleProperty = DependencyProperty.Register(nameof(ButtonStyle), typeof(Style), typeof(HSVPicker), new PropertyMetadata(null));
 
 
         /// <summary> Get or set the flyout style. </summary>
@@ -69,7 +79,7 @@ namespace HSVColorPickers
             get { return (Style)GetValue(FlyoutPresenterStyleProperty); }
             set { SetValue(FlyoutPresenterStyleProperty, value); }
         }
-        /// <summary> Identifies the <see cref = "NumberPicker.FlyoutPresenterStyle" /> dependency property. </summary>
+        /// <summary> Identifies the <see cref = "HSVPicker.FlyoutPresenterStyle" /> dependency property. </summary>
         public static readonly DependencyProperty FlyoutPresenterStyleProperty = DependencyProperty.Register(nameof(FlyoutPresenterStyle), typeof(Style), typeof(HSVPicker), new PropertyMetadata(null));
 
 
@@ -79,7 +89,7 @@ namespace HSVColorPickers
             get { return (FlyoutPlacementMode)GetValue(PlacementProperty); }
             set { SetValue(PlacementProperty, value); }
         }
-        /// <summary> Identifies the <see cref = "NumberPicker.Placement" /> dependency property. </summary>
+        /// <summary> Identifies the <see cref = "HSVPicker.Placement" /> dependency property. </summary>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(HSVPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
      
         
