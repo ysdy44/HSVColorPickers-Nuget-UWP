@@ -164,7 +164,7 @@ namespace HSVColorPickers
             this.ASlider.ValueChangeCompleted += (s, value) => this._AlphaCompleted = this.Change((byte)value, false);
 
             //Picker
-            this.APicker.ValueChange += (s, value) => this._Alpha = this.Change((byte)value, true);
+            this.APicker.ValueChanged += (s, value) => this._Alpha = this.Change((byte)value, true);
 
             //Canvas
             this.CanvasControl.SizeChanged += (s, e) =>

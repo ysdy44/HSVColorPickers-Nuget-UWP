@@ -158,9 +158,9 @@ namespace HSVColorPickers
             this.BSlider.ValueChangeCompleted += (sender, value) => this._ColorCompleted = this.Change((byte)value, RGBMode.NotB, false);
 
             //Picker
-            this.RPicker.ValueChange += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotR, true);
-            this.GPicker.ValueChange += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotG, true);
-            this.BPicker.ValueChange += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotB, true);
+            this.RPicker.ValueChanged += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotR, true);
+            this.GPicker.ValueChanged += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotG, true);
+            this.BPicker.ValueChanged += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotB, true);
         }
 
         #region Change

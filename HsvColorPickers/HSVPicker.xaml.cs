@@ -171,9 +171,9 @@ namespace HSVColorPickers
             this.VSlider.ValueChangeCompleted += (sender, value) => this._HSVCompleted = this.Change((float)value, HSVMode.NotV, false);
 
             //Picker
-            this.HPicker.ValueChange += (sender, value) => this._HSV = this.Change(value, HSVMode.NotH, true);
-            this.SPicker.ValueChange += (sender, value) => this._HSV = this.Change(value, HSVMode.NotS, true);
-            this.VPicker.ValueChange += (sender, value) => this._HSV = this.Change(value, HSVMode.NotV, true);
+            this.HPicker.ValueChanged += (sender, value) => this._HSV = this.Change(value, HSVMode.NotH, true);
+            this.SPicker.ValueChanged += (sender, value) => this._HSV = this.Change(value, HSVMode.NotS, true);
+            this.VPicker.ValueChanged += (sender, value) => this._HSV = this.Change(value, HSVMode.NotV, true);
         }
 
         #region Change

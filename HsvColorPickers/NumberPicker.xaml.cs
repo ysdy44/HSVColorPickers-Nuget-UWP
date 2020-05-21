@@ -11,8 +11,8 @@ namespace HSVColorPickers
     public sealed partial class NumberPicker : UserControl
     {
         //@Delegate
-        /// <summary> Occurs when the value changes. </summary>
-        public event ValueChangeHandler ValueChange = null;
+        /// <summary> Occurs when the value changed. </summary>
+        public event ValueChangeHandler ValueChanged = null;
 
 
         #region DependencyProperty
@@ -196,7 +196,7 @@ namespace HSVColorPickers
                 else
                     this.Value = this.CacheValue;
 
-                this.ValueChange?.Invoke(this, this.Value); //Delegate
+                this.ValueChanged?.Invoke(this, this.Value); //Delegate
             };
         }
 
