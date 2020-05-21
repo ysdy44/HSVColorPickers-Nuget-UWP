@@ -16,7 +16,13 @@ namespace HSVColorPickers
         /// <summary> Gets or sets picker's alpha. </summary>
         byte Alpha { get; set; }
 
-        /// <summary> Occurs when the alpha value changes. </summary>
-        event AlphaChangeHandler AlphaChange;
+        /// <summary> Occurs when the alpha value changed. </summary>
+        event AlphaChangeHandler AlphaChanged;
+        /// <summary> Occurs when the alpha change starts. </summary>
+        event AlphaChangeHandler AlphaChangeStarted;
+        /// <summary> Occurs when alpha change. </summary>
+        event AlphaChangeHandler AlphaChangeDelta;
+        /// <summary> Occurs when the alpha change is complete. </summary>
+        event AlphaChangeHandler AlphaChangeCompleted;
     }
 }

@@ -20,7 +20,7 @@ namespace HSVColorPickers
     /// <summary>
     ///  Extract colors from the app's screen.
     /// </summary>
-    public sealed partial class StrawPicker : UserControl, IColorPicker, IDisposable
+    public sealed partial class StrawPicker : UserControl, IDisposable
     {
         /// <summary> 
         /// A boxed Popup with Postionand Size. 
@@ -167,8 +167,8 @@ namespace HSVColorPickers
 
         
         //@Delegate
-        /// <summary> Occurs when the color value changes. </summary>
-        public event ColorChangeHandler ColorChange = null;
+        /// <summary> Occurs when the color value changed. </summary>
+        public event ColorChangeHandler ColorChanged = null;
 
 
         /// <summary> Gets picker's type name. </summary>
@@ -207,7 +207,7 @@ namespace HSVColorPickers
         public StrawPicker()
         {
             this.InitializeComponent();
-            this.Ellipse.Tapped += (sender, e) => this.ColorChange?.Invoke(this, this.Color);//Delegate
+            this.Ellipse.Tapped += (sender, e) => this.ColorChanged?.Invoke(this, this.Color);//Delegate
 
             //Canvas
             this.CanvasControl = new CanvasControl { UseSharedDevice = true, CustomDevice = this.Device };

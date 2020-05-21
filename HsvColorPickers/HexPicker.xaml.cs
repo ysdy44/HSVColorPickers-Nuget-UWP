@@ -7,11 +7,11 @@ namespace HSVColorPickers
     /// <summary>
     /// Hex code picker.
     /// </summary>
-    public sealed partial class HexPicker : UserControl, IColorPicker
+    public sealed partial class HexPicker : UserControl
     {
         //@Delegate
-        /// <summary> Occurs when the color value changes. </summary>
-        public event ColorChangeHandler ColorChange = null;
+        /// <summary> Occurs when the color value changed. </summary>
+        public event ColorChangeHandler ColorChanged = null;
 
 
         /// <summary> Gets picker's type name. </summary>
@@ -41,7 +41,7 @@ namespace HSVColorPickers
             get => this.color;
             set
             {
-                this.ColorChange?.Invoke(this, value);//Delegate
+                this.ColorChanged?.Invoke(this, value);//Delegate
 
                 this.color = value;
             }

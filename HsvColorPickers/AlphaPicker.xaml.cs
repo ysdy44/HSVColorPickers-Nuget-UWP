@@ -14,14 +14,18 @@ namespace HSVColorPickers
     /// <summary>
     /// Color alpha picker.
     /// </summary>
-    public sealed partial class AlphaPicker : UserControl, IColorPicker, IAlphaPicker
+    public sealed partial class AlphaPicker : UserControl, IAlphaPicker
     {
 
         //@Delegate
-        /// <summary> Occurs when the color value changes. </summary>
-        public event ColorChangeHandler ColorChange;
-        /// <summary> Occurs when the alpha value changes. </summary>
-        public event AlphaChangeHandler AlphaChange;
+        /// <summary> Occurs when alpha change. </summary>
+        public event AlphaChangeHandler AlphaChanged;
+        /// <summary> Occurs when the alpha change starts. </summary>
+        public event AlphaChangeHandler AlphaChangeStarted;
+        /// <summary> Occurs when alpha change. </summary>
+        public event AlphaChangeHandler AlphaChangeDelta;
+        /// <summary> Occurs when the alpha change is complete. </summary>
+        public event AlphaChangeHandler AlphaChangeCompleted;
 
 
         /// <summary> Gets picker's type name. </summary>
@@ -52,16 +56,38 @@ namespace HSVColorPickers
             }
         }
         private byte alpha = 255;
-        
+
 
         private byte _Alpha
         {
             set
             {
-                this.ColorChange?.Invoke(this, Color.FromArgb(value, 255, 255, 255));//Delegate
-                this.AlphaChange?.Invoke(this, value);//Delegate
-
                 this.alpha = value;
+                this.AlphaChanged?.Invoke(this, value);//Delegate
+            }
+        }
+        private byte _AlphaStarted
+        {
+            set
+            {
+                this.alpha = value;
+                this.AlphaChangeStarted?.Invoke(this, value);//Delegate
+            }
+        }
+        private byte _AlphaDelta
+        {
+            set
+            {
+                this.alpha = value;
+                this.AlphaChangeDelta?.Invoke(this, value);//Delegate
+            }
+        }
+        private byte _AlphaCompleted
+        {
+            set
+            {
+                this.alpha = value;
+                this.AlphaChangeCompleted?.Invoke(this, value);//Delegate
             }
         }
 
@@ -133,7 +159,9 @@ namespace HSVColorPickers
             this.InitializeComponent();
 
             //Slider
-            this.ASlider.ValueChangeDelta += (s, value) => this._Alpha = this.Change((byte)value, false);
+            this.ASlider.ValueChangeStarted += (s, value) => this._AlphaStarted = this.Change((byte)value, false);
+            this.ASlider.ValueChangeDelta += (s, value) => this._AlphaDelta = this.Change((byte)value, false);
+            this.ASlider.ValueChangeCompleted += (s, value) => this._AlphaCompleted = this.Change((byte)value, false);
 
             //Picker
             this.APicker.ValueChange += (s, value) => this._Alpha = this.Change((byte)value, true);

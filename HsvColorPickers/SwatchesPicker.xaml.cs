@@ -111,8 +111,14 @@ namespace HSVColorPickers
 
 
         //@Delegate
-        /// <summary> Occurs when the color value changes. </summary>
-        public event ColorChangeHandler ColorChange = null;
+        /// <summary> Occurs when the color value changed. </summary>
+        public event ColorChangeHandler ColorChanged;
+        /// <summary> Occurs when the color change starts. </summary>
+        public event ColorChangeHandler ColorChangeStarted;
+        /// <summary> Occurs when color change. </summary>
+        public event ColorChangeHandler ColorChangeDelta;
+        /// <summary> Occurs when the color change is complete. </summary>
+        public event ColorChangeHandler ColorChangeCompleted;
 
 
         /// <summary> Gets picker's type name. </summary>
@@ -259,7 +265,7 @@ namespace HSVColorPickers
                 Color color = brush.Color;
 
                 this.Color = color;
-                this.ColorChange?.Invoke(this, color);//Delegate
+                this.ColorChanged?.Invoke(this, color);//Delegate
             };
 
             return rectangle;

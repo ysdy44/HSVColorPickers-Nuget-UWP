@@ -13,8 +13,14 @@ namespace HSVColorPickers
     public sealed partial class RGBPicker : UserControl, IColorPicker
     {
         //@Delegate
-        /// <summary> Occurs when the color value changes. </summary>
-        public event ColorChangeHandler ColorChange = null;
+        /// <summary> Occurs when the color value changed. </summary>
+        public event ColorChangeHandler ColorChanged;
+        /// <summary> Occurs when the color change starts. </summary>
+        public event ColorChangeHandler ColorChangeStarted;
+        /// <summary> Occurs when color change. </summary>
+        public event ColorChangeHandler ColorChangeDelta;
+        /// <summary> Occurs when the color change is complete. </summary>
+        public event ColorChangeHandler ColorChangeCompleted;
 
 
         /// <summary> Gets picker's type name. </summary>
@@ -44,7 +50,37 @@ namespace HSVColorPickers
             get => this.color;
             set
             {
-                this.ColorChange?.Invoke(this, value);//Delegate
+                this.ColorChanged?.Invoke(this, value);//Delegate
+
+                this.color = value;
+            }
+        }
+        private Color _ColorStarted
+        {
+            get => this.color;
+            set
+            {
+                this.ColorChangeStarted?.Invoke(this, value);//Delegate
+
+                this.color = value;
+            }
+        }
+        private Color _ColorDelta
+        {
+            get => this.color;
+            set
+            {
+                this.ColorChangeDelta?.Invoke(this, value);//Delegate
+
+                this.color = value;
+            }
+        }
+        private Color _ColorCompleted
+        {
+            get => this.color;
+            set
+            {
+                this.ColorChangeCompleted?.Invoke(this, value);//Delegate
 
                 this.color = value;
             }
@@ -109,9 +145,17 @@ namespace HSVColorPickers
             this.InitializeComponent();
 
             //Slider
-            this.RSlider.ValueChangeDelta += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotR, false);
-            this.GSlider.ValueChangeDelta += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotG, false);
-            this.BSlider.ValueChangeDelta += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotB, false);
+            this.RSlider.ValueChangeStarted += (sender, value) => this._ColorStarted = this.Change((byte)value, RGBMode.NotR, false);
+            this.RSlider.ValueChangeDelta += (sender, value) => this._ColorDelta = this.Change((byte)value, RGBMode.NotR, false);
+            this.RSlider.ValueChangeCompleted += (sender, value) => this._ColorCompleted = this.Change((byte)value, RGBMode.NotR, false);
+
+            this.GSlider.ValueChangeStarted += (sender, value) => this._ColorStarted = this.Change((byte)value, RGBMode.NotG, false);
+            this.GSlider.ValueChangeDelta += (sender, value) => this._ColorDelta = this.Change((byte)value, RGBMode.NotG, false);
+            this.GSlider.ValueChangeCompleted += (sender, value) => this._ColorCompleted = this.Change((byte)value, RGBMode.NotG, false);
+
+            this.BSlider.ValueChangeStarted += (sender, value) => this._ColorStarted = this.Change((byte)value, RGBMode.NotB, false);
+            this.BSlider.ValueChangeDelta += (sender, value) => this._ColorDelta = this.Change((byte)value, RGBMode.NotB, false);
+            this.BSlider.ValueChangeCompleted += (sender, value) => this._ColorCompleted = this.Change((byte)value, RGBMode.NotB, false);
 
             //Picker
             this.RPicker.ValueChange += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotR, true);

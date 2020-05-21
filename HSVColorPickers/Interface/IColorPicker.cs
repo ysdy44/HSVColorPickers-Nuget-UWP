@@ -17,7 +17,13 @@ namespace HSVColorPickers
         /// <summary> Gets or sets picker's color. </summary>
         Color Color { get; set; }
 
-        /// <summary> Occurs when the color value changes. </summary>
-        event ColorChangeHandler ColorChange;
+        /// <summary> Occurs when the color value changed. </summary>
+        event ColorChangeHandler ColorChanged;
+        /// <summary> Occurs when the color change starts. </summary>
+        event ColorChangeHandler ColorChangeStarted;
+        /// <summary> Occurs when color change. </summary>
+        event ColorChangeHandler ColorChangeDelta;
+        /// <summary> Occurs when the color change is complete. </summary>
+        event ColorChangeHandler ColorChangeCompleted;
     }
 }

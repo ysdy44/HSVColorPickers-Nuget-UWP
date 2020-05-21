@@ -32,10 +32,22 @@ namespace HSVColorPickers
 
 
         //@Delegate
-        /// <summary> Occurs when the color value changes. </summary>
-        public event ColorChangeHandler ColorChange = null;
-        /// <summary> Occurs when the hsv value changes. </summary>
-        public event HSVChangeHandler HSVChange = null;
+        /// <summary> Occurs when the color value changed. </summary>
+        public event ColorChangeHandler ColorChanged;
+        /// <summary> Occurs when the color change starts. </summary>
+        public event ColorChangeHandler ColorChangeStarted;
+        /// <summary> Occurs when color change. </summary>
+        public event ColorChangeHandler ColorChangeDelta;
+        /// <summary> Occurs when the color change is complete. </summary>
+        public event ColorChangeHandler ColorChangeCompleted;
+        /// <summary> Occurs when the hsv value changed. </summary>
+        public event HSVChangeHandler HSVChanged;
+        /// <summary> Occurs when the hsv change starts. </summary>
+        public event HSVChangeHandler HSVChangeStarted;
+        /// <summary> Occurs when hsv change. </summary>
+        public event HSVChangeHandler HSVChangeDelta;
+        /// <summary> Occurs when the hsv change is complete. </summary>
+        public event HSVChangeHandler HSVChangeCompleted;
 
 
         /// <summary> Gets picker's type name. </summary>
@@ -76,8 +88,38 @@ namespace HSVColorPickers
             get => this.hsv;
             set
             {
-                this.ColorChange?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
-                this.HSVChange?.Invoke(this, value);//Delegate
+                this.ColorChanged?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
+                this.HSVChanged?.Invoke(this, value);//Delegate
+
+                this.hsv = value;
+            }
+        }
+        private HSV _HSVStarted
+        {
+            set
+            {
+                this.ColorChangeStarted?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
+                this.HSVChangeStarted?.Invoke(this, value);//Delegate
+
+                this.hsv = value;
+            }
+        }
+        private HSV _HSVDelta
+        {
+            set
+            {
+                this.ColorChangeDelta?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
+                this.HSVChangeDelta?.Invoke(this, value);//Delegate
+
+                this.hsv = value;
+            }
+        }
+        private HSV _HSVCompleted
+        {
+            set
+            {
+                this.ColorChangeCompleted?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
+                this.HSVChangeCompleted?.Invoke(this, value);//Delegate
 
                 this.hsv = value;
             }
@@ -126,7 +168,10 @@ namespace HSVColorPickers
             this.Slider.Value = paletteBase.GetValue(this.hsv);
             this.LinearGradientBrush.GradientStops = paletteBase.GetSliderBrush(this.hsv);
 
-            this.Slider.ValueChangeDelta += (sender, value) => this.HSV = this._HSV = paletteBase.GetHSV(this.hsv, (float)value);
+            this.Slider.ValueChangeStarted += (sender, value) => this.HSV = this._HSVStarted = paletteBase.GetHSV(this.hsv, (float)value);
+            this.Slider.ValueChangeDelta += (sender, value) => this.HSV = this._HSVDelta = paletteBase.GetHSV(this.hsv, (float)value);
+            this.Slider.ValueChangeCompleted += (sender, value) => this.HSV = this._HSVCompleted = paletteBase.GetHSV(this.hsv, (float)value);
+
 
             //Action
             this.Action = (HSV hsv) =>
@@ -155,15 +200,19 @@ namespace HSVColorPickers
 
                 this.IsPalette = Math.Abs(Vector.X) < this.Square.Width && Math.Abs(this.Vector.Y) < this.Square.Height;
 
-                if (this.IsPalette) this.HSV = this._HSV = paletteBase.Delta(this.hsv, this.Vector, this.Square.HalfWidth, this.Square.HalfHeight);
+                if (this.IsPalette) this.HSV = this._HSVStarted = paletteBase.Delta(this.hsv, this.Vector, this.Square.HalfWidth, this.Square.HalfHeight);
             };
             this.CanvasControl.ManipulationDelta += (sender, e) =>
             {
                 this.Vector += e.Delta.Translation.ToVector2();
 
-                if (this.IsPalette) this.HSV = this._HSV = paletteBase.Delta(this.hsv, this.Vector, this.Square.HalfWidth, this.Square.HalfHeight);
+                if (this.IsPalette) this.HSV = this._HSVDelta = paletteBase.Delta(this.hsv, this.Vector, this.Square.HalfWidth, this.Square.HalfHeight);
             };
-            this.CanvasControl.ManipulationCompleted += (sender, e) => this.IsPalette = false;
+            this.CanvasControl.ManipulationCompleted += (sender, e) =>
+            {
+                if (this.IsPalette) this.HSV = this._HSVCompleted = paletteBase.Delta(this.hsv, this.Vector, this.Square.HalfWidth, this.Square.HalfHeight);
+                this.IsPalette = false;
+            };
 
 
             this.CanvasControl.Invalidate();

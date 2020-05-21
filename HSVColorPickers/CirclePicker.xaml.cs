@@ -112,12 +112,24 @@ namespace HSVColorPickers
 
 
         //@Delegate
-        /// <summary> Occurs when the color value changes. </summary>
-        public event ColorChangeHandler ColorChange = null;
-        /// <summary> Occurs when the hsv value changes. </summary>
-        public event HSVChangeHandler HSVChange = null;
+        /// <summary> Occurs when the color value changed. </summary>
+        public event ColorChangeHandler ColorChanged;
+        /// <summary> Occurs when the color change starts. </summary>
+        public event ColorChangeHandler ColorChangeStarted;
+        /// <summary> Occurs when color change. </summary>
+        public event ColorChangeHandler ColorChangeDelta;
+        /// <summary> Occurs when the color change is complete. </summary>
+        public event ColorChangeHandler ColorChangeCompleted;
+        /// <summary> Occurs when the hsv value changed. </summary>
+        public event HSVChangeHandler HSVChanged;
+        /// <summary> Occurs when the hsv change starts. </summary>
+        public event HSVChangeHandler HSVChangeStarted;
+        /// <summary> Occurs when hsv change. </summary>
+        public event HSVChangeHandler HSVChangeDelta;
+        /// <summary> Occurs when the hsv change is complete. </summary>
+        public event HSVChangeHandler HSVChangeCompleted;
 
-        
+
         /// <summary> Gets picker's type name. </summary>
         public string Type => "Circle";
         /// <summary> Gets picker self. </summary>
@@ -162,8 +174,41 @@ namespace HSVColorPickers
             get => this.hsv;
             set
             {
-                this.ColorChange?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
-                this.HSVChange?.Invoke(this, value);//Delegate
+                this.ColorChanged?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
+                this.HSVChanged?.Invoke(this, value);//Delegate
+
+                this.hsv = value;
+            }
+        }
+        private HSV _HSVStarted
+        {
+            get => this.hsv;
+            set
+            {
+                this.ColorChangeStarted?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
+                this.HSVChangeStarted?.Invoke(this, value);//Delegate
+
+                this.hsv = value;
+            }
+        }
+        private HSV _HSVDelta
+        {
+            get => this.hsv;
+            set
+            {
+                this.ColorChangeDelta?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
+                this.HSVChangeDelta?.Invoke(this, value);//Delegate
+
+                this.hsv = value;
+            }
+        }
+        private HSV _HSVCompleted
+        {
+            get => this.hsv;
+            set
+            {
+                this.ColorChangeCompleted?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
+                this.HSVChangeCompleted?.Invoke(this, value);//Delegate
 
                 this.hsv = value;
             }
@@ -260,16 +305,22 @@ namespace HSVColorPickers
             this.Canvas.ManipulationStarted += (s, e) =>
             {
                 this._position = e.Position.ToVector2() - this._center;
+                this._HSVStarted = this.Change(this._position);
             };
             this.Canvas.ManipulationDelta += (s, e) =>
             {
                 this._position += e.Delta.Translation.ToVector2();
-                this._HSV = this.Change(this._position); 
+                this._HSVDelta = this.Change(this._position);
             };
-            this.Canvas.ManipulationCompleted += (s, e) => { };
+            this.Canvas.ManipulationCompleted += (s, e) =>
+            {
+                this._HSVCompleted = this.Change(this._position);
+            };
 
             //Slider
-            this.VSlider.ValueChangeDelta += (sender, value) => this._HSV = this.Change((float)value);
+            this.VSlider.ValueChangeStarted += (sender, value) => this._HSVStarted = this.Change((float)value);
+            this.VSlider.ValueChangeDelta += (sender, value) => this._HSVDelta = this.Change((float)value);
+            this.VSlider.ValueChangeCompleted += (sender, value) => this._HSVCompleted = this.Change((float)value);
 
         }
 
