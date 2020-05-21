@@ -60,10 +60,25 @@ namespace HSVColorPickers.TestApp
             //Pickers
             foreach (IColorPicker picker in this.Pickers())
             {
-                picker.ColorChanged += (s, value) => this._Color = value;
-                picker.ColorChangeStarted += (s, value) => this._Color = value;
-                picker.ColorChangeDelta += (s, value) => this._Color = value;
-                picker.ColorChangeCompleted += (s, value) => this._Color = value;
+                picker.ColorChanged += (s, value) =>
+                {
+                    this._Color = value;
+                };
+                picker.ColorChangeStarted += (s, value) =>
+                {
+                    this._Color = value;
+                    this.TextBlock.Text = "ColorChangeStarted";
+                };
+                picker.ColorChangeDelta += (s, value) =>
+                {
+                    this._Color = value;
+                    this.TextBlock.Text = "ColorChangeDelta";
+                };
+                picker.ColorChangeCompleted += (s, value) =>
+                {
+                    this._Color = value;
+                    this.TextBlock.Text = "ColorChangeCompleted";
+                };
             }
         }
 

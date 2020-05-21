@@ -17,6 +17,7 @@
 
 
         <StackPanel VerticalAlignment="Center">
+            <TextBlock x:Name="TextBlock"/>
             <Ellipse Width="50" Height="50" Margin="22" StrokeThickness="1" Stroke="White">
                 <Ellipse.Fill>
                     <SolidColorBrush x:Name="SolidColorBrush" Color="DodgerBlue"/>

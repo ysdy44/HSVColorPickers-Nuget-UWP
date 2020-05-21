@@ -22,14 +22,6 @@ namespace HSVColorPickers
         public event ColorChangeHandler ColorChangeDelta;
         /// <summary> Occurs when the color change is complete. </summary>
         public event ColorChangeHandler ColorChangeCompleted;
-        /// <summary> Occurs when the hsv value changed. </summary>
-        public event HSVChangeHandler HSVChange;
-        /// <summary> Occurs when the hsv change starts. </summary>
-        public event HSVChangeHandler HSVChangeStarted;
-        /// <summary> Occurs when hsv change. </summary>
-        public event HSVChangeHandler HSVChangeDelta;
-        /// <summary> Occurs when the hsv change is complete. </summary>
-        public event HSVChangeHandler HSVChangeCompleted;
         /// <summary> Occurs when alpha change. </summary>
         public event AlphaChangeHandler AlphaChanged;
         /// <summary> Occurs when the alpha change starts. </summary>
@@ -98,8 +90,8 @@ namespace HSVColorPickers
             get => this.SolidColorBrushName.Color;
             set
             {
-                if (value.A == this.Alpha && value.R == this.SolidColorBrushName.Color.R && value.G == this.SolidColorBrushName.Color.G && value.B == this.SolidColorBrushName.Color.B)
-                    return;
+                //if (value.A == this.Alpha && value.R == this.SolidColorBrushName.Color.R && value.G == this.SolidColorBrushName.Color.G && value.B == this.SolidColorBrushName.Color.B)
+                    //return;
 
                 this.SolidColorBrushName.Color = Color.FromArgb(255, value.R, value.G, value.B);
                 this.ColorChangeStarted?.Invoke(this, Color.FromArgb(this.Alpha, value.R, value.G, value.B));//Delegate
@@ -122,8 +114,8 @@ namespace HSVColorPickers
             get => this.SolidColorBrushName.Color;
             set
             {
-                if (value.A == this.Alpha && value.R == this.SolidColorBrushName.Color.R && value.G == this.SolidColorBrushName.Color.G && value.B == this.SolidColorBrushName.Color.B)
-                    return;
+                //if (value.A == this.Alpha && value.R == this.SolidColorBrushName.Color.R && value.G == this.SolidColorBrushName.Color.G && value.B == this.SolidColorBrushName.Color.B)
+                    //return;
 
                 this.SolidColorBrushName.Color = Color.FromArgb(255, value.R, value.G, value.B);
                 this.ColorChangeCompleted?.Invoke(this, Color.FromArgb(this.Alpha, value.R, value.G, value.B));//Delegate

@@ -41,6 +41,8 @@
 
             <local:HexPicker x:Name="HexPicker" Grid.Column="2" Height="28"/>
             <local:StrawPicker x:Name="StrawPicker" Grid.Column="2" HorizontalAlignment="Right" Background="Transparent"/>
+
+            <TextBlock x:Name="AAAA" Grid.ColumnSpan="3"/>
         </Grid>
 
         <!--ComboBox-->
