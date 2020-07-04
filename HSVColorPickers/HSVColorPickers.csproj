@@ -163,6 +163,7 @@
     </Compile>
     <Compile Include="Handlers\TouchValueChangeHandler.cs" />
     <Compile Include="Handlers\ValueChangeHandler.cs" />
+    <Compile Include="TouchSliderBase.cs" />
     <Compile Include="WheelPicker.xaml.cs">
       <DependentUpon>WheelPicker.xaml</DependentUpon>
     </Compile>
