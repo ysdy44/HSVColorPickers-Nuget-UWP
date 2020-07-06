@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
 
         <!--A-->
-        <TextBlock Text="A" Opacity="0.8" VerticalAlignment="Center"/>
+        <TextBlock Text="A" VerticalAlignment="Center" Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
         <local:NumberPicker x:Name="APicker" Minimum="0" Maximum="255" HorizontalAlignment="Right" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle,Mode=OneWay}"/>
         <local:TouchSlider  x:Name="ASlider" Grid.Row="1" Minimum="0" Maximum="255" BorderBrush="{x:Bind Stroke, Mode=OneWay}">
             <local:TouchSlider.SliderBackground>
