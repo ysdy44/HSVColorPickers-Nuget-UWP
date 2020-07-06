@@ -22,7 +22,12 @@ namespace HSVColorPickers
         public int Value
         {
             get { return (int)GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            set
+            {
+                if (value > this.Maximum) value = this.Maximum;
+                if (value < this.Minimum) value = this.Minimum;
+                SetValue(ValueProperty, value);
+            }
         }
         /// <summary> Identifies the <see cref = "NumberPicker.Value" /> dependency property. </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(int), typeof(NumberPicker), new PropertyMetadata(0, new PropertyChangedCallback((sender, e) =>
@@ -31,9 +36,6 @@ namespace HSVColorPickers
 
             if (e.NewValue is int value)
             {
-                if (value > con.Maximum) value = con.Maximum;
-                if (value < con.Minimum) value = con.Minimum;
-
                 con.Button.Content = con.GetContent(value);
             }
         })));
