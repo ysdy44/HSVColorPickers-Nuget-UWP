@@ -33,7 +33,7 @@ namespace HSVColorPickers
         /// <summary> Gets picker's type name. </summary>
         public string Type => "HSV";
         /// <summary> Gets picker self. </summary>
-        public UserControl Self => this;
+        public Control Self => this;
 
 
         #region Color
@@ -105,6 +105,16 @@ namespace HSVColorPickers
         #region DependencyProperty
 
 
+        /// <summary> Get or set the text style. </summary>
+        public Style TextStyle
+        {
+            get { return (Style)GetValue(TextStyleProperty); }
+            set { SetValue(TextStyleProperty, value); }
+        }
+        /// <summary> Identifies the <see cref = "HSVPicker.ButtonStyle" /> dependency property. </summary>
+        public static readonly DependencyProperty TextStyleProperty = DependencyProperty.Register(nameof(TextStyle), typeof(Style), typeof(HSVPicker), new PropertyMetadata(null));
+
+
         /// <summary> Get or set the button style. </summary>
         public Style ButtonStyle
         {
@@ -157,23 +167,44 @@ namespace HSVColorPickers
         {
             this.InitializeComponent();
 
-            //Slider
+
+            //H
+            this.HPicker.Unit = "º";
+            this.HPicker.Minimum = 0;
+            this.HPicker.Maximum = 360;
+            this.HPicker.ValueChanged += (sender, value) => this._HSV = this.Change(value, HSVMode.NotH, true);
+
+            this.HSlider.Minimum = 0.0d;
+            this.HSlider.Maximum = 360.0d;
             this.HSlider.ValueChangeStarted += (sender, value) => this._HSVStarted = this.Change((float)value, HSVMode.NotH, false);
             this.HSlider.ValueChangeDelta += (sender, value) => this._HSVDelta = this.Change((float)value, HSVMode.NotH, false);
             this.HSlider.ValueChangeCompleted += (sender, value) => this._HSVCompleted = this.Change((float)value, HSVMode.NotH, false);
 
+
+            //S
+            this.SPicker.Unit = "%";
+            this.SPicker.Minimum = 0;
+            this.SPicker.Maximum = 100;
+            this.SPicker.ValueChanged += (sender, value) => this._HSV = this.Change(value, HSVMode.NotS, true);
+
+            this.SSlider.Minimum = 0.0d;
+            this.SSlider.Maximum = 100.0d;
             this.SSlider.ValueChangeStarted += (sender, value) => this._HSVStarted = this.Change((float)value, HSVMode.NotS, false);
             this.SSlider.ValueChangeDelta += (sender, value) => this._HSVDelta = this.Change((float)value, HSVMode.NotS, false);
             this.SSlider.ValueChangeCompleted += (sender, value) => this._HSVCompleted = this.Change((float)value, HSVMode.NotS, false);
 
+
+            //V
+            this.VPicker.Unit = "%";
+            this.VPicker.Minimum = 0;
+            this.VPicker.Maximum = 100;
+            this.VPicker.ValueChanged += (sender, value) => this._HSV = this.Change(value, HSVMode.NotV, true);
+
+            this.VSlider.Minimum = 0.0d;
+            this.VSlider.Maximum = 100.0d;
             this.VSlider.ValueChangeStarted += (sender, value) => this._HSVStarted = this.Change((float)value, HSVMode.NotV, false);
             this.VSlider.ValueChangeDelta += (sender, value) => this._HSVDelta = this.Change((float)value, HSVMode.NotV, false);
             this.VSlider.ValueChangeCompleted += (sender, value) => this._HSVCompleted = this.Change((float)value, HSVMode.NotV, false);
-
-            //Picker
-            this.HPicker.ValueChanged += (sender, value) => this._HSV = this.Change(value, HSVMode.NotH, true);
-            this.SPicker.ValueChanged += (sender, value) => this._HSV = this.Change(value, HSVMode.NotS, true);
-            this.VPicker.ValueChanged += (sender, value) => this._HSV = this.Change(value, HSVMode.NotV, true);
         }
 
         #region Change

@@ -174,7 +174,7 @@ namespace HSVColorPickers
         /// <summary> Gets picker's type name. </summary>
         public string Type => "Straw";
         /// <summary> Gets picker self. </summary>
-        public UserControl Self => this;
+        public Control Self => this;
 
         /// <summary> Gets or sets picker's color. </summary>
         public Color Color

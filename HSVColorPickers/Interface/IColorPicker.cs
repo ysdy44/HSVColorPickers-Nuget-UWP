@@ -1,4 +1,5 @@
 ﻿using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace HSVColorPickers
@@ -12,7 +13,7 @@ namespace HSVColorPickers
         string Type { get; }
 
         /// <summary> Gets picker self. </summary>
-        UserControl Self { get; }
+        Control Self { get; }
 
         /// <summary> Gets or sets picker's color. </summary>
         Color Color { get; set; }

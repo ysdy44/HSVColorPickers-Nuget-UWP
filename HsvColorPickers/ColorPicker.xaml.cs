@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 using System.Linq;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -11,7 +12,7 @@ namespace HSVColorPickers
     /// <summary>
     /// Color picker (ง •̀_•́)ง
     /// </summary>
-    public sealed partial class ColorPicker : UserControl, IColorPicker, IAlphaPicker
+    public sealed partial class ColorPicker : UserControl, IColorPicker
     {
         //@Delegate
         /// <summary> Occurs when the color value changed. </summary>
@@ -22,23 +23,21 @@ namespace HSVColorPickers
         public event ColorChangeHandler ColorChangeDelta;
         /// <summary> Occurs when the color change is complete. </summary>
         public event ColorChangeHandler ColorChangeCompleted;
-        /// <summary> Occurs when alpha change. </summary>
-        public event AlphaChangeHandler AlphaChanged;
-        /// <summary> Occurs when the alpha change starts. </summary>
-        public event AlphaChangeHandler AlphaChangeStarted;
-        /// <summary> Occurs when alpha change. </summary>
-        public event AlphaChangeHandler AlphaChangeDelta;
-        /// <summary> Occurs when the alpha change is complete. </summary>
-        public event AlphaChangeHandler AlphaChangeCompleted;
 
+
+        //@Group
+        private EventHandler<int> Group;
+        private EventHandler<Color> ChangeColor;
 
         /// <summary> Gets picker's type name. </summary>
         public string Type => "Color";
         /// <summary> Gets picker self. </summary>
-        public UserControl Self => this;
+        public Control Self => this;
+        /// <summary> Gets hex picker. </summary>
+        public TextBox HexPicker => this._HexPicker;
 
 
-        private IEnumerable<IColorPicker> _pickers()
+        private IEnumerable<IColorPicker> ColorPickers()
         {
             yield return this.SwatchesPicker;
             yield return this.WheelPicker;
@@ -51,129 +50,6 @@ namespace HSVColorPickers
 
             yield return this.CirclePicker;
         }
-
-
-        #region Color
-
-
-        /// <summary> Gets or sets picker's color. </summary>
-        public Color Color
-        {
-            get => Color.FromArgb(this.Alpha, this.SolidColorBrushName.Color.R, this.SolidColorBrushName.Color.G, this.SolidColorBrushName.Color.B);
-            set
-            {
-                if (value.A != this.Alpha) this.Alpha = value.A;
-
-                if (value.A == this.Alpha && value.R == this.SolidColorBrushName.Color.R && value.G == this.SolidColorBrushName.Color.G && value.B == this.SolidColorBrushName.Color.B)
-                    return;
-
-                Color color = Color.FromArgb(255, value.R, value.G, value.B);
-                this.SetColorWithCurrentPicker(color);
-                this.SolidColorBrushName.Color = color;
-            }
-        }
-
-        private Color _Color
-        {
-            get => this.SolidColorBrushName.Color;
-            set
-            {
-                if (value.A == this.Alpha && value.R == this.SolidColorBrushName.Color.R && value.G == this.SolidColorBrushName.Color.G && value.B == this.SolidColorBrushName.Color.B)
-                    return;
-
-                this.SolidColorBrushName.Color = Color.FromArgb(255, value.R, value.G, value.B);
-                this.ColorChanged?.Invoke(this, Color.FromArgb(this.Alpha, value.R, value.G, value.B));//Delegate
-            }
-        }
-        private Color _ColorStarted
-        {
-            get => this.SolidColorBrushName.Color;
-            set
-            {
-                //if (value.A == this.Alpha && value.R == this.SolidColorBrushName.Color.R && value.G == this.SolidColorBrushName.Color.G && value.B == this.SolidColorBrushName.Color.B)
-                    //return;
-
-                this.SolidColorBrushName.Color = Color.FromArgb(255, value.R, value.G, value.B);
-                this.ColorChangeStarted?.Invoke(this, Color.FromArgb(this.Alpha, value.R, value.G, value.B));//Delegate
-            }
-        }
-        private Color _ColorDelta
-        {
-            get => this.SolidColorBrushName.Color;
-            set
-            {
-                if (value.A == this.Alpha && value.R == this.SolidColorBrushName.Color.R && value.G == this.SolidColorBrushName.Color.G && value.B == this.SolidColorBrushName.Color.B)
-                    return;
-
-                this.SolidColorBrushName.Color = Color.FromArgb(255, value.R, value.G, value.B);
-                this.ColorChangeDelta?.Invoke(this, Color.FromArgb(this.Alpha, value.R, value.G, value.B));//Delegate
-            }
-        }
-        private Color _ColorCompleted
-        {
-            get => this.SolidColorBrushName.Color;
-            set
-            {
-                //if (value.A == this.Alpha && value.R == this.SolidColorBrushName.Color.R && value.G == this.SolidColorBrushName.Color.G && value.B == this.SolidColorBrushName.Color.B)
-                    //return;
-
-                this.SolidColorBrushName.Color = Color.FromArgb(255, value.R, value.G, value.B);
-                this.ColorChangeCompleted?.Invoke(this, Color.FromArgb(this.Alpha, value.R, value.G, value.B));//Delegate
-            }
-        }
-
-
-
-        /// <summary> Gets or sets picker's alpha. </summary>
-        public byte Alpha
-        {
-            get => this.AlphaPicker.Alpha;
-            set => this.AlphaPicker.Alpha = value;
-        }
-
-        private byte _Alpha
-        {
-            get => this.AlphaPicker.Alpha;
-            set
-            {
-                this.AlphaPicker.Alpha = value;
-                this.AlphaChanged?.Invoke(this, value);//Delegate
-                this.ColorChanged?.Invoke(this, Color.FromArgb(value, this.SolidColorBrushName.Color.R, this.SolidColorBrushName.Color.G, this.SolidColorBrushName.Color.B)); //Delegate
-            }
-        }
-        private byte _AlphaStarted
-        {
-            get => this.AlphaPicker.Alpha;
-            set
-            {
-                this.AlphaPicker.Alpha = value;
-                this.AlphaChangeStarted?.Invoke(this, value);//Delegate
-                this.ColorChangeStarted?.Invoke(this, Color.FromArgb(value, this.SolidColorBrushName.Color.R, this.SolidColorBrushName.Color.G, this.SolidColorBrushName.Color.B)); //Delegate
-            }
-        }
-        private byte _AlphaDelta
-        {
-            get => this.AlphaPicker.Alpha;
-            set
-            {
-                this.AlphaPicker.Alpha = value;
-                this.AlphaChangeDelta?.Invoke(this, value);//Delegate
-                this.ColorChangeDelta?.Invoke(this, Color.FromArgb(value, this.SolidColorBrushName.Color.R, this.SolidColorBrushName.Color.G, this.SolidColorBrushName.Color.B)); //Delegate
-            }
-        }
-        private byte _AlphaCompleted
-        {
-            get => this.AlphaPicker.Alpha;
-            set
-            {
-                this.AlphaPicker.Alpha = value;
-                this.AlphaChangeCompleted?.Invoke(this, value);//Delegate
-                this.ColorChangeCompleted?.Invoke(this, Color.FromArgb(value, this.SolidColorBrushName.Color.R, this.SolidColorBrushName.Color.G, this.SolidColorBrushName.Color.B)); //Delegate
-            }
-        }
-
-
-        #endregion
 
 
         #region DependencyProperty
@@ -189,13 +65,154 @@ namespace HSVColorPickers
         public static readonly DependencyProperty IndexProperty = DependencyProperty.Register(nameof(Index), typeof(int), typeof(ColorPicker), new PropertyMetadata(0, (sender, e) =>
         {
             ColorPicker con = (ColorPicker)sender;
-            if (con._isLoad == false) return;
 
             if (e.NewValue is int value)
             {
-                con.SetVisibilityWithCurrentPicker(value);
+                con.Group?.Invoke(con, value);
             }
         }));
+
+
+        /// <summary> Gets or sets picker's color. </summary>
+        public Color Color
+        {
+            get => Color.FromArgb(this.Alpha, this.R, this.G, this.B);
+            set
+            {
+                if (value.A == this.Alpha)
+                {
+                    if (value.R == this.R) if (value.G == this.G) if (value.B == this.B) return;
+                }
+                else this.Alpha = value.A;
+
+
+                Color color = Color.FromArgb(255, value.R, value.G, value.B);
+                this.ChangeColor?.Invoke(this, color);//Delegate
+                this._HexPicker.Color = color;
+
+                this.R = value.R;
+                this.G = value.G;
+                this.B = value.B;
+            }
+        }
+
+        private Color _Color
+        {
+            set
+            {
+                if (value.A == this.Alpha) if (value.R == this.R) if (value.G == this.G) if (value.B == this.B) return;
+
+                this.R = value.R;
+                this.G = value.G;
+                this.B = value.B;
+
+                Color color = Color.FromArgb(this.Alpha, value.R, value.G, value.B);
+                this.ColorChanged?.Invoke(this, color);//Delegate
+                this._HexPicker.Color = color;
+            }
+        }
+        private Color _ColorStarted
+        {
+            set
+            {
+                //if (value.A == this.Alpha) if (value.R == this.R) if (value.G == this.G) if (value.B == this.B) return;
+
+                this.R = value.R;
+                this.G = value.G;
+                this.B = value.B;
+
+                Color color = Color.FromArgb(this.Alpha, value.R, value.G, value.B);
+                this.ColorChangeStarted?.Invoke(this, color);//Delegate
+            }
+        }
+        private Color _ColorDelta
+        {
+            set
+            {
+                if (value.A == this.Alpha) if (value.R == this.R) if (value.G == this.G) if (value.B == this.B) return;
+
+                this.R = value.R;
+                this.G = value.G;
+                this.B = value.B;
+
+                Color color = Color.FromArgb(this.Alpha, value.R, value.G, value.B);
+                this.ColorChangeDelta?.Invoke(this, color);//Delegate
+            }
+        }
+        private Color _ColorCompleted
+        {
+            set
+            {
+                //if (value.A == this.Alpha) if (value.R == this.R) if (value.G == this.G) if (value.B == this.B) return;
+
+                this.R = value.R;
+                this.G = value.G;
+                this.B = value.B;
+
+                Color color = Color.FromArgb(this.Alpha, value.R, value.G, value.B);
+                this.ColorChangeCompleted?.Invoke(this, color);//Delegate
+                this._HexPicker.Color = color;
+            }
+        }
+
+
+
+        /// <summary> Gets or sets picker's alpha. </summary>
+        public byte Alpha
+        {
+            get => this.AlphaPicker.Alpha;
+            set => this.AlphaPicker.Alpha = value;
+        }
+
+        private byte _Alpha
+        {
+            set => this.ColorChanged?.Invoke(this, Color.FromArgb(value, this.R, this.G, this.B)); //Delegate
+        }
+        private byte _AlphaStarted
+        {
+            set => this.ColorChangeStarted?.Invoke(this, Color.FromArgb(value, this.R, this.G, this.B)); //Delegate
+        }
+        private byte _AlphaDelta
+        {
+            set => this.ColorChangeDelta?.Invoke(this, Color.FromArgb(value, this.R, this.G, this.B)); //Delegate
+        }
+        private byte _AlphaCompleted
+        {
+            set => this.ColorChangeCompleted?.Invoke(this, Color.FromArgb(value, this.R, this.G, this.B)); //Delegate
+        }
+
+        /// <summary> Gets or sets picker's red. </summary>
+        private byte R = 255;
+        /// <summary> Gets or sets picker's green. </summary>
+        private byte G = 255;
+        /// <summary> Gets or sets picker's blue. </summary>
+        private byte B = 255;
+
+
+        #endregion
+
+
+        #region DependencyProperty
+
+
+        /// <summary> Get or set the text style. </summary>
+        public Style TextStyle
+        {
+            get { return (Style)GetValue(TextStyleProperty); }
+            set { SetValue(TextStyleProperty, value); }
+        }
+        /// <summary> Identifies the <see cref = "ColorPicker.ButtonStyle" /> dependency property. </summary>
+        public static readonly DependencyProperty TextStyleProperty = DependencyProperty.Register(nameof(TextStyle), typeof(Style), typeof(ColorPicker), new PropertyMetadata(null));
+
+
+        /// <summary> Get or set the button style. </summary>
+        public Style ButtonStyle
+        {
+            get { return (Style)GetValue(ButtonStyleProperty); }
+            set { SetValue(ButtonStyleProperty, value); }
+        }
+        /// <summary> Identifies the <see cref = "ColorPicker.ButtonStyle" /> dependency property. </summary>
+        public static readonly DependencyProperty ButtonStyleProperty = DependencyProperty.Register(nameof(ButtonStyle), typeof(Style), typeof(ColorPicker), new PropertyMetadata(null));
 
 
         /// <summary> Get or set the flyout style. </summary>
@@ -204,7 +221,7 @@ namespace HSVColorPickers
             get { return (Style)GetValue(FlyoutPresenterStyleProperty); }
             set { SetValue(FlyoutPresenterStyleProperty, value); }
         }
-        /// <summary> Identifies the <see cref = "NumberPicker.FlyoutPresenterStyle" /> dependency property. </summary>
+        /// <summary> Identifies the <see cref = "ColorPicker.FlyoutPresenterStyle" /> dependency property. </summary>
         public static readonly DependencyProperty FlyoutPresenterStyleProperty = DependencyProperty.Register(nameof(FlyoutPresenterStyle), typeof(Style), typeof(ColorPicker), new PropertyMetadata(null));
 
 
@@ -214,7 +231,7 @@ namespace HSVColorPickers
             get { return (FlyoutPlacementMode)GetValue(PlacementProperty); }
             set { SetValue(PlacementProperty, value); }
         }
-        /// <summary> Identifies the <see cref = "NumberPicker.Placement" /> dependency property. </summary>
+        /// <summary> Identifies the <see cref = "ColorPicker.Placement" /> dependency property. </summary>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(ColorPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
 
 
@@ -224,7 +241,6 @@ namespace HSVColorPickers
             get { return (SolidColorBrush)GetValue(StrokeProperty); }
             set { SetValue(StrokeProperty, value); }
         }
-
         /// <summary> Identifies the <see cref = "ColorPicker.Stroke" /> dependency property. </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(ColorPicker), new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.Gray)));
 
@@ -232,30 +248,6 @@ namespace HSVColorPickers
         #endregion
 
 
-        /// <summary> Get or set up display <see cref="HSVColorPickers.HexPicker"/> or <see cref="HSVColorPickers.StrawPicker"/>. </summary>
-        public bool HexOrStraw
-        {
-            get => hexOrStraw;
-            set
-            {
-                if (value)
-                {
-                    this.HexPicker.Visibility = Visibility.Visible;
-                    this.StrawPicker.Visibility = Visibility.Collapsed;
-
-                    this.HexPicker.Color = this.Color;
-                }
-                else
-                {
-                    this.HexPicker.Visibility = Visibility.Collapsed;
-                    this.StrawPicker.Visibility = Visibility.Visible;
-                }
-                hexOrStraw = value;
-            }
-        }
-        private bool hexOrStraw;
-
-        bool _isLoad;
         //@Construct
         /// <summary>
         /// Construct a ColorPicker.
@@ -263,100 +255,91 @@ namespace HSVColorPickers
         public ColorPicker()
         {
             this.InitializeComponent();
-            this.Loaded += (s, e) => 
-            {
-                this._isLoad = true;
-                this.SetVisibilityWithCurrentPicker(this.Index);
-            };
 
             //Picker
-            this.ComboBox.ItemsSource = from picker in this._pickers() select picker.Type;
+            IList<IColorPicker> colorPickers = this.ColorPickers().ToList();
+         this.Loaded += (s, e) => this.ConstructColorPickers(colorPickers);
+            this.ComboBox.ItemsSource = from colorPicker in colorPickers select colorPicker.Type;
 
             //Alpha
             this.Alpha = 255;
             this.AlphaPicker.AlphaChanged += (s, value) => this._Alpha = value;
+            this.AlphaPicker.AlphaChangeStarted += (s, value) => this._Alpha = value;
+            this.AlphaPicker.AlphaChangeDelta += (s, value) => this._Alpha = value;
+            this.AlphaPicker.AlphaChangeCompleted += (s, value) => this._Alpha = value;
 
-            //HexOrStraw
-            this.HexOrStraw = false;
-            this.HexOrStrawButton.Click += (s, e) => this.HexOrStraw = !this.HexOrStraw;
             //Hex
-            this.HexPicker.Color = this.Color;
-            this.HexPicker.ColorChanged += (s, color) =>
+            this._HexPicker.Color = this.Color;
+            this._HexPicker.ColorChanged += (s, color) =>
             {
                 this._Color = color;
-                this.SetColorWithCurrentPicker(color);
+                this.ChangeColor?.Invoke(this, color);
             };
             //Straw
-            this.StrawPicker.Color = this.Color;
-            this.StrawPicker.ColorChanged += (s, color) =>
+            this._StrawPicker.Color = this.Color;
+            this._StrawPicker.ColorChanged += (s, color) =>
             {
                 this._Color = color;
-                this.SetColorWithCurrentPicker(color);
+                this.ChangeColor?.Invoke(this, color);
             };
+        }
 
-            
+    }
+
+    /// <summary>
+    /// Color picker (ง •̀_•́)ง
+    /// </summary>
+    public sealed partial class ColorPicker : UserControl
+    {
+        //IColorPicker
+        private void ConstructColorPickers(IList<IColorPicker> colorPickers)
+        {
+            int index = 0;
+
             //Pickers
-            foreach (IColorPicker picker in this._pickers())
+            foreach (IColorPicker colorPicker in colorPickers)
             {
-                picker.ColorChanged += (s, value) =>
-                {
-                    this._Color = value;
-
-                    if (this.HexOrStraw) this.HexPicker.Color = value;
-                    else this.StrawPicker.Color = value;
-                };
-                picker.ColorChangeStarted += (s, value) =>
-                {
-                    this._ColorStarted = value;
-
-                    if (this.HexOrStraw) this.HexPicker.Color = value;
-                    else this.StrawPicker.Color = value;
-                };
-                picker.ColorChangeDelta += (s, value) =>
-                {
-                    this._ColorDelta = value;
-
-                    if (this.HexOrStraw) this.HexPicker.Color = value;
-                    else this.StrawPicker.Color = value;
-                };
-                picker.ColorChangeCompleted += (s, value) =>
-                {
-                    this._ColorCompleted = value;
-
-                    if (this.HexOrStraw) this.HexPicker.Color = value;
-                    else this.StrawPicker.Color = value;
-                };
+                this.ConstructGroup(colorPicker, index);
+                index++;
             }
         }
 
-
-
-        private void SetColorWithCurrentPicker(Color color)
+        //Group
+        private void ConstructGroup(IColorPicker colorPicker, int index)
         {
-            foreach (IColorPicker picker in this._pickers())
+            void group(int groupIndex)
             {
-                if (picker.Self.Visibility == Visibility.Visible)
+                if (groupIndex == index)
                 {
-                    picker.Color = color;
-                }
-            }
-        }
+                    colorPicker.Self.Visibility = Visibility.Visible;
 
-        private void SetVisibilityWithCurrentPicker(int index)
-        {
-            foreach (IColorPicker picker in this._pickers())
-            {
-                bool isSelf = index == picker.Self.TabIndex;
-                if (isSelf)
-                {
-                    picker.Self.Visibility = Visibility.Visible;
-                    picker.Color = this.SolidColorBrushName.Color;
+                    colorPicker.Color = this.Color;
                 }
                 else
                 {
-                    picker.Self.Visibility = Visibility.Collapsed;
+                    colorPicker.Self.Visibility = Visibility.Collapsed;
                 }
             }
+
+            //NoneButton
+            group(this.Index);
+
+            //Buttons
+            colorPicker.ColorChanged += (s, value) => this._Color = value;
+            colorPicker.ColorChangeStarted += (s, value) => this._ColorStarted = value;
+            colorPicker.ColorChangeDelta += (s, value) => this._ColorDelta = value;
+            colorPicker.ColorChangeCompleted += (s, value) => this._ColorCompleted = value;
+
+            //Change
+            this.Group += (s, e) => group(e);
+            this.ChangeColor += (s, color) =>
+            {
+                if (this.Index == index)
+                {
+                    colorPicker.Color = color;
+                }
+            };
         }
+
     }
 }

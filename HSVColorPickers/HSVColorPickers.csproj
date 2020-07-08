@@ -123,9 +123,7 @@
       <DependentUpon>ColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Hex.cs" />
-    <Compile Include="HexPicker.xaml.cs">
-      <DependentUpon>HexPicker.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="HexPicker.cs" />
     <Compile Include="HSV.cs" />
     <Compile Include="Handlers\HSVChangeHandler.cs" />
     <Compile Include="HSVPicker.xaml.cs">
@@ -187,10 +185,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ColorPicker.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="HexPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

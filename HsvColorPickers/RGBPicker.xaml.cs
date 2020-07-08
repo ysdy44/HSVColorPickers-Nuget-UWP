@@ -26,7 +26,7 @@ namespace HSVColorPickers
         /// <summary> Gets picker's type name. </summary>
         public string Type => "RGB";
         /// <summary> Gets picker self. </summary>
-        public UserControl Self => this;
+        public Control Self => this;
 
 
         #region Color
@@ -92,14 +92,24 @@ namespace HSVColorPickers
         #region DependencyProperty
 
 
+        /// <summary> Get or set the text style. </summary>
+        public Style TextStyle
+        {
+            get { return (Style)GetValue(TextStyleProperty); }
+            set { SetValue(TextStyleProperty, value); }
+        }
+        /// <summary> Identifies the <see cref = "RGBPicker.ButtonStyle" /> dependency property. </summary>
+        public static readonly DependencyProperty TextStyleProperty = DependencyProperty.Register(nameof(TextStyle), typeof(Style), typeof(RGBPicker), new PropertyMetadata(null));
+
+
         /// <summary> Get or set the button style. </summary>
         public Style ButtonStyle
         {
             get { return (Style)GetValue(ButtonStyleProperty); }
             set { SetValue(ButtonStyleProperty, value); }
         }
-        /// <summary> Identifies the <see cref = "WheelPicker.ButtonStyle" /> dependency property. </summary>
-        public static readonly DependencyProperty ButtonStyleProperty = DependencyProperty.Register(nameof(ButtonStyle), typeof(Style), typeof(WheelPicker), new PropertyMetadata(null));
+        /// <summary> Identifies the <see cref = "RGBPicker.ButtonStyle" /> dependency property. </summary>
+        public static readonly DependencyProperty ButtonStyleProperty = DependencyProperty.Register(nameof(ButtonStyle), typeof(Style), typeof(RGBPicker), new PropertyMetadata(null));
 
 
         /// <summary> Get or set the flyout style. </summary>
@@ -108,8 +118,8 @@ namespace HSVColorPickers
             get { return (Style)GetValue(FlyoutPresenterStyleProperty); }
             set { SetValue(FlyoutPresenterStyleProperty, value); }
         }
-        /// <summary> Identifies the <see cref = "WheelPicker.FlyoutPresenterStyle" /> dependency property. </summary>
-        public static readonly DependencyProperty FlyoutPresenterStyleProperty = DependencyProperty.Register(nameof(FlyoutPresenterStyle), typeof(Style), typeof(WheelPicker), new PropertyMetadata(null));
+        /// <summary> Identifies the <see cref = "RGBPicker.FlyoutPresenterStyle" /> dependency property. </summary>
+        public static readonly DependencyProperty FlyoutPresenterStyleProperty = DependencyProperty.Register(nameof(FlyoutPresenterStyle), typeof(Style), typeof(RGBPicker), new PropertyMetadata(null));
 
 
         /// <summary> Get or set the flyout placement. </summary>
@@ -118,7 +128,7 @@ namespace HSVColorPickers
             get { return (FlyoutPlacementMode)GetValue(PlacementProperty); }
             set { SetValue(PlacementProperty, value); }
         }
-        /// <summary> Identifies the <see cref = "WheelPicker.Placement" /> dependency property. </summary>
+        /// <summary> Identifies the <see cref = "RGBPicker.Placement" /> dependency property. </summary>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(RGBPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
 
 
@@ -129,8 +139,8 @@ namespace HSVColorPickers
             set { SetValue(StrokeProperty, value); }
         }
 
-        /// <summary> Identifies the <see cref = "WheelPicker.Stroke" /> dependency property. </summary>
-        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(WheelPicker), new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.Gray)));
+        /// <summary> Identifies the <see cref = "RGBPicker.Stroke" /> dependency property. </summary>
+        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(RGBPicker), new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.Gray)));
 
 
         #endregion
@@ -144,23 +154,44 @@ namespace HSVColorPickers
         {
             this.InitializeComponent();
 
-            //Slider
+
+            //R
+            this.RPicker.Unit = null;
+            this.RPicker.Minimum = 0;
+            this.RPicker.Maximum = 255;
+            this.RPicker.ValueChanged += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotR, true);
+
+            this.RSlider.Minimum = 0.0d;
+            this.RSlider.Maximum = 255.0d;
             this.RSlider.ValueChangeStarted += (sender, value) => this._ColorStarted = this.Change((byte)value, RGBMode.NotR, false);
             this.RSlider.ValueChangeDelta += (sender, value) => this._ColorDelta = this.Change((byte)value, RGBMode.NotR, false);
             this.RSlider.ValueChangeCompleted += (sender, value) => this._ColorCompleted = this.Change((byte)value, RGBMode.NotR, false);
 
+
+            //G
+            this.GPicker.Unit = null;
+            this.GPicker.Minimum = 0;
+            this.GPicker.Maximum = 255;
+            this.GPicker.ValueChanged += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotG, true);
+
+            this.GSlider.Minimum = 0.0d;
+            this.GSlider.Maximum = 255.0d;
             this.GSlider.ValueChangeStarted += (sender, value) => this._ColorStarted = this.Change((byte)value, RGBMode.NotG, false);
             this.GSlider.ValueChangeDelta += (sender, value) => this._ColorDelta = this.Change((byte)value, RGBMode.NotG, false);
             this.GSlider.ValueChangeCompleted += (sender, value) => this._ColorCompleted = this.Change((byte)value, RGBMode.NotG, false);
 
+
+            //B
+            this.BPicker.Unit = null;
+            this.BPicker.Minimum = 0;
+            this.BPicker.Maximum = 255;
+            this.BPicker.ValueChanged += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotB, true);
+
+            this.BSlider.Minimum = 0.0d;
+            this.BSlider.Maximum = 255.0d;
             this.BSlider.ValueChangeStarted += (sender, value) => this._ColorStarted = this.Change((byte)value, RGBMode.NotB, false);
             this.BSlider.ValueChangeDelta += (sender, value) => this._ColorDelta = this.Change((byte)value, RGBMode.NotB, false);
             this.BSlider.ValueChangeCompleted += (sender, value) => this._ColorCompleted = this.Change((byte)value, RGBMode.NotB, false);
-
-            //Picker
-            this.RPicker.ValueChanged += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotR, true);
-            this.GPicker.ValueChanged += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotG, true);
-            this.BPicker.ValueChanged += (sender, value) => this._Color = this.Change((byte)value, RGBMode.NotB, true);
         }
 
         #region Change

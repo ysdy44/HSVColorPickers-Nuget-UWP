@@ -31,7 +31,7 @@ namespace HSVColorPickers
         /// <summary> Gets picker's type name. </summary>
         public string Type => "Alpha";
         /// <summary> Gets picker self. </summary>
-        public UserControl Self => this;
+        public Control Self => this;
 
         
         #region Color

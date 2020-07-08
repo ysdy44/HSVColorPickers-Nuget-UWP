@@ -53,7 +53,7 @@ namespace HSVColorPickers
         /// <summary> Gets picker's type name. </summary>
         public string Type { get; set; } = "Palette";
         /// <summary> Gets picker self. </summary>
-        public UserControl Self => this;
+        public Control Self => this;
 
 
 

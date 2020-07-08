@@ -57,7 +57,7 @@ namespace HSVColorPickers
             set { SetValue(MinimumProperty, value); }
         }
         /// <summary> Identifies the <see cref = "TouchSliderBase.Minimum" /> dependency property. </summary>
-        public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(nameof(Minimum), typeof(double), typeof(NumberPicker), new PropertyMetadata(0.0));
+        public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(nameof(Minimum), typeof(double), typeof(NumberPicker), new PropertyMetadata(0.0d));
 
 
         /// <summary> Get or set the maximum desirable Value for range elements. </summary>
@@ -67,7 +67,7 @@ namespace HSVColorPickers
             set { SetValue(MaximumProperty, value); }
         }
         /// <summary> Identifies the <see cref = "TouchSliderBase.Minimum" /> dependency property. </summary>
-        public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(nameof(Maximum), typeof(double), typeof(NumberPicker), new PropertyMetadata(100.0));
+        public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(nameof(Maximum), typeof(double), typeof(NumberPicker), new PropertyMetadata(100.0d));
 
 
         #endregion
@@ -107,35 +107,40 @@ namespace HSVColorPickers
         //@Converter
         private double ValueToProportionConverter(double value)
         {
+            if (value <= this.Minimum) return 0.0d;
+            if (value >= this.Maximum) return 1.0d;
+
             double proportion = (value - this.Minimum) / (this.Maximum - this.Minimum);
-            if (proportion < 0.0d) return 0.0d;
-            if (proportion > 1.0d) return 1.0d;
             return proportion;
         }
         private double OffsetToProportionConverter(double offset)
         {
-            double proportion = offset / (this.RootGrid.ActualWidth - this.CenterGridLength.ActualWidth / 2.0d);
-            if (proportion < 0.0d) return 0.0d;
-            if (proportion > 1.0d) return 1.0d;
+            if (offset <= 0.0d) return 0.0d;
+
+            double right = this.RootGrid.ActualWidth - this.CenterGridLength.ActualWidth / 2.0d;
+            if (offset >= right) return 1.0d;
+
+            double proportion = offset / right;
             return proportion;
         }
         private double ProportionToValueConverter(double proportion)
         {
+            if (proportion <= 0.0d) return this.Minimum;
+            if (proportion >= 1.0d) return this.Maximum;
+
             double value = proportion * (this.Maximum - this.Minimum) + this.Minimum;
-            if (value < this.Minimum) return this.Minimum;
-            if (value > this.Maximum) return this.Maximum;
             return value;
         }
 
 
         private void SetGridLength(double proportion)
         {
-            if (proportion <= 0)
+            if (proportion <= 0.0d)
             {
                 this.LeftGridLength.Width = new GridLength(0);
                 this.RightGridLength.Width = new GridLength(1, GridUnitType.Star);
             }
-            else if (proportion >= 1)
+            else if (proportion >= 1.0d)
             {
                 this.LeftGridLength.Width = new GridLength(1, GridUnitType.Star);
                 this.RightGridLength.Width = new GridLength(0);

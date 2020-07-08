@@ -1,5 +1,6 @@
 ﻿using System;
 using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace HSVColorPickers
@@ -7,7 +8,7 @@ namespace HSVColorPickers
     /// <summary>
     /// Hex code picker.
     /// </summary>
-    public sealed partial class HexPicker : UserControl
+    public sealed partial class HexPicker : TextBox
     {
         //@Delegate
         /// <summary> Occurs when the color value changed. </summary>
@@ -17,7 +18,7 @@ namespace HSVColorPickers
         /// <summary> Gets picker's type name. </summary>
         public string Type => "Hex";
         /// <summary> Gets picker self. </summary>
-        public UserControl Self => this;
+        public Control Self => this;
 
 
         /// <summary> Gets or sets picker's color. </summary>
@@ -26,7 +27,7 @@ namespace HSVColorPickers
             get => this.color;
             set
             {
-                this.TextBox.Text = Hex.ColorToString(value).ToUpper();
+                this.Text = Hex.ColorToString(value).ToUpper();
                 this.color = value;
             }
         }
@@ -50,17 +51,21 @@ namespace HSVColorPickers
 
         #endregion
 
-
+        string _text;
         //@Construct
         /// <summary>
         /// Construct a HexPicker.
         /// </summary>
         public HexPicker()
         {
-            this.InitializeComponent();
+            this.GotFocus += (s, e) => this._text = this.Text.ToUpper();
+            this.LostFocus += (s, e) =>
+            {
+                string text = this.Text.ToUpper();
+                if (this._text == text) return;
 
-            this.TextBox.GotFocus += (s, e) => { };
-            this.TextBox.LostFocus += (s, e) => this.Color = this._Color = this.TextHex(this.TextBox.Text);
+                this.Color = this._Color = this.TextHex(text);
+            };
         }
 
         private Color TextHex(string text)

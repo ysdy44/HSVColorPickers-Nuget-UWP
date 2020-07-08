@@ -9,6 +9,7 @@
     >
 
     <Button x:Name="Button" Style="{x:Bind ButtonStyle}">
+
         <Button.Flyout>
             <Flyout x:Name="Flyout" Placement="{x:Bind Placement}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle}">
                 <Grid Width="180" Height="180">
@@ -53,7 +54,12 @@
                 </Grid>
             </Flyout>
         </Button.Flyout>
-        
+
+        <TextBlock>
+            <Run Text="{x:Bind Value, Mode=OneWay}"/>
+            <Run Text="{x:Bind Unit, Mode=OneWay}"/>
+        </TextBlock>
+
     </Button>
 
 </UserControl>

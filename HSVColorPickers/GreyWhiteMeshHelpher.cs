@@ -4,13 +4,62 @@ using Microsoft.Graphics.Canvas.Effects;
 using System.Numerics;
 using Windows.Graphics.Effects;
 using Windows.UI;
+using Windows.UI.Xaml.Media;
 
 namespace HSVColorPickers
 {
+
     /// <summary>
     /// Provides static methods for gray-white spacing of the mesh.
     /// </summary>
-    public static class GreyWhiteMeshHelpher
+    public static partial class GreyWhiteMeshHelpher
+    {
+
+        /// <summary>
+        /// Turn into GradientStopCollection.
+        /// </summary>
+        /// <param name="stops"> The source stops. </param>
+        /// <returns> The product GradientStopCollection. </returns>
+        public static GradientStopCollection ToStops(this CanvasGradientStop[] stops)
+        {
+            GradientStopCollection gradientStops = new GradientStopCollection();
+
+            foreach (CanvasGradientStop stop in stops)
+            {
+                GradientStop gradientStop = new GradientStop
+                {
+                    Color = stop.Color,
+                    Offset = stop.Position,
+                };
+                gradientStops.Add(gradientStop);
+            }
+
+            return gradientStops;
+        }
+
+        /// <summary>
+        /// Create a copy of CanvasGradientStop array.
+        /// </summary>
+        /// <param name="stops"> The data. </param>
+        /// <returns> The copy. </returns>
+        public static CanvasGradientStop[] CloneArray(this CanvasGradientStop[] stops)
+        {
+            CanvasGradientStop[] clone = new CanvasGradientStop[stops.Length];
+
+            for (int i = 0; i < stops.Length; i++)
+            {
+                clone[i] = stops[i];
+            }
+
+            return clone;
+        }
+
+    }
+
+    /// <summary>
+    /// Provides static methods for gray-white spacing of the mesh.
+    /// </summary>
+    public static partial class GreyWhiteMeshHelpher
     {
         /// <summary>
         /// Get a 2x2 grey-white Mesh.
@@ -51,6 +100,16 @@ namespace HSVColorPickers
         {
             new CanvasGradientStop{Color= Colors.White, Position=0.0f },
             new CanvasGradientStop{Color= Colors.Gray, Position=1.0f }
+        };
+        /// <summary>
+        /// Gets a CanvasGradientStop array with White and Gray. 
+        /// </summary>
+        /// <param name="color"> The last color. </param>
+        /// <returns> The provided stops. </returns>
+        public static CanvasGradientStop[] GetGradientStopArray(Color color) => new CanvasGradientStop[]
+        {
+             new CanvasGradientStop{ Color= Colors.White, Position=0.0f },
+             new CanvasGradientStop{ Color= color, Position=1.0f }
         };
 
         /// <summary>

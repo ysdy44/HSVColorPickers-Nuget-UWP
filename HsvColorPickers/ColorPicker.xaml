@@ -14,11 +14,6 @@
     d:DesignHeight="270"
     d:DesignWidth="200">
 
-
-    <UserControl.Resources>
-        <SolidColorBrush x:Name="SolidColorBrushName" x:Key="SolidColorBrushKey" Color="White"/>
-    </UserControl.Resources>
-    
     
     <StackPanel 
         Background="{x:Bind UserControl.Background,Mode=OneWay}"
@@ -28,21 +23,16 @@
         <!--Head-->
         <Grid Height="40">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40"/>
-                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Grid >
-                <Ellipse Width="22" Height="22" Fill="{StaticResource SolidColorBrushKey}"/>
-                <Ellipse StrokeThickness="4" Width="25" Height="25" Stroke="Gray"/>
-                <Ellipse StrokeThickness="2" Width="23" Height="23" Stroke="White"/>
-            </Grid>
-            <Button x:Name="HexOrStrawButton" Grid.Column="1" Width="Auto" Content="&#xECE7;" FontSize="18" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Stretch" Style="{ThemeResource NavigationBackButtonNormalStyle}"/>
-
-            <local:HexPicker x:Name="HexPicker" Grid.Column="2" Height="28"/>
-            <local:StrawPicker x:Name="StrawPicker" Grid.Column="2" HorizontalAlignment="Right" Background="Transparent"/>
-
-            <TextBlock x:Name="AAAA" Grid.ColumnSpan="3"/>
+            <TextBlock VerticalAlignment="Center">
+                #
+            </TextBlock>
+            <local:HexPicker x:Name="_HexPicker" Grid.Column="1" Height="24" BorderThickness="0" />
+            <local:StrawPicker x:Name="_StrawPicker" Grid.Column="3" Width="74" />
         </Grid>
 
         <!--ComboBox-->
@@ -73,8 +63,8 @@
 
             <local:SwatchesPicker x:Name="SwatchesPicker" TabIndex="0"/>
             <local:WheelPicker x:Name="WheelPicker" TabIndex="1" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
-            <local:RGBPicker x:Name="RGBPicker" TabIndex="2" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
-            <local:HSVPicker x:Name="HSVPicker" TabIndex="3" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
+            <local:RGBPicker x:Name="RGBPicker" TabIndex="2" TextStyle="{x:Bind TextStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle,Mode=OneWay}" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
+            <local:HSVPicker x:Name="HSVPicker" TabIndex="3" TextStyle="{x:Bind TextStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle,Mode=OneWay}" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
 
             <local:PaletteHuePicker x:Name="PaletteHuePicker" TabIndex="4" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
             <local:PaletteSaturationPicker x:Name="PaletteSaturationPicker" TabIndex="5" Stroke="{x:Bind Stroke, Mode=OneWay}"/>

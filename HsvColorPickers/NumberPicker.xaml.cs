@@ -21,24 +21,31 @@ namespace HSVColorPickers
         /// <summary> Get or set the current value for a number picker. </summary>
         public int Value
         {
-            get { return (int)GetValue(ValueProperty); }
+            get
+            {
+                int value = (int)GetValue(ValueProperty);
+
+                if (this.IsFlyoutOpened == false)
+                {
+                    if (value < this.Minimum) return this.Minimum;
+                    if (value > this.Maximum) return this.Maximum;
+                }
+
+                return value;
+            }
             set
             {
-                if (value > this.Maximum) value = this.Maximum;
-                if (value < this.Minimum) value = this.Minimum;
+                if (this.IsFlyoutOpened == false)
+                {
+                    if (value < this.Minimum) value = this.Minimum;
+                    if (value > this.Maximum) value = this.Maximum;
+                }
+
                 SetValue(ValueProperty, value);
             }
         }
         /// <summary> Identifies the <see cref = "NumberPicker.Value" /> dependency property. </summary>
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(int), typeof(NumberPicker), new PropertyMetadata(0, new PropertyChangedCallback((sender, e) =>
-        {
-            NumberPicker con = (NumberPicker)sender;
-
-            if (e.NewValue is int value)
-            {
-                con.Button.Content = con.GetContent(value);
-            }
-        })));
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(int), typeof(NumberPicker), new PropertyMetadata(0));
 
 
         /// <summary> Get or set the minimum desirable Value for range elements. </summary>
@@ -68,15 +75,7 @@ namespace HSVColorPickers
             set { SetValue(UnitProperty, value); }
         }
         /// <summary> Identifies the <see cref = "NumberPicker.Unit" /> dependency property. </summary>
-        public static readonly DependencyProperty UnitProperty = DependencyProperty.Register(nameof(Unit), typeof(string), typeof(NumberPicker), new PropertyMetadata(string.Empty, new PropertyChangedCallback((sender, e) =>
-        {
-            NumberPicker con = (NumberPicker)sender;
-
-            if (e.NewValue is string value)
-            {
-                con.GetContent(value);
-            }
-        })));
+        public static readonly DependencyProperty UnitProperty = DependencyProperty.Register(nameof(Unit), typeof(string), typeof(NumberPicker), new PropertyMetadata(null));
 
 
         /// <summary> Get or set the button style. </summary>
@@ -108,12 +107,12 @@ namespace HSVColorPickers
         /// <summary> Identifies the <see cref = "NumberPicker.Placement" /> dependency property. </summary>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(NumberPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
 
-            
+
         #endregion
 
 
-        /// <summary> The Flyout is Flyouted? </summary>
-        bool IsFlyoutClosed;
+        /// <summary> The Flyout is opened? </summary>
+        bool IsFlyoutOpened;
         /// <summary> Is this button the first one to be clicked? </summary>
         bool IsFirstClickedButton;
         /// <summary> Indicates the positive and negative of <see cref = "CacheValue" />. </summary>
@@ -129,7 +128,6 @@ namespace HSVColorPickers
         public NumberPicker()
         {
             this.InitializeComponent();
-            this.Loaded += (s, e) => this.Button.Content = this.Value.ToString() + " " + this.Unit;
             this.Button.Click += (s, e) =>
             {
                 //FirstClicked: Reset the boolean
@@ -140,15 +138,15 @@ namespace HSVColorPickers
             };
 
             //Flyout
-            this.Flyout.Opened += (s, e) => this.IsFlyoutClosed = true;
+            this.Flyout.Opened += (s, e) => this.IsFlyoutOpened = true;
             this.Flyout.Closed += (s, e) =>
             {
-                if (this.IsFlyoutClosed)
+                if (this.IsFlyoutOpened)
                 {
                     // The Value will be reset, when the user clicks on the blank and then Flyout closed.
                     this.SetCacheValue(this.Value);
 
-                    this.IsFlyoutClosed = false;
+                    this.IsFlyoutOpened = false;
                 }
             };
 
@@ -187,7 +185,7 @@ namespace HSVColorPickers
             this.Cancel.Click += (s, e) => this.Flyout.Hide();
             this.OK.Click += (s, e) =>
             {
-                this.IsFlyoutClosed = false;
+                this.IsFlyoutOpened = false;
                 this.Flyout.Hide();
 
                 //FirstClicked
@@ -202,14 +200,14 @@ namespace HSVColorPickers
             };
         }
 
-        private string GetContent(int value) => value.ToString() + " " + this.Unit;
-        private string GetContent(bool isNegative, int value) => (isNegative ? "-" : "") + Math.Abs(value).ToString() + " " + this.Unit;
-        private string GetContent(string unit) => (this.IsNegative ? "-" : "") + this.Value.ToString() + " " + unit;
-
         private void SetCacheValue(int cacheValue)
         {
             this.CacheValue = cacheValue;
-            this.Button.Content = this.GetContent(this.IsNegative, this.CacheValue);
+
+            if (this.IsNegative)
+                this.Value = -Math.Abs(cacheValue);
+            else
+                this.Value = Math.Abs(cacheValue);
 
             //FirstClicked
             this.IsFirstClickedButton = false;
