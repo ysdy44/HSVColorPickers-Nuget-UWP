@@ -64,20 +64,20 @@ namespace HSVColorPickers.TestApp
                 {
                     this._Color = value;
                 };
-                picker.ColorChangeStarted += (s, value) =>
+                picker.ColorChangedStarted += (s, value) =>
                 {
                     this._Color = value;
-                    this.TextBlock.Text = "ColorChangeStarted";
+                    this.TextBlock.Text = "ColorChangedStarted";
                 };
-                picker.ColorChangeDelta += (s, value) =>
+                picker.ColorChangedDelta += (s, value) =>
                 {
                     this._Color = value;
-                    this.TextBlock.Text = "ColorChangeDelta";
+                    this.TextBlock.Text = "ColorChangedDelta";
                 };
-                picker.ColorChangeCompleted += (s, value) =>
+                picker.ColorChangedCompleted += (s, value) =>
                 {
                     this._Color = value;
-                    this.TextBlock.Text = "ColorChangeCompleted";
+                    this.TextBlock.Text = "ColorChangedCompleted";
                 };
             }
         }

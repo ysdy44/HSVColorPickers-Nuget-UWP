@@ -113,12 +113,12 @@ namespace HSVColorPickers
         //@Delegate
         /// <summary> Occurs when the color value changed. </summary>
         public event ColorChangeHandler ColorChanged;
-        /// <summary> Occurs when the color change starts. </summary>
-        public event ColorChangeHandler ColorChangeStarted;
-        /// <summary> Occurs when color change. </summary>
-        public event ColorChangeHandler ColorChangeDelta;
-        /// <summary> Occurs when the color change is complete. </summary>
-        public event ColorChangeHandler ColorChangeCompleted;
+        /// <summary> Occurs when the color changed starts. </summary>
+        public event ColorChangeHandler ColorChangedStarted;
+        /// <summary> Occurs when color changed. </summary>
+        public event ColorChangeHandler ColorChangedDelta;
+        /// <summary> Occurs when the color changed is complete. </summary>
+        public event ColorChangeHandler ColorChangedCompleted;
 
 
         /// <summary> Gets picker's type name. </summary>
@@ -252,7 +252,7 @@ namespace HSVColorPickers
             for (int i = 0; i < this.Count; i++)
             {
                 this.Brushs[i].Color = colors[i];
-            } 
+            }
         }
 
         //Items
@@ -265,7 +265,7 @@ namespace HSVColorPickers
         {
             Rectangle rectangle = new Rectangle
             {
-                Fill= brush,
+                Fill = brush,
                 Width = 44,
                 Height = 44,
                 HorizontalAlignment = HorizontalAlignment.Stretch,

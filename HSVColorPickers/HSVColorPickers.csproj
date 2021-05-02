@@ -141,14 +141,10 @@
       <DependentUpon>NumberPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Palette.cs" />
-    <Compile Include="PaletteBases\PaletteBase.cs" />
-    <Compile Include="PaletteBases\PaletteHue.cs" />
     <Compile Include="PalettePickers\PaletteHuePicker.cs" />
     <Compile Include="PalettePickers\PalettePicker.xaml.cs">
       <DependentUpon>PalettePicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PaletteBases\PaletteSaturation.cs" />
-    <Compile Include="PaletteBases\PaletteValue.cs" />
     <Compile Include="PalettePickers\PaletteSaturationPicker.cs" />
     <Compile Include="PalettePickers\PaletteValuePicker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

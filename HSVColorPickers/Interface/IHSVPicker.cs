@@ -19,11 +19,11 @@ namespace HSVColorPickers
 
         /// <summary> Occurs when the hsv value changed. </summary>
         event HSVChangeHandler HSVChanged;
-        /// <summary> Occurs when the hsv change starts. </summary>
+        /// <summary> Occurs when the hsv changed starts. </summary>
         event HSVChangeHandler HSVChangeStarted;
-        /// <summary> Occurs when hsv change. </summary>
+        /// <summary> Occurs when hsv changed. </summary>
         event HSVChangeHandler HSVChangeDelta;
-        /// <summary> Occurs when the hsv change is complete. </summary>
+        /// <summary> Occurs when the hsv changed is complete. </summary>
         event HSVChangeHandler HSVChangeCompleted;
     }
 }

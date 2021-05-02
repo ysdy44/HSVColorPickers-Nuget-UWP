@@ -14,19 +14,19 @@ namespace HSVColorPickers
         //@Delegate
         /// <summary> Occurs when the color value changed. </summary>
         public event ColorChangeHandler ColorChanged;
-        /// <summary> Occurs when the color change starts. </summary>
-        public event ColorChangeHandler ColorChangeStarted;
-        /// <summary> Occurs when color change. </summary>
-        public event ColorChangeHandler ColorChangeDelta;
-        /// <summary> Occurs when the color change is complete. </summary>
-        public event ColorChangeHandler ColorChangeCompleted;
+        /// <summary> Occurs when the color changed starts. </summary>
+        public event ColorChangeHandler ColorChangedStarted;
+        /// <summary> Occurs when color changed. </summary>
+        public event ColorChangeHandler ColorChangedDelta;
+        /// <summary> Occurs when the color changed is complete. </summary>
+        public event ColorChangeHandler ColorChangedCompleted;
         /// <summary> Occurs when the hsv value changed. </summary>
         public event HSVChangeHandler HSVChanged;
-        /// <summary> Occurs when the hsv change starts. </summary>
+        /// <summary> Occurs when the hsv changed starts. </summary>
         public event HSVChangeHandler HSVChangeStarted;
-        /// <summary> Occurs when hsv change. </summary>
+        /// <summary> Occurs when hsv changed. </summary>
         public event HSVChangeHandler HSVChangeDelta;
-        /// <summary> Occurs when the hsv change is complete. </summary>
+        /// <summary> Occurs when the hsv changed is complete. </summary>
         public event HSVChangeHandler HSVChangeCompleted;
 
 
@@ -51,52 +51,40 @@ namespace HSVColorPickers
             get => this.hsv;
             set
             {
-                this.Change(value);
-                this.hsv = value;            
+                this.Changed(value);
+                this.hsv = value;
             }
         }
         private HSV hsv = new HSV(255, 0, 100, 100);
-               
 
-        private HSV _HSV
+
+        private void OnHSVChanged(HSV value)
         {
-            set
-            {
-                this.ColorChanged?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
-                this.HSVChanged?.Invoke(this, value);//Delegate
+            this.ColorChanged?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
+            this.HSVChanged?.Invoke(this, value);//Delegate
 
-                this.hsv = value;
-            }
+            this.hsv = value;
         }
-        private HSV _HSVStarted
+        private void OnHSVChangeStarted(HSV value)
         {
-            set
-            {
-                this.ColorChangeStarted?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
-                this.HSVChangeStarted?.Invoke(this, value);//Delegate
+            this.ColorChangedStarted?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
+            this.HSVChangeStarted?.Invoke(this, value);//Delegate
 
-                this.hsv = value;
-            }
+            this.hsv = value;
         }
-        private HSV _HSVDelta
+        private void OnHSVChangeDelta(HSV value)
         {
-            set
-            {
-                this.ColorChangeDelta?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
-                this.HSVChangeDelta?.Invoke(this, value);//Delegate
+            this.ColorChangedDelta?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
+            this.HSVChangeDelta?.Invoke(this, value);//Delegate
 
-                this.hsv = value;
-            }
+            this.hsv = value;
         }
-        private HSV _HSVCompleted
+        private void OnHSVChangeCompleted(HSV value)
         {
-            set
-            {
-                this.ColorChangeCompleted?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
-                this.HSVChangeCompleted?.Invoke(this, value);//Delegate
+            this.ColorChangedCompleted?.Invoke(this, HSV.HSVtoRGB(value.A, value.H, value.S, value.V));//Delegate
+            this.HSVChangeCompleted?.Invoke(this, value);//Delegate
 
-                this.hsv = value;
-            }
+            this.hsv = value;
         }
 
 
@@ -143,8 +131,8 @@ namespace HSVColorPickers
         }
         /// <summary> Identifies the <see cref = "HSVPicker.Placement" /> dependency property. </summary>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(HSVPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
-     
-        
+
+
         /// <summary>  Gets or sets a brush that describes the border fill of the control. </summary>
         public SolidColorBrush Stroke
         {
@@ -172,45 +160,45 @@ namespace HSVColorPickers
             this.HPicker.Unit = "º";
             this.HPicker.Minimum = 0;
             this.HPicker.Maximum = 360;
-            this.HPicker.ValueChanged += (sender, value) => this._HSV = this.Change(value, HSVMode.NotH, true);
+            this.HPicker.ValueChanged += (sender, value) => this.OnHSVChanged(this.Changed(value, HSVMode.NotH, true));
 
             this.HSlider.Minimum = 0.0d;
             this.HSlider.Maximum = 360.0d;
-            this.HSlider.ValueChangeStarted += (sender, value) => this._HSVStarted = this.Change((float)value, HSVMode.NotH, false);
-            this.HSlider.ValueChangeDelta += (sender, value) => this._HSVDelta = this.Change((float)value, HSVMode.NotH, false);
-            this.HSlider.ValueChangeCompleted += (sender, value) => this._HSVCompleted = this.Change((float)value, HSVMode.NotH, false);
+            this.HSlider.ValueChangeStarted += (sender, value) => this.OnHSVChangeStarted(this.Changed((float)value, HSVMode.NotH, false));
+            this.HSlider.ValueChangeDelta += (sender, value) => this.OnHSVChangeDelta(this.Changed((float)value, HSVMode.NotH, false));
+            this.HSlider.ValueChangeCompleted += (sender, value) => this.OnHSVChangeCompleted(this.Changed((float)value, HSVMode.NotH, false));
 
 
             //S
             this.SPicker.Unit = "%";
             this.SPicker.Minimum = 0;
             this.SPicker.Maximum = 100;
-            this.SPicker.ValueChanged += (sender, value) => this._HSV = this.Change(value, HSVMode.NotS, true);
+            this.SPicker.ValueChanged += (sender, value) => this.OnHSVChanged(this.Changed(value, HSVMode.NotS, true));
 
             this.SSlider.Minimum = 0.0d;
             this.SSlider.Maximum = 100.0d;
-            this.SSlider.ValueChangeStarted += (sender, value) => this._HSVStarted = this.Change((float)value, HSVMode.NotS, false);
-            this.SSlider.ValueChangeDelta += (sender, value) => this._HSVDelta = this.Change((float)value, HSVMode.NotS, false);
-            this.SSlider.ValueChangeCompleted += (sender, value) => this._HSVCompleted = this.Change((float)value, HSVMode.NotS, false);
+            this.SSlider.ValueChangeStarted += (sender, value) => this.OnHSVChangeStarted(this.Changed((float)value, HSVMode.NotS, false));
+            this.SSlider.ValueChangeDelta += (sender, value) => this.OnHSVChangeDelta(this.Changed((float)value, HSVMode.NotS, false));
+            this.SSlider.ValueChangeCompleted += (sender, value) => this.OnHSVChangeCompleted(this.Changed((float)value, HSVMode.NotS, false));
 
 
             //V
             this.VPicker.Unit = "%";
             this.VPicker.Minimum = 0;
             this.VPicker.Maximum = 100;
-            this.VPicker.ValueChanged += (sender, value) => this._HSV = this.Change(value, HSVMode.NotV, true);
+            this.VPicker.ValueChanged += (sender, value) => this.OnHSVChanged(this.Changed(value, HSVMode.NotV, true));
 
             this.VSlider.Minimum = 0.0d;
             this.VSlider.Maximum = 100.0d;
-            this.VSlider.ValueChangeStarted += (sender, value) => this._HSVStarted = this.Change((float)value, HSVMode.NotV, false);
-            this.VSlider.ValueChangeDelta += (sender, value) => this._HSVDelta = this.Change((float)value, HSVMode.NotV, false);
-            this.VSlider.ValueChangeCompleted += (sender, value) => this._HSVCompleted = this.Change((float)value, HSVMode.NotV, false);
+            this.VSlider.ValueChangeStarted += (sender, value) => this.OnHSVChangeStarted(this.Changed((float)value, HSVMode.NotV, false));
+            this.VSlider.ValueChangeDelta += (sender, value) => this.OnHSVChangeDelta(this.Changed((float)value, HSVMode.NotV, false));
+            this.VSlider.ValueChangeCompleted += (sender, value) => this.OnHSVChangeCompleted(this.Changed((float)value, HSVMode.NotV, false));
         }
 
-        #region Change
+        #region Changed
 
 
-        private HSV Change(float value, HSVMode hsvMode = HSVMode.All, bool? sliderOrPicker = null)
+        private HSV Changed(float value, HSVMode hsvMode = HSVMode.All, bool? sliderOrPicker = null)
         {
             HSV hsv = this.hsv;
 
@@ -221,11 +209,11 @@ namespace HSVColorPickers
                 case HSVMode.NotV: hsv.V = value; break;
             }
 
-            this.Change(hsv, hsvMode, sliderOrPicker);
+            this.Changed(hsv, hsvMode, sliderOrPicker);
             return hsv;
         }
-         
-        private void Change(HSV hsv, HSVMode hsvMode = HSVMode.All, bool? sliderOrPicker = null)
+
+        private void Changed(HSV hsv, HSVMode hsvMode = HSVMode.All, bool? sliderOrPicker = null)
         {
             float H = hsv.H;
             float S = hsv.S;

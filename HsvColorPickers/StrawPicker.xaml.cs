@@ -227,6 +227,16 @@ namespace HSVColorPickers
                 });
             };
 
+            //Pointer
+            this.IconBorder.PointerPressed += (s, e) =>
+            {
+                base.CapturePointer(e.Pointer);
+            };
+            this.IconBorder.PointerReleased += (s, e) =>
+            {
+                base.ReleasePointerCapture(e.Pointer);
+            };
+
             //Manipulation
             this.IconBorder.ManipulationMode = ManipulationModes.All;
             this.IconBorder.PointerPressed += (s, e) => this.Size.Postion = e.GetCurrentPoint(Window.Current.Content).Position.ToVector2();

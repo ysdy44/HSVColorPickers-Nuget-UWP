@@ -1,5 +1,4 @@
 ﻿using Windows.UI;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace HSVColorPickers
@@ -20,11 +19,11 @@ namespace HSVColorPickers
 
         /// <summary> Occurs when the color value changed. </summary>
         event ColorChangeHandler ColorChanged;
-        /// <summary> Occurs when the color change starts. </summary>
-        event ColorChangeHandler ColorChangeStarted;
-        /// <summary> Occurs when color change. </summary>
-        event ColorChangeHandler ColorChangeDelta;
-        /// <summary> Occurs when the color change is complete. </summary>
-        event ColorChangeHandler ColorChangeCompleted;
+        /// <summary> Occurs when the color changed starts. </summary>
+        event ColorChangeHandler ColorChangedStarted;
+        /// <summary> Occurs when color changed. </summary>
+        event ColorChangeHandler ColorChangedDelta;
+        /// <summary> Occurs when the color changed is complete. </summary>
+        event ColorChangeHandler ColorChangedCompleted;
     }
 }

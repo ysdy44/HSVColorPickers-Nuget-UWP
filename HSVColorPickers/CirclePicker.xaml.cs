@@ -114,19 +114,19 @@ namespace HSVColorPickers
         //@Delegate
         /// <summary> Occurs when the color value changed. </summary>
         public event ColorChangeHandler ColorChanged;
-        /// <summary> Occurs when the color change starts. </summary>
-        public event ColorChangeHandler ColorChangeStarted;
-        /// <summary> Occurs when color change. </summary>
-        public event ColorChangeHandler ColorChangeDelta;
-        /// <summary> Occurs when the color change is complete. </summary>
-        public event ColorChangeHandler ColorChangeCompleted;
+        /// <summary> Occurs when the color changed starts. </summary>
+        public event ColorChangeHandler ColorChangedStarted;
+        /// <summary> Occurs when color changed. </summary>
+        public event ColorChangeHandler ColorChangedDelta;
+        /// <summary> Occurs when the color changed is complete. </summary>
+        public event ColorChangeHandler ColorChangedCompleted;
         /// <summary> Occurs when the hsv value changed. </summary>
         public event HSVChangeHandler HSVChanged;
-        /// <summary> Occurs when the hsv change starts. </summary>
+        /// <summary> Occurs when the hsv changes starts. </summary>
         public event HSVChangeHandler HSVChangeStarted;
-        /// <summary> Occurs when hsv change. </summary>
+        /// <summary> Occurs when hsv changes. </summary>
         public event HSVChangeHandler HSVChangeDelta;
-        /// <summary> Occurs when the hsv change is complete. </summary>
+        /// <summary> Occurs when the hsv changes is complete. </summary>
         public event HSVChangeHandler HSVChangeCompleted;
 
 
@@ -185,7 +185,7 @@ namespace HSVColorPickers
             get => this.hsv;
             set
             {
-                this.ColorChangeStarted?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
+                this.ColorChangedStarted?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
                 this.HSVChangeStarted?.Invoke(this, value);//Delegate
 
                 this.hsv = value;
@@ -196,7 +196,7 @@ namespace HSVColorPickers
             get => this.hsv;
             set
             {
-                this.ColorChangeDelta?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
+                this.ColorChangedDelta?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
                 this.HSVChangeDelta?.Invoke(this, value);//Delegate
 
                 this.hsv = value;
@@ -207,7 +207,7 @@ namespace HSVColorPickers
             get => this.hsv;
             set
             {
-                this.ColorChangeCompleted?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
+                this.ColorChangedCompleted?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
                 this.HSVChangeCompleted?.Invoke(this, value);//Delegate
 
                 this.hsv = value;
@@ -298,6 +298,16 @@ namespace HSVColorPickers
 
                 this.UpdateEllipse(size);
                 this.UpdateThumb(this.hsv.H, this.hsv.S);
+            };
+
+            //Pointer
+            this.Canvas.PointerPressed += (s, e) =>
+            {
+                base.CapturePointer(e.Pointer);
+            };
+            this.Canvas.PointerReleased += (s, e) =>
+            {
+                base.ReleasePointerCapture(e.Pointer);
             };
 
             //Manipulation

@@ -18,13 +18,13 @@ namespace HSVColorPickers
     {
 
         //@Delegate
-        /// <summary> Occurs when alpha change. </summary>
+        /// <summary> Occurs when alpha changed. </summary>
         public event AlphaChangeHandler AlphaChanged;
-        /// <summary> Occurs when the alpha change starts. </summary>
+        /// <summary> Occurs when the alpha changed starts. </summary>
         public event AlphaChangeHandler AlphaChangeStarted;
-        /// <summary> Occurs when alpha change. </summary>
+        /// <summary> Occurs when alpha changed. </summary>
         public event AlphaChangeHandler AlphaChangeDelta;
-        /// <summary> Occurs when the alpha change is complete. </summary>
+        /// <summary> Occurs when the alpha changed is complete. </summary>
         public event AlphaChangeHandler AlphaChangeCompleted;
 
 
@@ -56,40 +56,6 @@ namespace HSVColorPickers
             }
         }
         private byte alpha = 255;
-
-
-        private byte _Alpha
-        {
-            set
-            {
-                this.alpha = value;
-                this.AlphaChanged?.Invoke(this, value);//Delegate
-            }
-        }
-        private byte _AlphaStarted
-        {
-            set
-            {
-                this.alpha = value;
-                this.AlphaChangeStarted?.Invoke(this, value);//Delegate
-            }
-        }
-        private byte _AlphaDelta
-        {
-            set
-            {
-                this.alpha = value;
-                this.AlphaChangeDelta?.Invoke(this, value);//Delegate
-            }
-        }
-        private byte _AlphaCompleted
-        {
-            set
-            {
-                this.alpha = value;
-                this.AlphaChangeCompleted?.Invoke(this, value);//Delegate
-            }
-        }
 
 
         #endregion
@@ -159,12 +125,32 @@ namespace HSVColorPickers
             this.InitializeComponent();
 
             //Slider
-            this.ASlider.ValueChangeStarted += (s, value) => this._AlphaStarted = this.Change((byte)value, false);
-            this.ASlider.ValueChangeDelta += (s, value) => this._AlphaDelta = this.Change((byte)value, false);
-            this.ASlider.ValueChangeCompleted += (s, value) => this._AlphaCompleted = this.Change((byte)value, false);
+            this.ASlider.ValueChangeStarted += (s, value) =>
+            {
+                byte alpha = (byte)value;
+                this.alpha = alpha;
+                this.AlphaChangeStarted?.Invoke(this, alpha);//Delegate
+            };
+            this.ASlider.ValueChangeDelta += (s, value) =>
+            {
+                byte alpha = (byte)value;
+                this.alpha = alpha;
+                this.AlphaChangeDelta?.Invoke(this, alpha);//Delegate
+            };
+            this.ASlider.ValueChangeCompleted += (s, value) =>
+            {
+                byte alpha = (byte)value;
+                this.alpha = alpha;
+                this.AlphaChangeCompleted?.Invoke(this, alpha);//Delegate
+            };
 
             //Picker
-            this.APicker.ValueChanged += (s, value) => this._Alpha = this.Change((byte)value, true);
+            this.APicker.ValueChanged += (s, value) =>
+            {
+                byte alpha = (byte)value;
+                this.alpha = alpha;
+                this.AlphaChanged?.Invoke(this, alpha);//Delegate
+            };
 
             //Canvas
             this.CanvasControl.SizeChanged += (s, e) =>

@@ -80,19 +80,19 @@ namespace HSVColorPickers
         //@Delegate
         /// <summary> Occurs when the color value changed. </summary>
         public event ColorChangeHandler ColorChanged;
-        /// <summary> Occurs when the color change starts. </summary>
-        public event ColorChangeHandler ColorChangeStarted;
-        /// <summary> Occurs when color change. </summary>
-        public event ColorChangeHandler ColorChangeDelta;
-        /// <summary> Occurs when the color change is complete. </summary>
-        public event ColorChangeHandler ColorChangeCompleted;
+        /// <summary> Occurs when the color changed starts. </summary>
+        public event ColorChangeHandler ColorChangedStarted;
+        /// <summary> Occurs when color changed. </summary>
+        public event ColorChangeHandler ColorChangedDelta;
+        /// <summary> Occurs when the color changed is complete. </summary>
+        public event ColorChangeHandler ColorChangedCompleted;
         /// <summary> Occurs when the hsv value changed. </summary>
         public event HSVChangeHandler HSVChanged;
-        /// <summary> Occurs when the hsv change starts. </summary>
+        /// <summary> Occurs when the hsv changed starts. </summary>
         public event HSVChangeHandler HSVChangeStarted;
-        /// <summary> Occurs when hsv change. </summary>
+        /// <summary> Occurs when hsv changed. </summary>
         public event HSVChangeHandler HSVChangeDelta;
-        /// <summary> Occurs when the hsv change is complete. </summary>
+        /// <summary> Occurs when the hsv changed is complete. </summary>
         public event HSVChangeHandler HSVChangeCompleted;
 
 
@@ -143,41 +143,29 @@ namespace HSVColorPickers
                 this.hsv = value;
             }
         }
-        private HSV _HSVStarted
+        private void OnHSVChangeStarted(HSV value)
         {
-            get => this.hsv;
-            set
-            {
-                this.ColorChangeStarted?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
-                this.HSVChangeStarted?.Invoke(this, value);//Delegate
+            this.ColorChangedStarted?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
+            this.HSVChangeStarted?.Invoke(this, value);//Delegate
 
-                this.Invalidate(value);
-                this.hsv = value;
-            }
+            this.Invalidate(value);
+            this.hsv = value;
         }
-        private HSV _HSVDelta
+        private void OnHSVChangeDelta(HSV value)
         {
-            get => this.hsv;
-            set
-            {
-                this.ColorChangeDelta?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
-                this.HSVChangeDelta?.Invoke(this, value);//Delegate
+            this.ColorChangedDelta?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
+            this.HSVChangeDelta?.Invoke(this, value);//Delegate
 
-                this.Invalidate(value);
-                this.hsv = value;
-            }
+            this.Invalidate(value);
+            this.hsv = value;
         }
-        private HSV _HSVCompleted
+        private void OnHSVChangeCompleted(HSV value)
         {
-            get => this.hsv;
-            set
-            {
-                this.ColorChangeCompleted?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
-                this.HSVChangeCompleted?.Invoke(this, value);//Delegate
+            this.ColorChangedCompleted?.Invoke(this, HSV.HSVtoRGB(value));//Delegate
+            this.HSVChangeCompleted?.Invoke(this, value);//Delegate
 
-                this.Invalidate(value);
-                this.hsv = value;
-            }
+            this.Invalidate(value);
+            this.hsv = value;
         }
 
 
@@ -196,26 +184,26 @@ namespace HSVColorPickers
         /// <summary> Identifies the <see cref = "WheelPicker.Stroke" /> dependency property. </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(WheelPicker), new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.Gray)));
 
-        
+
         #endregion
 
 
         readonly float _strokeWidth = 8;
         float _canvasWidth;
         float _canvasHeight;
-        
+
         //Wheel
         Vector2 _center;// Wheel's center
         float _radio;// Wheel's radio
-        float _radioSpace; 
-         CanvasRenderTarget _wheelCanvas;
+        float _radioSpace;
+        CanvasRenderTarget _wheelCanvas;
 
         //Palette  
         float _square;
         Rect _rect;
         PaletteBrush _horizontalBrush = new PaletteBrush();
         PaletteBrush _verticalBrush = new PaletteBrush();
-        
+
         //Manipulation
         bool _isWheel;
         bool _isPalette;
@@ -238,7 +226,7 @@ namespace HSVColorPickers
                 float width = (float)e.NewSize.Width;
                 float height = (float)e.NewSize.Height;
 
-                if (this._wheelCanvas!=null)
+                if (this._wheelCanvas != null)
                 {
                     if (this._canvasWidth != width || this._canvasHeight != height)
                     {
@@ -259,7 +247,7 @@ namespace HSVColorPickers
                 {
                     using (CanvasDrawingSession ds = this._wheelCanvas.CreateDrawingSession())
                     {
-                        this.DrawWheelCanvas(ds); 
+                        this.DrawWheelCanvas(ds);
                     }
                 }
 
@@ -296,8 +284,9 @@ namespace HSVColorPickers
 
                 //Thumb
                 Vector2 wheel = WheelSize.HToVector((float)((this.HSV.H + 360.0) * Math.PI / 180.0), this._radio, this._center);
-                this.DrawThumb(args.DrawingSession, wheel);
-                
+                args.DrawingSession.DrawCircle(wheel, 9, Windows.UI.Colors.Black, 5);
+                args.DrawingSession.DrawCircle(wheel, 9, Windows.UI.Colors.White, 3);
+
                 //Palette
                 args.DrawingSession.FillRoundedRectangle(this._rect, 4, 4, Colors.White);
                 args.DrawingSession.FillRoundedRectangle(this._rect, 4, 4, this._horizontalBrush.Brush);
@@ -305,9 +294,22 @@ namespace HSVColorPickers
                 args.DrawingSession.DrawRoundedRectangle(this._rect, 4, 4, this.Stroke.Color);
 
                 //Thumb 
+                Color color = HSV.HSVtoRGB(this.HSV);
                 float paletteX = WheelSize.SToVector(this.HSV.S, this._square, this._center.X);
                 float paletteY = WheelSize.VToVector(this.HSV.V, this._square, this._center.Y);
-                this.DrawThumb(args.DrawingSession, new Vector2(paletteX, paletteY));
+                args.DrawingSession.FillCircle(paletteX, paletteY, 12, this.Stroke.Color);
+                args.DrawingSession.FillCircle(paletteX, paletteY, 11, color);
+            };
+
+
+            //Pointer
+            this.CanvasControl.PointerPressed += (s, e) =>
+            {
+                base.CapturePointer(e.Pointer);
+            };
+            this.CanvasControl.PointerReleased += (s, e) =>
+            {
+                base.ReleasePointerCapture(e.Pointer);
             };
 
 
@@ -320,20 +322,20 @@ namespace HSVColorPickers
                 this._isWheel = this._position.Length() + this._strokeWidth > this._radio && this._position.Length() - this._strokeWidth < this._radio;
                 this._isPalette = Math.Abs(this._position.X) < this._square && Math.Abs(this._position.Y) < this._square;
 
-                if (this._isWheel) this._HSVStarted = new HSV(this.hsv.A, WheelSize.VectorToH(this._position), this.hsv.S, this.hsv.V);
-                if (this._isPalette) this._HSVStarted = new HSV(this.hsv.A, this.hsv.H, WheelSize.VectorToS(this._position.X, this._square), WheelSize.VectorToV(this._position.Y, this._square));
+                if (this._isWheel) this.OnHSVChangeStarted(new HSV(this.hsv.A, WheelSize.VectorToH(this._position), this.hsv.S, this.hsv.V));
+                if (this._isPalette) this.OnHSVChangeStarted(new HSV(this.hsv.A, this.hsv.H, WheelSize.VectorToS(this._position.X, this._square), WheelSize.VectorToV(this._position.Y, this._square)));
             };
             this.CanvasControl.ManipulationDelta += (s, e) =>
             {
                 this._position += e.Delta.Translation.ToVector2();
 
-                if (this._isWheel) this._HSVDelta = new HSV(this.hsv.A, WheelSize.VectorToH(this._position), this.hsv.S, this.hsv.V);
-                if (this._isPalette) this._HSVDelta = new HSV(this.hsv.A, this.hsv.H, WheelSize.VectorToS(this._position.X, this._square), WheelSize.VectorToV(this._position.Y, this._square));
+                if (this._isWheel) this.OnHSVChangeDelta(new HSV(this.hsv.A, WheelSize.VectorToH(this._position), this.hsv.S, this.hsv.V));
+                if (this._isPalette) this.OnHSVChangeDelta(new HSV(this.hsv.A, this.hsv.H, WheelSize.VectorToS(this._position.X, this._square), WheelSize.VectorToV(this._position.Y, this._square)));
             };
             this.CanvasControl.ManipulationCompleted += (s, e) =>
             {
-                if (this._isWheel) this._HSVCompleted = new HSV(this.hsv.A, WheelSize.VectorToH(this._position), this.hsv.S, this.hsv.V);
-                if (this._isPalette) this._HSVCompleted = new HSV(this.hsv.A, this.hsv.H, WheelSize.VectorToS(this._position.X, this._square), WheelSize.VectorToV(this._position.Y, this._square));
+                if (this._isWheel) this.OnHSVChangeCompleted(new HSV(this.hsv.A, WheelSize.VectorToH(this._position), this.hsv.S, this.hsv.V));
+                if (this._isPalette) this.OnHSVChangeCompleted(new HSV(this.hsv.A, this.hsv.H, WheelSize.VectorToS(this._position.X, this._square), WheelSize.VectorToV(this._position.Y, this._square)));
 
                 this._isWheel = false;
                 this._isPalette = false;
@@ -357,13 +359,6 @@ namespace HSVColorPickers
             ds.DrawCircle(this._center, this._radio + this._strokeWidth, this.Stroke.Color);
         }
 
-
-        //Thumb
-        private void DrawThumb(CanvasDrawingSession ds, Vector2 vector)
-        {
-            ds.DrawCircle(vector, 9, Windows.UI.Colors.Black, 5);
-            ds.DrawCircle(vector, 9, Windows.UI.Colors.White, 3);
-        }
 
     }
 }

@@ -19,11 +19,11 @@ namespace HSVColorPickers
 
         /// <summary> Occurs when the alpha value changed. </summary>
         event AlphaChangeHandler AlphaChanged;
-        /// <summary> Occurs when the alpha change starts. </summary>
+        /// <summary> Occurs when the alpha changed starts. </summary>
         event AlphaChangeHandler AlphaChangeStarted;
-        /// <summary> Occurs when alpha change. </summary>
+        /// <summary> Occurs when alpha changed. </summary>
         event AlphaChangeHandler AlphaChangeDelta;
-        /// <summary> Occurs when the alpha change is complete. </summary>
+        /// <summary> Occurs when the alpha changed is complete. </summary>
         event AlphaChangeHandler AlphaChangeCompleted;
     }
 }

@@ -36,19 +36,19 @@ namespace HSVColorPickers
         //@Delegate
         /// <summary> Occurs when the color value changed. </summary>
         public event ColorChangeHandler ColorChanged;
-        /// <summary> Occurs when the color change starts. </summary>
+        /// <summary> Occurs when the color changed starts. </summary>
         public event ColorChangeHandler ColorChangedStarted;
-        /// <summary> Occurs when color change. </summary>
+        /// <summary> Occurs when color changed. </summary>
         public event ColorChangeHandler ColorChangedDelta;
-        /// <summary> Occurs when the color change is complete. </summary>
+        /// <summary> Occurs when the color changed is complete. </summary>
         public event ColorChangeHandler ColorChangedCompleted;
         /// <summary> Occurs when the hsv value changed. </summary>
         public event HSVChangeHandler HSVChanged;
-        /// <summary> Occurs when the hsv change starts. </summary>
+        /// <summary> Occurs when the hsv changed starts. </summary>
         public event HSVChangeHandler HSVChangeStarted;
-        /// <summary> Occurs when hsv change. </summary>
+        /// <summary> Occurs when hsv changed. </summary>
         public event HSVChangeHandler HSVChangeDelta;
-        /// <summary> Occurs when the hsv change is complete. </summary>
+        /// <summary> Occurs when the hsv changed is complete. </summary>
         public event HSVChangeHandler HSVChangeCompleted;
 
 

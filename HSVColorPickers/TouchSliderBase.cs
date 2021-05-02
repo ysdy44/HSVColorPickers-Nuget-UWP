@@ -10,11 +10,11 @@ namespace HSVColorPickers
     public abstract class TouchSliderBase : UserControl
     {
         //@Delegate
-        /// <summary> Occurs when the value change starts. </summary>
+        /// <summary> Occurs when the value changed starts. </summary>
         public event TouchValueChangeHandler ValueChangeStarted;
-        /// <summary> Occurs when value change. </summary>
+        /// <summary> Occurs when value changed. </summary>
         public event TouchValueChangeHandler ValueChangeDelta;
-        /// <summary> Occurs when the value change is complete. </summary>
+        /// <summary> Occurs when the value changed is complete. </summary>
         public event TouchValueChangeHandler ValueChangeCompleted;
 
         //@Content
