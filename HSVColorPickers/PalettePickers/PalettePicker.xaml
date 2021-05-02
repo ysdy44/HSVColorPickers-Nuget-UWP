@@ -24,7 +24,8 @@
 
         <hsvColorPickers:TouchSlider x:Name="Slider" Grid.Row="1" SliderBrush="{StaticResource LinearGradientBrush}" BorderBrush="{x:Bind Stroke, Mode=OneWay}"/>
 
-        <canvas:CanvasControl x:Name="CanvasControl"/>
+        <canvas:CanvasControl x:Name="CanvasControl"   
+                              FlowDirection="LeftToRight"/>
 
     </Grid>
 </UserControl>

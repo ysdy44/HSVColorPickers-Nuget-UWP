@@ -113,6 +113,11 @@
     </Compile>
     <Compile Include="Enums\RGBMode.cs" />
     <Compile Include="Enums\HSVMode.cs" />
+    <Compile Include="Eyedropper.Method.cs" />
+    <Compile Include="Eyedropper.xaml.cs">
+      <DependentUpon>Eyedropper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EyedropperToolButton .cs" />
     <Compile Include="GreyWhiteMeshHelpher.cs" />
     <Compile Include="Handlers\AlphaChangeHandler.cs" />
     <Compile Include="AlphaPicker.xaml.cs">
@@ -123,9 +128,7 @@
       <DependentUpon>ColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Hex.cs" />
-    <Compile Include="HexPicker.xaml.cs">
-      <DependentUpon>HexPicker.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="HexPicker.cs" />
     <Compile Include="HSV.cs" />
     <Compile Include="Handlers\HSVChangeHandler.cs" />
     <Compile Include="HSVPicker.xaml.cs">
@@ -138,14 +141,10 @@
       <DependentUpon>NumberPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Palette.cs" />
-    <Compile Include="PaletteBases\PaletteBase.cs" />
-    <Compile Include="PaletteBases\PaletteHue.cs" />
     <Compile Include="PalettePickers\PaletteHuePicker.cs" />
     <Compile Include="PalettePickers\PalettePicker.xaml.cs">
       <DependentUpon>PalettePicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PaletteBases\PaletteSaturation.cs" />
-    <Compile Include="PaletteBases\PaletteValue.cs" />
     <Compile Include="PalettePickers\PaletteSaturationPicker.cs" />
     <Compile Include="PalettePickers\PaletteValuePicker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -190,7 +189,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="HexPicker.xaml">
+    <Page Include="Eyedropper.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
