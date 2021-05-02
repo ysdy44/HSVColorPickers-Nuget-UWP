@@ -14,7 +14,7 @@
     d:DesignHeight="270"
     d:DesignWidth="200">
 
-    
+
     <StackPanel 
         Background="{x:Bind UserControl.Background,Mode=OneWay}"
         Padding="{x:Bind UserControl.Padding,Mode=OneWay}"
@@ -32,39 +32,255 @@
             <ContentControl IsTabStop="True" IsTapEnabled="True" HorizontalContentAlignment="Center" VerticalAlignment="Center">
                 #
             </ContentControl>
-            <local:HexPicker x:Name="_HexPicker" Grid.Column="1" Height="24" BorderThickness="0" />
-            <local:EyedropperToolButton  x:Name="_StrawPicker" Grid.Column="3" >
+            <local:HexPicker x:Name="HexPickerCore" Grid.Column="1" Height="24" BorderThickness="0" />
+            <local:EyedropperToolButton  x:Name="Eyedropper" Grid.Column="3" Margin="0" MinWidth="32" MaxWidth="32" Width="32" Height="32" Style="{x:Bind ButtonStyle, Mode=OneWay}">
                 <FontIcon Glyph="&#xEF3C;" FontFamily="Segoe MDL2 Assets" />
             </local:EyedropperToolButton>
         </Grid>
 
-        <!--ComboBox-->
-        <Border>
-            <ComboBox x:Name="ComboBox" SelectedIndex="{x:Bind Index, Mode=TwoWay}">
-                <ComboBox.Style>
-                    <Style TargetType="ComboBox">
-                        <Setter Property="Background" Value="{ThemeResource AppBarBackgroundThemeBrush}"/>
-                        <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundListLowBrush}"/>
-                        <Setter Property="BorderThickness" Value="1"/>
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                        <Setter Property="VerticalAlignment" Value="Top"/>
-                    </Style>
-                </ComboBox.Style>
-                <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="x:String">
-                        <TextBlock Text="{x:Bind}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+        <!--Segmented-->
+        <Border Height="36" BorderThickness="0" BorderBrush="{x:Bind Stroke,Mode=OneWay}">
+            <Border.Resources>
+                <!--StaticResource-->
+                <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="{ThemeResource SystemBaseMediumColor}"/>
+                <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="{ThemeResource SystemBaseMediumColor}"/>
+                <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPressed" Color="{ThemeResource SystemBaseMediumColor}"/>
+                <SolidColorBrush x:Key="ListViewItemForegroundSelected" Color="White"/>
+                <SolidColorBrush x:Key="ListViewItemForegroundSelectedPointerOver" Color="White"/>
+                <SolidColorBrush x:Key="ListViewItemForegroundSelectedPressed" Color="White"/>
+            </Border.Resources>
+            <Grid x:Name="SegmentedGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <GridViewItem x:Name="Wheel" Grid.Column="0" Margin="0" Padding="2" MinWidth="22" MinHeight="22" Width="Auto" Height="Auto" HorizontalContentAlignment="Center">
+                    <Grid>
+                        <Ellipse Width="20" Height="20" StrokeThickness="1" Stroke="{x:Bind Stroke, Mode=OneWay}" Fill="White"/>
+                        <Ellipse Width="20" Height="20" >
+                            <Ellipse.Fill>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,0.5">
+                                    <GradientStop Color="#00A5FF" Offset="0"/>
+                                    <GradientStop Color="#0000A5FF" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <Ellipse Width="20" Height="20" >
+                            <Ellipse.Fill>
+                                <LinearGradientBrush StartPoint="0.3,0.7" EndPoint="0.5,0.5">
+                                    <GradientStop Color="#3900FF5C" Offset="0"/>
+                                    <GradientStop Color="#0000FF5C" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <Ellipse Width="20" Height="20" >
+                            <Ellipse.Fill>
+                                <LinearGradientBrush StartPoint="0.7,0.7" EndPoint="0.5,0.5">
+                                    <GradientStop Color="#20FF1B00" Offset="0"/>
+                                    <GradientStop Color="#00FF1B00" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <Rectangle RadiusX="2" RadiusY="2" Width="11" Height="11" StrokeThickness="1" Stroke="{x:Bind Stroke, Mode=OneWay}" Fill="White"/>
+                        <Rectangle RadiusX="2" RadiusY="2" Width="11" Height="11">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Color="#FFFFFF" Offset="0"/>
+                                    <GradientStop Color="#FF0000" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle RadiusX="2" RadiusY="2" Width="11" Height="11">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                    <GradientStop Color="Transparent" Offset="0"/>
+                                    <GradientStop Color="Black" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Grid>
+                </GridViewItem>
+                <GridViewItem x:Name="RGB" Grid.Column="1" Margin="0" Padding="2" MinWidth="22" MinHeight="22" Width="Auto" Height="Auto" HorizontalContentAlignment="Center">
+                    <StackPanel BorderThickness="1" BorderBrush="{x:Bind Stroke, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Rectangle Width="19" Height="5">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Color="#00FFFF" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Width="19" Height="5">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Color="#FF00FF" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Width="19" Height="5">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Color="#FFFF00" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </StackPanel>
+
+                </GridViewItem>
+                <GridViewItem x:Name="HSV" Grid.Column="2" Margin="0" Padding="2" MinWidth="22" MinHeight="22" Width="Auto" Height="Auto" HorizontalContentAlignment="Center">
+                    <StackPanel BorderThickness="1" BorderBrush="{x:Bind Stroke, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Rectangle Width="19" Height="5">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Color="#FF0000" Offset="0"/>
+                                    <GradientStop Color="#FFFF00" Offset="0.16666667"/>
+                                    <GradientStop Color="#00FF00" Offset="0.33333333"/>
+                                    <GradientStop Color="#00FFFF" Offset="0.5"/>
+                                    <GradientStop Color="#0000FF" Offset="0.66666667"/>
+                                    <GradientStop Color="#FF00FF" Offset="0.83333333"/>
+                                    <GradientStop Color="#FF0000" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Width="19" Height="5">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#00A5FF" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Width="19" Height="5">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="#00A5FF" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </StackPanel>
+                </GridViewItem>
+
+                <GridViewItem x:Name="PaletteHue" Grid.Column="3" Margin="0" Padding="2" MinWidth="22" MinHeight="22" Width="Auto" Height="Auto" HorizontalContentAlignment="Center">
+                    <Grid>
+                        <Rectangle RadiusX="2" RadiusY="2" Width="20" Height="20" StrokeThickness="1" Stroke="{x:Bind Stroke, Mode=OneWay}" Fill="White"/>
+                        <Rectangle RadiusX="2" RadiusY="2" Width="20" Height="20">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Color="#FFFFFF" Offset="0"/>
+                                    <GradientStop Color="#FF0000" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle RadiusX="2" RadiusY="2" Width="20" Height="20">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                    <GradientStop Color="Transparent" Offset="0"/>
+                                    <GradientStop Color="Black" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Grid>
+                </GridViewItem>
+                <GridViewItem x:Name="PaletteSaturation" Grid.Column="4" Margin="0" Padding="2" MinWidth="22" MinHeight="22" Width="Auto" Height="Auto" HorizontalContentAlignment="Center">
+                    <Grid>
+                        <Rectangle RadiusX="2" RadiusY="2" Width="20" Height="20" StrokeThickness="1" Stroke="{x:Bind Stroke, Mode=OneWay}" Fill="White"/>
+                        <Rectangle RadiusX="2" RadiusY="2" Width="20" Height="20">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Color="#FF0000" Offset="0"/>
+                                    <GradientStop Color="#FFFF00" Offset="0.16666667"/>
+                                    <GradientStop Color="#00FF00" Offset="0.33333333"/>
+                                    <GradientStop Color="#00FFFF" Offset="0.5"/>
+                                    <GradientStop Color="#0000FF" Offset="0.66666667"/>
+                                    <GradientStop Color="#FF00FF" Offset="0.83333333"/>
+                                    <GradientStop Color="#FF0000" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle RadiusX="2" RadiusY="2" Width="20" Height="20">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                    <GradientStop Color="Transparent" Offset="0"/>
+                                    <GradientStop Color="Black" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Grid>
+                </GridViewItem>
+                <GridViewItem x:Name="PaletteValue" Grid.Column="5" Margin="0" Padding="2" MinWidth="22" MinHeight="22" Width="Auto" Height="Auto" HorizontalContentAlignment="Center">
+                    <Grid>
+                        <Rectangle RadiusX="2" RadiusY="2" Width="20" Height="20" StrokeThickness="1" Stroke="{x:Bind Stroke, Mode=OneWay}" Fill="White"/>
+                        <Rectangle RadiusX="2" RadiusY="2" Width="20" Height="20">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Color="#FF0000" Offset="0"/>
+                                    <GradientStop Color="#FFFF00" Offset="0.16666667"/>
+                                    <GradientStop Color="#00FF00" Offset="0.33333333"/>
+                                    <GradientStop Color="#00FFFF" Offset="0.5"/>
+                                    <GradientStop Color="#0000FF" Offset="0.66666667"/>
+                                    <GradientStop Color="#FF00FF" Offset="0.83333333"/>
+                                    <GradientStop Color="#FF0000" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle RadiusX="2" RadiusY="2" Width="20" Height="20">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                    <GradientStop Color="#00FFFFFF" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Grid>
+                </GridViewItem>
+
+                <GridViewItem x:Name="Circle" Grid.Column="6" Margin="0" Padding="2" MinWidth="22" MinHeight="22" Width="Auto" Height="Auto" HorizontalContentAlignment="Center">
+                    <Grid>
+                        <Ellipse Width="20" Height="20" StrokeThickness="1" Stroke="{x:Bind Stroke, Mode=OneWay}" Fill="White"/>
+                        <Ellipse Width="20" Height="20" >
+                            <Ellipse.Fill>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,0.5">
+                                    <GradientStop Color="#00A5FF" Offset="0"/>
+                                    <GradientStop Color="#0000A5FF" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <Ellipse Width="20" Height="20" >
+                            <Ellipse.Fill>
+                                <LinearGradientBrush StartPoint="0.3,0.7" EndPoint="0.5,0.5">
+                                    <GradientStop Color="#3900FF5C" Offset="0"/>
+                                    <GradientStop Color="#0000FF5C" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <Ellipse Width="20" Height="20" >
+                            <Ellipse.Fill>
+                                <LinearGradientBrush StartPoint="0.7,0.7" EndPoint="0.5,0.5">
+                                    <GradientStop Color="#20FF1B00" Offset="0"/>
+                                    <GradientStop Color="#00FF1B00" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </Grid>
+                </GridViewItem>
+
+            </Grid>
         </Border>
 
         <ContentControl Height="4"/>
-        
-        <!--Body-->
-        <Grid Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-            <local:SwatchesPicker x:Name="SwatchesPicker" TabIndex="0"/>
+        <!--Body-->
+        <Grid x:Name="BodyGrid" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
             <local:WheelPicker x:Name="WheelPicker" TabIndex="1" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
             <local:RGBPicker x:Name="RGBPicker" TabIndex="2" TextStyle="{x:Bind TextStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle,Mode=OneWay}" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
             <local:HSVPicker x:Name="HSVPicker" TabIndex="3" TextStyle="{x:Bind TextStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle,Mode=OneWay}" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
@@ -74,11 +290,11 @@
             <local:PaletteValuePicker x:Name="PaletteValuePicker" TabIndex="6" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
 
             <local:CirclePicker x:Name="CirclePicker" TabIndex="7" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
-            
+
         </Grid>
 
         <!--Alpha-->
-        <local:AlphaPicker x:Name="AlphaPicker" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
+        <local:AlphaPicker x:Name="AlphaPicker" ButtonStyle="{x:Bind ButtonStyle,Mode=OneWay}" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
 
         <ContentControl Height="12"/>
 
