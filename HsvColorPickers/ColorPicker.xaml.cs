@@ -258,7 +258,7 @@ namespace HSVColorPickers
 
             //Picker
             IList<IColorPicker> colorPickers = this.ColorPickers().ToList();
-         this.Loaded += (s, e) => this.ConstructColorPickers(colorPickers);
+            this.Loaded += (s, e) => this.ConstructColorPickers(colorPickers);
             this.ComboBox.ItemsSource = from colorPicker in colorPickers select colorPicker.Type;
 
             //Alpha

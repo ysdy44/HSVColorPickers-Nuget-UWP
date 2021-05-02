@@ -113,6 +113,11 @@
     </Compile>
     <Compile Include="Enums\RGBMode.cs" />
     <Compile Include="Enums\HSVMode.cs" />
+    <Compile Include="Eyedropper.Method.cs" />
+    <Compile Include="Eyedropper.xaml.cs">
+      <DependentUpon>Eyedropper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EyedropperToolButton .cs" />
     <Compile Include="GreyWhiteMeshHelpher.cs" />
     <Compile Include="Handlers\AlphaChangeHandler.cs" />
     <Compile Include="AlphaPicker.xaml.cs">
@@ -185,6 +190,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ColorPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Eyedropper.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
