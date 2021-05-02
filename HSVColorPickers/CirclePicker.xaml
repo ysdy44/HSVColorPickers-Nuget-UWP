@@ -33,10 +33,11 @@
         <hsvColorPickers:TouchSlider x:Name="VSlider" Grid.Row="1" SliderBrush="{StaticResource LinearGradientBrush}" BorderBrush="{x:Bind Stroke, Mode=OneWay}"/>
 
         
-        <Grid x:Name="RootGrid" Margin="15">
+        <Grid x:Name="RootGrid" Margin="15"
+              FlowDirection="LeftToRight">
 
             <Ellipse x:Name="HSEllipse" HorizontalAlignment="Center" VerticalAlignment="Center"
-                 StrokeThickness="1" Stroke="{x:Bind Stroke, Mode=OneWay}" Fill="{StaticResource ImageBrush}"/>
+                     StrokeThickness="1" Stroke="{x:Bind Stroke, Mode=OneWay}" Fill="{StaticResource ImageBrush}"/>
 
             <Canvas x:Name="Canvas" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Thumb x:Name="HSThumb" Width="26" Height="26">

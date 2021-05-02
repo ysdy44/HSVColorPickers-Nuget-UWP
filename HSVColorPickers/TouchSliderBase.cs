@@ -80,6 +80,17 @@ namespace HSVColorPickers
         /// </summary>
         public void InitializeComponent()
         {
+            //Pointer
+            this.PointerPressed += (s, e) =>
+            {
+                base.CapturePointer(e.Pointer);
+            };
+            this.PointerReleased += (s, e) =>
+            {
+                base.ReleasePointerCapture(e.Pointer);
+            };
+
+            //Manipulation
             this.RootGrid.ManipulationMode = ManipulationModes.All;
             this.RootGrid.ManipulationStarted += (sender, e) =>
             {
@@ -90,7 +101,17 @@ namespace HSVColorPickers
             };
             this.RootGrid.ManipulationDelta += (sender, e) =>
             {
-                this._offset += e.Delta.Translation.X;
+                switch (base.FlowDirection)
+                {
+                    case FlowDirection.LeftToRight:
+                        this._offset += e.Delta.Translation.X;
+                        break;
+                    case FlowDirection.RightToLeft:
+                        this._offset -= e.Delta.Translation.X;
+                        break;
+                    default:
+                        break;
+                }
                 double proportion = this.OffsetToProportionConverter(this._offset);
                 this.Value = this.ProportionToValueConverter(proportion);
                 this.ValueChangeDelta?.Invoke(this, this.Value);//Delegate

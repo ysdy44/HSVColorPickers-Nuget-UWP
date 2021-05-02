@@ -193,6 +193,18 @@ namespace HSVColorPickers
             this.Brushs = this.GetBrushs(colors);
             this.GridView.ItemsSource = this.GetItems(this.Brushs);
 
+
+            //Pointer
+            this.CanvasControl.PointerPressed += (s, e) =>
+            {
+                base.CapturePointer(e.Pointer);
+            };
+            this.CanvasControl.PointerReleased += (s, e) =>
+            {
+                base.ReleasePointerCapture(e.Pointer);
+            };
+
+
             //Manipulation
             this.CanvasControl.ManipulationMode = ManipulationModes.TranslateX;
             this.CanvasControl.ManipulationStarted += (s, e) => this.CurrentX = e.Position.X;
