@@ -42,7 +42,7 @@
                     <Grid>
                         <canvas:CanvasControl x:Name="CanvasControl" 
                                             UseSharedDevice="True" 
-                                            CustomDevice="{x:Bind canvasDevice}" 
+                                            CustomDevice="{x:Bind CanvasDevice}" 
                                             ClearColor="White"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"

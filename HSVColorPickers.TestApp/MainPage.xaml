@@ -23,6 +23,14 @@
                     <SolidColorBrush x:Name="SolidColorBrush" Color="DodgerBlue"/>
                 </Ellipse.Fill>
             </Ellipse>
+            <Button>
+                lllll
+                <Button.Flyout>
+                    <Flyout>
+                        <hSVColorPickers:ColorPicker x:Name="ColorPi" />
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
             <ListBox x:Name="ListBox" SelectedIndex="{x:Bind Index, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="x:String">
@@ -32,7 +40,7 @@
             </ListBox>
         </StackPanel>
 
-        
+
         <Grid 
                 Grid.Column="1"
                 Width="240"
@@ -63,6 +71,6 @@
 
 
         </Grid>
-        
+
     </Grid>
 </Page>
