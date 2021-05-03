@@ -23,7 +23,7 @@ namespace HSVColorPickers
         {
             get
             {
-                int value = (int)GetValue(ValueProperty);
+                int value = (int)base.GetValue(ValueProperty);
 
                 if (this.IsFlyoutOpened == false)
                 {
@@ -41,7 +41,7 @@ namespace HSVColorPickers
                     if (value > this.Maximum) value = this.Maximum;
                 }
 
-                SetValue(ValueProperty, value);
+                base.SetValue(ValueProperty, value);
             }
         }
         /// <summary> Identifies the <see cref = "NumberPicker.Value" /> dependency property. </summary>
@@ -102,7 +102,7 @@ namespace HSVColorPickers
         public FlyoutPlacementMode Placement
         {
             get => (FlyoutPlacementMode)base.GetValue(PlacementProperty);
-            set => base.SetValue(FlyoutPresenterStyleProperty, value);
+            set => base.SetValue(PlacementProperty, value);
         }
         /// <summary> Identifies the <see cref = "NumberPicker.Placement" /> dependency property. </summary>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(NumberPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));

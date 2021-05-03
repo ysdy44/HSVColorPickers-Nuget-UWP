@@ -87,7 +87,7 @@ namespace HSVColorPickers
         public FlyoutPlacementMode Placement
         {
             get => (FlyoutPlacementMode)base.GetValue(PlacementProperty);
-            set => base.SetValue(FlyoutPresenterStyleProperty, value);
+            set => base.SetValue(PlacementProperty, value);
         }
         /// <summary> Identifies the <see cref = "NumberPicker.Placement" /> dependency property. </summary>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(AlphaPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));

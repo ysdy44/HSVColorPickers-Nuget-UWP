@@ -107,7 +107,7 @@ namespace HSVColorPickers
         public Style ButtonStyle
         {
             get => (Style)base.GetValue(ButtonStyleProperty);
-            set => base.SetValue(TextStyleProperty, value);
+            set => base.SetValue(ButtonStyleProperty, value);
         }
         /// <summary> Identifies the <see cref = "HSVPicker.ButtonStyle" /> dependency property. </summary>
         public static readonly DependencyProperty ButtonStyleProperty = DependencyProperty.Register(nameof(ButtonStyle), typeof(Style), typeof(HSVPicker), new PropertyMetadata(null));
@@ -127,7 +127,7 @@ namespace HSVColorPickers
         public FlyoutPlacementMode Placement
         {
             get => (FlyoutPlacementMode)base.GetValue(PlacementProperty);
-            set => base.SetValue(FlyoutPresenterStyleProperty, value);
+            set => base.SetValue(PlacementProperty, value);
         }
         /// <summary> Identifies the <see cref = "HSVPicker.Placement" /> dependency property. </summary>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(HSVPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
