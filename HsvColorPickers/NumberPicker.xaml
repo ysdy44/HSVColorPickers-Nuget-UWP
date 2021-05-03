@@ -8,10 +8,10 @@
     mc:Ignorable="d"    
     >
 
-    <Button x:Name="Button" Style="{x:Bind ButtonStyle}">
+    <Button x:Name="Button" Style="{x:Bind ButtonStyle, Mode=OneWay}">
 
         <Button.Flyout>
-            <Flyout x:Name="Flyout" Placement="{x:Bind Placement}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle}">
+            <Flyout x:Name="Flyout" Placement="{x:Bind Placement, Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle, Mode=OneWay}">
                 <Grid Width="180" Height="180">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
