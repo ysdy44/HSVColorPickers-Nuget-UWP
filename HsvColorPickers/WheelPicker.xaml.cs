@@ -177,8 +177,8 @@ namespace HSVColorPickers
         /// <summary>  Gets or sets a brush that describes the border fill of the control. </summary>
         public SolidColorBrush Stroke
         {
-            get { return (SolidColorBrush)GetValue(StrokeProperty); }
-            set { SetValue(StrokeProperty, value); }
+            get => (SolidColorBrush)base.GetValue(StrokeProperty);
+            set => base.SetValue(StrokeProperty, value);
         }
 
         /// <summary> Identifies the <see cref = "WheelPicker.Stroke" /> dependency property. </summary>

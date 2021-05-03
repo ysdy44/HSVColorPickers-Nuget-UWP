@@ -96,8 +96,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the text style. </summary>
         public Style TextStyle
         {
-            get { return (Style)GetValue(TextStyleProperty); }
-            set { SetValue(TextStyleProperty, value); }
+            get => (Style)base.GetValue(TextStyleProperty);
+            set => base.SetValue(TextStyleProperty, value);
         }
         /// <summary> Identifies the <see cref = "HSVPicker.ButtonStyle" /> dependency property. </summary>
         public static readonly DependencyProperty TextStyleProperty = DependencyProperty.Register(nameof(TextStyle), typeof(Style), typeof(HSVPicker), new PropertyMetadata(null));
@@ -106,8 +106,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the button style. </summary>
         public Style ButtonStyle
         {
-            get { return (Style)GetValue(ButtonStyleProperty); }
-            set { SetValue(ButtonStyleProperty, value); }
+            get => (Style)base.GetValue(ButtonStyleProperty);
+            set => base.SetValue(TextStyleProperty, value);
         }
         /// <summary> Identifies the <see cref = "HSVPicker.ButtonStyle" /> dependency property. </summary>
         public static readonly DependencyProperty ButtonStyleProperty = DependencyProperty.Register(nameof(ButtonStyle), typeof(Style), typeof(HSVPicker), new PropertyMetadata(null));
@@ -116,8 +116,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the flyout style. </summary>
         public Style FlyoutPresenterStyle
         {
-            get { return (Style)GetValue(FlyoutPresenterStyleProperty); }
-            set { SetValue(FlyoutPresenterStyleProperty, value); }
+            get => (Style)base.GetValue(FlyoutPresenterStyleProperty);
+            set => base.SetValue(FlyoutPresenterStyleProperty, value);
         }
         /// <summary> Identifies the <see cref = "HSVPicker.FlyoutPresenterStyle" /> dependency property. </summary>
         public static readonly DependencyProperty FlyoutPresenterStyleProperty = DependencyProperty.Register(nameof(FlyoutPresenterStyle), typeof(Style), typeof(HSVPicker), new PropertyMetadata(null));
@@ -126,8 +126,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the flyout placement. </summary>
         public FlyoutPlacementMode Placement
         {
-            get { return (FlyoutPlacementMode)GetValue(PlacementProperty); }
-            set { SetValue(PlacementProperty, value); }
+            get => (FlyoutPlacementMode)base.GetValue(PlacementProperty);
+            set => base.SetValue(FlyoutPresenterStyleProperty, value);
         }
         /// <summary> Identifies the <see cref = "HSVPicker.Placement" /> dependency property. </summary>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(HSVPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
@@ -136,10 +136,9 @@ namespace HSVColorPickers
         /// <summary>  Gets or sets a brush that describes the border fill of the control. </summary>
         public SolidColorBrush Stroke
         {
-            get { return (SolidColorBrush)GetValue(StrokeProperty); }
-            set { SetValue(StrokeProperty, value); }
+            get => (SolidColorBrush)base.GetValue(StrokeProperty);
+            set => base.SetValue(StrokeProperty, value);
         }
-
         /// <summary> Identifies the <see cref = "HSVPicker.Stroke" /> dependency property. </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(HSVPicker), new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.Gray)));
 

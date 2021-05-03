@@ -51,8 +51,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the minimum desirable Value for range elements. </summary>
         public int Minimum
         {
-            get { return (int)GetValue(MinimumProperty); }
-            set { SetValue(MinimumProperty, value); }
+            get => (int)base.GetValue(MinimumProperty);
+            set => base.SetValue(MinimumProperty, value);
         }
         /// <summary> Identifies the <see cref = "NumberPicker.Minimum" /> dependency property. </summary>
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(nameof(Minimum), typeof(int), typeof(NumberPicker), new PropertyMetadata(0));
@@ -61,8 +61,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the maximum desirable Value for range elements. </summary>
         public int Maximum
         {
-            get { return (int)GetValue(MaximumProperty); }
-            set { SetValue(MaximumProperty, value); }
+            get => (int)base.GetValue(MaximumProperty);
+            set => base.SetValue(MaximumProperty, value);
         }
         /// <summary> Identifies the <see cref = "NumberPicker.Maximum" /> dependency property. </summary>
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(nameof(Maximum), typeof(int), typeof(NumberPicker), new PropertyMetadata(100));
@@ -71,8 +71,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the string Unit for range elements. </summary>
         public string Unit
         {
-            get { return (string)GetValue(UnitProperty); }
-            set { SetValue(UnitProperty, value); }
+            get => (string)base.GetValue(UnitProperty);
+            set => base.SetValue(UnitProperty, value);
         }
         /// <summary> Identifies the <see cref = "NumberPicker.Unit" /> dependency property. </summary>
         public static readonly DependencyProperty UnitProperty = DependencyProperty.Register(nameof(Unit), typeof(string), typeof(NumberPicker), new PropertyMetadata(null));
@@ -81,8 +81,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the button style. </summary>
         public Style ButtonStyle
         {
-            get { return (Style)GetValue(ButtonStyleProperty); }
-            set { SetValue(ButtonStyleProperty, value); }
+            get => (Style)base.GetValue(ButtonStyleProperty);
+            set => base.SetValue(ButtonStyleProperty, value);
         }
         /// <summary> Identifies the <see cref = "NumberPicker.ButtonStyleProperty" /> dependency property. </summary>
         public static readonly DependencyProperty ButtonStyleProperty = DependencyProperty.Register(nameof(ButtonStyleProperty), typeof(Style), typeof(NumberPicker), new PropertyMetadata(null));
@@ -91,8 +91,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the flyout style. </summary>
         public Style FlyoutPresenterStyle
         {
-            get { return (Style)GetValue(FlyoutPresenterStyleProperty); }
-            set { SetValue(FlyoutPresenterStyleProperty, value); }
+            get => (Style)base.GetValue(FlyoutPresenterStyleProperty);
+            set => base.SetValue(FlyoutPresenterStyleProperty, value);
         }
         /// <summary> Identifies the <see cref = "NumberPicker.FlyoutPresenterStyle" /> dependency property. </summary>
         public static readonly DependencyProperty FlyoutPresenterStyleProperty = DependencyProperty.Register(nameof(FlyoutPresenterStyle), typeof(Style), typeof(NumberPicker), new PropertyMetadata(null));
@@ -101,8 +101,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the flyout placement. </summary>
         public FlyoutPlacementMode Placement
         {
-            get { return (FlyoutPlacementMode)GetValue(PlacementProperty); }
-            set { SetValue(PlacementProperty, value); }
+            get => (FlyoutPlacementMode)base.GetValue(PlacementProperty);
+            set => base.SetValue(FlyoutPresenterStyleProperty, value);
         }
         /// <summary> Identifies the <see cref = "NumberPicker.Placement" /> dependency property. </summary>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(NumberPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));

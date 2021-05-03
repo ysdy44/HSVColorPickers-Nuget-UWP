@@ -52,17 +52,17 @@
 
         <!--H-->
         <TextBlock Grid.Row="0" Text="H" VerticalAlignment="Center" Style="{x:Bind TextStyle,Mode=OneWay}"/>
-        <hsvColorPickers:NumberPicker x:Name="HPicker" Grid.Row="0" HorizontalAlignment="Right" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle,Mode=OneWay}"/>
+        <hsvColorPickers:NumberPicker x:Name="HPicker" Grid.Row="0" HorizontalAlignment="Right" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle, Mode=OneWay}"/>
         <hsvColorPickers:TouchSlider x:Name="HSlider" Grid.Row="1" SliderBrush="{StaticResource HBrush}" BorderBrush="{x:Bind Stroke, Mode=OneWay}"/>
 
         <!--S-->
         <TextBlock Grid.Row="2" Text="S" VerticalAlignment="Center" Style="{x:Bind TextStyle,Mode=OneWay}"/>
-        <hsvColorPickers:NumberPicker x:Name="SPicker" Grid.Row="2" HorizontalAlignment="Right" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle,Mode=OneWay}"/>
+        <hsvColorPickers:NumberPicker x:Name="SPicker" Grid.Row="2" HorizontalAlignment="Right" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle, Mode=OneWay}"/>
         <hsvColorPickers:TouchSlider x:Name="SSlider" Grid.Row="3" SliderBrush="{StaticResource SBrush}" BorderBrush="{x:Bind Stroke, Mode=OneWay}"/>
 
         <!--V-->
         <TextBlock Grid.Row="4" Text="V" VerticalAlignment="Center" Style="{x:Bind TextStyle,Mode=OneWay}"/>
-        <hsvColorPickers:NumberPicker x:Name="VPicker" Grid.Row="4" HorizontalAlignment="Right" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle,Mode=OneWay}"/>
+        <hsvColorPickers:NumberPicker x:Name="VPicker" Grid.Row="4" HorizontalAlignment="Right" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle, Mode=OneWay}"/>
         <hsvColorPickers:TouchSlider x:Name="VSlider" Grid.Row="5" SliderBrush="{StaticResource VBrush}" BorderBrush="{x:Bind Stroke, Mode=OneWay}"/>
 
     </Grid>

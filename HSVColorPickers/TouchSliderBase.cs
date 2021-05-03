@@ -34,8 +34,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the current value for a TouchSlider. </summary>
         public double Value
         {
-            get { return (double)GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            get => (double)base.GetValue(ValueProperty);
+            set => base.SetValue(ValueProperty, value);
         }
         /// <summary> Identifies the <see cref = "TouchSliderBase.Value" /> dependency property. </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(double), typeof(TouchSliderBase), new PropertyMetadata(0.0, (sender, e) =>
@@ -53,8 +53,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the minimum desirable Value for range elements. </summary>
         public double Minimum
         {
-            get { return (double)GetValue(MinimumProperty); }
-            set { SetValue(MinimumProperty, value); }
+            get => (double)base.GetValue(MinimumProperty);
+            set => base.SetValue(MinimumProperty, value);
         }
         /// <summary> Identifies the <see cref = "TouchSliderBase.Minimum" /> dependency property. </summary>
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(nameof(Minimum), typeof(double), typeof(NumberPicker), new PropertyMetadata(0.0d));
@@ -63,8 +63,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the maximum desirable Value for range elements. </summary>
         public double Maximum
         {
-            get { return (double)GetValue(MaximumProperty); }
-            set { SetValue(MaximumProperty, value); }
+            get => (double)base.GetValue(MaximumProperty);
+            set => base.SetValue(MaximumProperty, value);
         }
         /// <summary> Identifies the <see cref = "TouchSliderBase.Minimum" /> dependency property. </summary>
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(nameof(Maximum), typeof(double), typeof(NumberPicker), new PropertyMetadata(100.0d));
