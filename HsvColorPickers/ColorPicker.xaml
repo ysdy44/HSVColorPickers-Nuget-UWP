@@ -33,9 +33,10 @@
                 #
             </ContentControl>
             <local:HexPicker x:Name="HexPickerCore" Grid.Column="1" Height="24" BorderThickness="0" />
-            <local:EyedropperToolButton  x:Name="Eyedropper" Grid.Column="3" Margin="0" Padding="2" MaxWidth="32" MinWidth="32" Width="32" Height="32" Style="{x:Bind ButtonStyle, Mode=OneWay}">
+            <Button x:Name="EyedropperButton" Grid.Column="3" Margin="0" Padding="2" MaxWidth="32" MinWidth="32" Width="32" Height="32" 
+                    Style="{x:Bind ButtonStyle, Mode=OneWay}">
                 <FontIcon Glyph="&#xEF3C;" FontFamily="Segoe MDL2 Assets" />
-            </local:EyedropperToolButton>
+            </Button>
         </Grid>
 
         <!--Segmented-->
@@ -282,8 +283,8 @@
         <Grid x:Name="BodyGrid" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
             <local:WheelPicker x:Name="WheelPicker" TabIndex="1" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
-            <local:RGBPicker x:Name="RGBPicker" TabIndex="2" TextStyle="{x:Bind TextStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle,Mode=OneWay}" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
-            <local:HSVPicker x:Name="HSVPicker" TabIndex="3" TextStyle="{x:Bind TextStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle,Mode=OneWay}" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
+            <local:RGBPicker x:Name="RGBPicker" TabIndex="2" TextStyle="{x:Bind TextStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle, Mode=OneWay}" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
+            <local:HSVPicker x:Name="HSVPicker" TabIndex="3" TextStyle="{x:Bind TextStyle,Mode=OneWay}" ButtonStyle="{x:Bind ButtonStyle, Mode=OneWay}" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
 
             <local:PaletteHuePicker x:Name="PaletteHuePicker" TabIndex="4" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
             <local:PaletteSaturationPicker x:Name="PaletteSaturationPicker" TabIndex="5" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
@@ -294,7 +295,7 @@
         </Grid>
 
         <!--Alpha-->
-        <local:AlphaPicker x:Name="AlphaPicker" ButtonStyle="{x:Bind ButtonStyle,Mode=OneWay}" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
+        <local:AlphaPicker x:Name="AlphaPicker" ButtonStyle="{x:Bind ButtonStyle, Mode=OneWay}" Placement="{x:Bind Placement,Mode=OneWay}" FlyoutPresenterStyle="{x:Bind FlyoutPresenterStyle,Mode=OneWay}" Stroke="{x:Bind Stroke, Mode=OneWay}"/>
 
         <ContentControl Height="12"/>
 

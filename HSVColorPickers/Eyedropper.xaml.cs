@@ -1,6 +1,8 @@
 ﻿using Microsoft.Graphics.Canvas;
+using System;
 using System.Numerics;
 using System.Threading.Tasks;
+using Windows.System;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -11,16 +13,31 @@ namespace HSVColorPickers
     /// <summary>
     /// The <see cref="Eyedropper"/> control can pick up a color from anywhere in your application.
     /// </summary>
-    internal sealed partial class Eyedropper : UserControl
+    public sealed partial class Eyedropper : UserControl
     {
 
+        //@Delegate
+        /// <summary> Occurs when closed. </summary>
+        public event EventHandler<object> Closed
+        {
+            remove => this.Popup.Closed -= value;
+            add => this.Popup.Closed += value;
+        }
+        /// <summary> Occurs when opened. </summary>
+        public event EventHandler<object> Opened
+        {
+            remove => this.Popup.Opened -= value;
+            add => this.Popup.Opened += value;
+        }
+
+
         //@Converter
-        public string ColorToStringConverter(Color color) => $"#{color.R:x2}{color.G:x2}{color.B:x2}".ToUpper();
-        public double RadiusToDiameterConverter(double radius) => radius * 2;
-        public CornerRadius RadiusToCornerRadiusConverter(double radius) => new CornerRadius(radius);
-        public double RadiusToInnerDiameterConverter(double radius) => radius * 2 - 2;
-        public CornerRadius RadiusToInnerCornerRadiusConverter(double radius) => new CornerRadius(radius - 1);
-        public double FactorToSquareConverter(double factor) => factor + 2;
+        private string ColorToStringConverter(Color color) => $"#{color.R:x2}{color.G:x2}{color.B:x2}".ToUpper();
+        private double RadiusToDiameterConverter(double radius) => radius * 2;
+        private CornerRadius RadiusToCornerRadiusConverter(double radius) => new CornerRadius(radius);
+        private double RadiusToInnerDiameterConverter(double radius) => radius * 2 - 2;
+        private CornerRadius RadiusToInnerCornerRadiusConverter(double radius) => new CornerRadius(radius - 1);
+        private double FactorToSquareConverter(double factor) => factor + 2;
 
 
         //@Content

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using Windows.System;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 
 namespace HSVColorPickers
@@ -25,6 +27,18 @@ namespace HSVColorPickers
         /// <summary> Occurs when the color changed is complete. </summary>
         public event ColorChangeHandler ColorChangedCompleted;
 
+        /// <summary> Occurs when the eyedropper closed. </summary>
+        public event EventHandler<object> EyedropperClosed
+        {
+            remove => this.Eyedropper.Closed -= value;
+            add => this.Eyedropper.Closed += value;
+        }
+        /// <summary> Occurs when the eyedropper opened. </summary>
+        public event EventHandler<object> EyedropperOpened
+        {
+            remove => this.Eyedropper.Opened -= value;
+            add => this.Eyedropper.Opened += value;
+        }
 
         private EventHandler<Color> ChangeColor;
 
@@ -35,6 +49,10 @@ namespace HSVColorPickers
         public Control Self => this;
         /// <summary> Gets hex picker. </summary>
         public TextBox HexPicker => this.HexPickerCore;
+
+        private readonly Eyedropper Eyedropper = new Eyedropper();
+        private readonly IEnumerable<IColorPicker> ColorPickers;
+        private readonly IEnumerable<GridViewItem> Headers;
 
 
         #region DependencyProperty
@@ -142,8 +160,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the text style. </summary>
         public Style TextStyle
         {
-            get { return (Style)GetValue(TextStyleProperty); }
-            set { SetValue(TextStyleProperty, value); }
+            get => (Style)base.GetValue(TextStyleProperty);
+            set => base.SetValue(TextStyleProperty, value);
         }
         /// <summary> Identifies the <see cref = "ColorPicker.ButtonStyle" /> dependency property. </summary>
         public static readonly DependencyProperty TextStyleProperty = DependencyProperty.Register(nameof(TextStyle), typeof(Style), typeof(ColorPicker), new PropertyMetadata(null));
@@ -152,8 +170,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the button style. </summary>
         public Style ButtonStyle
         {
-            get { return (Style)GetValue(ButtonStyleProperty); }
-            set { SetValue(ButtonStyleProperty, value); }
+            get => (Style)base.GetValue(ButtonStyleProperty);
+            set => base.SetValue(TextStyleProperty, value);
         }
         /// <summary> Identifies the <see cref = "ColorPicker.ButtonStyle" /> dependency property. </summary>
         public static readonly DependencyProperty ButtonStyleProperty = DependencyProperty.Register(nameof(ButtonStyle), typeof(Style), typeof(ColorPicker), new PropertyMetadata(null));
@@ -162,8 +180,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the flyout style. </summary>
         public Style FlyoutPresenterStyle
         {
-            get { return (Style)GetValue(FlyoutPresenterStyleProperty); }
-            set { SetValue(FlyoutPresenterStyleProperty, value); }
+            get => (Style)base.GetValue(FlyoutPresenterStyleProperty);
+            set => base.SetValue(FlyoutPresenterStyleProperty, value);
         }
         /// <summary> Identifies the <see cref = "ColorPicker.FlyoutPresenterStyle" /> dependency property. </summary>
         public static readonly DependencyProperty FlyoutPresenterStyleProperty = DependencyProperty.Register(nameof(FlyoutPresenterStyle), typeof(Style), typeof(ColorPicker), new PropertyMetadata(null));
@@ -172,8 +190,8 @@ namespace HSVColorPickers
         /// <summary> Get or set the flyout placement. </summary>
         public FlyoutPlacementMode Placement
         {
-            get { return (FlyoutPlacementMode)GetValue(PlacementProperty); }
-            set { SetValue(PlacementProperty, value); }
+            get => (FlyoutPlacementMode)base.GetValue(PlacementProperty);
+            set => base.SetValue(FlyoutPresenterStyleProperty, value);
         }
         /// <summary> Identifies the <see cref = "ColorPicker.Placement" /> dependency property. </summary>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(ColorPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
@@ -182,18 +200,14 @@ namespace HSVColorPickers
         /// <summary>  Gets or sets a brush that describes the border fill of the control. </summary>
         public SolidColorBrush Stroke
         {
-            get { return (SolidColorBrush)GetValue(StrokeProperty); }
-            set { SetValue(StrokeProperty, value); }
+            get => (SolidColorBrush)base.GetValue(StrokeProperty);
+            set => base.SetValue(StrokeProperty, value);
         }
         /// <summary> Identifies the <see cref = "ColorPicker.Stroke" /> dependency property. </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(ColorPicker), new PropertyMetadata(new SolidColorBrush(Windows.UI.Colors.Gray)));
 
 
         #endregion
-
-
-        private readonly IEnumerable<IColorPicker> ColorPickers;
-        private readonly IEnumerable<GridViewItem> Headers;
 
 
         //@Construct
@@ -224,11 +238,21 @@ namespace HSVColorPickers
             };
 
             //Eyedropper
-            this.Eyedropper.Color = this.Color;
-            this.Eyedropper.ColorChanged += (s, color) =>
+            this.EyedropperButton.Click += async (s, e) =>
             {
+                Color color = await this.Eyedropper.OpenAsync(this.EyedropperButton);
                 this.OnColorChanged(this, color);
                 this.ChangeColor?.Invoke(this, color);
+            };
+            this.EyedropperClosed += (s, e) =>
+            {
+                this.EyedropperButton.IsEnabled = true;
+                Window.Current.CoreWindow.KeyDown -= CoreWindow_KeyDown;
+            };
+            this.EyedropperOpened += (s, e) =>
+            {
+                this.EyedropperButton.IsEnabled = false;
+                Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
             };
         }
 
@@ -289,6 +313,58 @@ namespace HSVColorPickers
 
                     colorPicker.Self.Visibility = Visibility.Collapsed;
                 }
+            }
+        }
+
+        private void CoreWindow_KeyDown(CoreWindow sender, KeyEventArgs args)
+        {
+            switch (args.VirtualKey)
+            {
+                case VirtualKey.Left:
+                    {
+                        Vector2 position = this.Eyedropper.Postion;
+                        position.X -= 2;
+                        this.Eyedropper.Postion = position;
+                    }
+                    break;
+                case VirtualKey.Up:
+                    {
+                        Vector2 position = this.Eyedropper.Postion;
+                        position.Y -= 2;
+                        this.Eyedropper.Postion = position;
+                    }
+                    break;
+                case VirtualKey.Right:
+                    {
+                        Vector2 position = this.Eyedropper.Postion;
+                        position.X += 2;
+                        this.Eyedropper.Postion = position;
+                    }
+                    break;
+                case VirtualKey.Down:
+                    {
+                        Vector2 position = this.Eyedropper.Postion;
+                        position.Y += 2;
+                        this.Eyedropper.Postion = position;
+                    }
+                    break;
+
+                case VirtualKey.Enter:
+                    {
+                        this.Eyedropper.Close();
+                    }
+                    break;
+                case VirtualKey.Escape:
+                    {
+                        this.Eyedropper.Close();
+                        Color color = this.Eyedropper.Color;
+                        this.OnColorChanged(this, color);
+                        this.ChangeColor?.Invoke(this, color);
+                    }
+                    break;
+
+                default:
+                    break;
             }
         }
 

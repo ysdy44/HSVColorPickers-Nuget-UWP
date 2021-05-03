@@ -117,7 +117,6 @@
     <Compile Include="Eyedropper.xaml.cs">
       <DependentUpon>Eyedropper.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EyedropperToolButton .cs" />
     <Compile Include="GreyWhiteMeshHelpher.cs" />
     <Compile Include="Handlers\AlphaChangeHandler.cs" />
     <Compile Include="AlphaPicker.xaml.cs">

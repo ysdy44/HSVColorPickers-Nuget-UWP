@@ -12,10 +12,11 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.Foundation;
 
 namespace HSVColorPickers
 {
-    internal sealed partial class Eyedropper : UserControl
+    public sealed partial class Eyedropper : UserControl
     {
 
         /// <summary>
@@ -35,16 +36,20 @@ namespace HSVColorPickers
         /// <summary>
         /// Open the eyedropper.
         /// </summary>
-        /// <param name="pointer">The initial eyedropper pointer</param>
+        /// <param name="placementTarget">Gets or sets the element relative to which the eyedropper is placed.</param>
         /// <returns>The picked color.</returns>
-        public async Task<Color> OpenAsync(PointerRoutedEventArgs pointer)
+        public async Task<Color> OpenAsync(FrameworkElement placementTarget)
         {
             await this.OpenCore();
 
-            this.Visibility = Visibility.Collapsed;
             this.Popup.IsOpen = true;
-            this.Postion = pointer.GetCurrentPoint(this.RootGrid).Position.ToVector2();
-            this.Visibility = Visibility.Visible;
+
+            //@Release
+            Point sourcePostion = placementTarget.TransformToVisual(Window.Current.Content).TransformPoint(new Point());
+            double offsetX = sourcePostion.X + base.ActualWidth / 2;
+            double offsetY = sourcePostion.Y + base.ActualHeight / 2;
+            Point position = new Point(offsetX, offsetY);
+            this.Postion = position.ToVector2();
 
             Color resultcolor = await this.TaskSource.Task;
             this.TaskSource = null;
@@ -61,7 +66,7 @@ namespace HSVColorPickers
             RenderTargetBitmap imageSource = await this.RenderScreenshotAsync();
             this.ImageBrush.ImageSource = imageSource;
 
-            CanvasBitmap screenshot =await this.GetBitmap(imageSource);
+            CanvasBitmap screenshot = await this.GetBitmap(imageSource);
             this.ScreenShot = screenshot;
         }
 
