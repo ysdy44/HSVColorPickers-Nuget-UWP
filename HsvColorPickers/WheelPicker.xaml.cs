@@ -79,21 +79,21 @@ namespace HSVColorPickers
 
         //@Delegate
         /// <summary> Occurs when the color value changed. </summary>
-        public event ColorChangeHandler ColorChanged;
+        public event ColorChangedHandler ColorChanged;
         /// <summary> Occurs when the color changed starts. </summary>
-        public event ColorChangeHandler ColorChangedStarted;
+        public event ColorChangedHandler ColorChangedStarted;
         /// <summary> Occurs when color changed. </summary>
-        public event ColorChangeHandler ColorChangedDelta;
+        public event ColorChangedHandler ColorChangedDelta;
         /// <summary> Occurs when the color changed is complete. </summary>
-        public event ColorChangeHandler ColorChangedCompleted;
+        public event ColorChangedHandler ColorChangedCompleted;
         /// <summary> Occurs when the hsv value changed. </summary>
-        public event HSVChangeHandler HSVChanged;
+        public event HSVChangedHandler HSVChanged;
         /// <summary> Occurs when the hsv changed starts. </summary>
-        public event HSVChangeHandler HSVChangeStarted;
+        public event HSVChangedHandler HSVChangeStarted;
         /// <summary> Occurs when hsv changed. </summary>
-        public event HSVChangeHandler HSVChangeDelta;
+        public event HSVChangedHandler HSVChangeDelta;
         /// <summary> Occurs when the hsv changed is complete. </summary>
-        public event HSVChangeHandler HSVChangeCompleted;
+        public event HSVChangedHandler HSVChangeCompleted;
 
 
         /// <summary> Gets picker's type name. </summary>

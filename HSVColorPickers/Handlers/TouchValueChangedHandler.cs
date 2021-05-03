@@ -2,9 +2,9 @@
 {
     //@Delegate
     /// <summary>
-    /// Method that represents the handling of the HSVChaTouchValueChangenge event.
+    /// Method that represents the handling of the TouchValueChanged event.
     /// </summary>
     /// <param name="sender"> The object to which the event handler is attached. </param>
     /// <param name="value"> Event data. </param>
-    public delegate void TouchValueChangeHandler(object sender, double value);
+    public delegate void TouchValueChangedHandler(object sender, double value);
 }

@@ -1,10 +1,12 @@
-﻿namespace HSVColorPickers
+﻿using Windows.UI;
+
+namespace HSVColorPickers
 {
     //@Delegate
     /// <summary>
-    /// Method that represents the handling of the HSVChange event.
+    /// Method that represents the handling of the ColorChange event.
     /// </summary>
     /// <param name="sender"> The object to which the event handler is attached. </param>
     /// <param name="value"> Event data. </param>
-    public delegate void HSVChangeHandler(object sender, HSV value);
+    public delegate void ColorChangedHandler(object sender, Color value);
 }

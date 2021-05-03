@@ -12,7 +12,7 @@ namespace HSVColorPickers
     {
         //@Delegate
         /// <summary> Occurs when the value changed. </summary>
-        public event ValueChangeHandler ValueChanged = null;
+        public event ValueChangedHandler ValueChanged = null;
 
 
         #region DependencyProperty

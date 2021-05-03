@@ -18,12 +18,12 @@ namespace HSVColorPickers
         Color Color { get; set; }
 
         /// <summary> Occurs when the color value changed. </summary>
-        event ColorChangeHandler ColorChanged;
+        event ColorChangedHandler ColorChanged;
         /// <summary> Occurs when the color changed starts. </summary>
-        event ColorChangeHandler ColorChangedStarted;
+        event ColorChangedHandler ColorChangedStarted;
         /// <summary> Occurs when color changed. </summary>
-        event ColorChangeHandler ColorChangedDelta;
+        event ColorChangedHandler ColorChangedDelta;
         /// <summary> Occurs when the color changed is complete. </summary>
-        event ColorChangeHandler ColorChangedCompleted;
+        event ColorChangedHandler ColorChangedCompleted;
     }
 }

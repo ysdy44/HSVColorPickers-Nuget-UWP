@@ -18,12 +18,12 @@ namespace HSVColorPickers
         byte Alpha { get; set; }
 
         /// <summary> Occurs when the alpha value changed. </summary>
-        event AlphaChangeHandler AlphaChanged;
+        event AlphaChangedHandler AlphaChanged;
         /// <summary> Occurs when the alpha changed starts. </summary>
-        event AlphaChangeHandler AlphaChangeStarted;
+        event AlphaChangedHandler AlphaChangeStarted;
         /// <summary> Occurs when alpha changed. </summary>
-        event AlphaChangeHandler AlphaChangeDelta;
+        event AlphaChangedHandler AlphaChangeDelta;
         /// <summary> Occurs when the alpha changed is complete. </summary>
-        event AlphaChangeHandler AlphaChangeCompleted;
+        event AlphaChangedHandler AlphaChangeCompleted;
     }
 }

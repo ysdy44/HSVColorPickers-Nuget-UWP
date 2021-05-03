@@ -11,11 +11,11 @@ namespace HSVColorPickers
     {
         //@Delegate
         /// <summary> Occurs when the value changed starts. </summary>
-        public event TouchValueChangeHandler ValueChangeStarted;
+        public event TouchValueChangedHandler ValueChangeStarted;
         /// <summary> Occurs when value changed. </summary>
-        public event TouchValueChangeHandler ValueChangeDelta;
+        public event TouchValueChangedHandler ValueChangeDelta;
         /// <summary> Occurs when the value changed is complete. </summary>
-        public event TouchValueChangeHandler ValueChangeCompleted;
+        public event TouchValueChangedHandler ValueChangeCompleted;
 
         //@Content
         /// <summary> Get the RootGrid. </summary>

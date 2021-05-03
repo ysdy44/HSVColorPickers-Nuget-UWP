@@ -19,13 +19,13 @@ namespace HSVColorPickers
 
         //@Delegate
         /// <summary> Occurs when alpha changed. </summary>
-        public event AlphaChangeHandler AlphaChanged;
+        public event AlphaChangedHandler AlphaChanged;
         /// <summary> Occurs when the alpha changed starts. </summary>
-        public event AlphaChangeHandler AlphaChangeStarted;
+        public event AlphaChangedHandler AlphaChangeStarted;
         /// <summary> Occurs when alpha changed. </summary>
-        public event AlphaChangeHandler AlphaChangeDelta;
+        public event AlphaChangedHandler AlphaChangeDelta;
         /// <summary> Occurs when the alpha changed is complete. </summary>
-        public event AlphaChangeHandler AlphaChangeCompleted;
+        public event AlphaChangedHandler AlphaChangeCompleted;
 
 
         /// <summary> Gets picker's type name. </summary>

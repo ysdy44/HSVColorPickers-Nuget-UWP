@@ -118,7 +118,7 @@
       <DependentUpon>Eyedropper.xaml</DependentUpon>
     </Compile>
     <Compile Include="GreyWhiteMeshHelpher.cs" />
-    <Compile Include="Handlers\AlphaChangeHandler.cs" />
+    <Compile Include="Handlers\AlphaChangedHandler.cs" />
     <Compile Include="AlphaPicker.xaml.cs">
       <DependentUpon>AlphaPicker.xaml</DependentUpon>
     </Compile>
@@ -129,7 +129,7 @@
     <Compile Include="Hex.cs" />
     <Compile Include="HexPicker.cs" />
     <Compile Include="HSV.cs" />
-    <Compile Include="Handlers\HSVChangeHandler.cs" />
+    <Compile Include="Handlers\HSVChangedHandler.cs" />
     <Compile Include="HSVPicker.xaml.cs">
       <DependentUpon>HSVPicker.xaml</DependentUpon>
     </Compile>
@@ -159,8 +159,8 @@
     <Compile Include="TouchSlider.xaml.cs">
       <DependentUpon>TouchSlider.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Handlers\TouchValueChangeHandler.cs" />
-    <Compile Include="Handlers\ValueChangeHandler.cs" />
+    <Compile Include="Handlers\TouchValueChangedHandler.cs" />
+    <Compile Include="Handlers\ValueChangedHandler.cs" />
     <Compile Include="TouchSliderBase.cs" />
     <Compile Include="WheelPicker.xaml.cs">
       <DependentUpon>WheelPicker.xaml</DependentUpon>

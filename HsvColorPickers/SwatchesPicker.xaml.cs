@@ -112,13 +112,13 @@ namespace HSVColorPickers
 
         //@Delegate
         /// <summary> Occurs when the color value changed. </summary>
-        public event ColorChangeHandler ColorChanged;
+        public event ColorChangedHandler ColorChanged;
         /// <summary> Occurs when the color changed starts. </summary>
-        public event ColorChangeHandler ColorChangedStarted;
+        public event ColorChangedHandler ColorChangedStarted;
         /// <summary> Occurs when color changed. </summary>
-        public event ColorChangeHandler ColorChangedDelta;
+        public event ColorChangedHandler ColorChangedDelta;
         /// <summary> Occurs when the color changed is complete. </summary>
-        public event ColorChangeHandler ColorChangedCompleted;
+        public event ColorChangedHandler ColorChangedCompleted;
 
 
         /// <summary> Gets picker's type name. </summary>

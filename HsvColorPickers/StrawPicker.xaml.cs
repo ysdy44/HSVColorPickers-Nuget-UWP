@@ -23,7 +23,7 @@ namespace HSVColorPickers
     public sealed partial class StrawPicker : UserControl, IDisposable
     {
         /// <summary> 
-        /// A boxed Popup with Postionand Size. 
+        /// A boxed Popup with Postion and Size. 
         /// </summary>
         struct PopupSize
         {
@@ -168,7 +168,7 @@ namespace HSVColorPickers
         
         //@Delegate
         /// <summary> Occurs when the color value changed. </summary>
-        public event ColorChangeHandler ColorChanged = null;
+        public event ColorChangedHandler ColorChanged = null;
 
 
         /// <summary> Gets picker's type name. </summary>

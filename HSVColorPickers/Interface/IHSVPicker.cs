@@ -18,12 +18,12 @@ namespace HSVColorPickers
         HSV HSV { get; set; }
 
         /// <summary> Occurs when the hsv value changed. </summary>
-        event HSVChangeHandler HSVChanged;
+        event HSVChangedHandler HSVChanged;
         /// <summary> Occurs when the hsv changed starts. </summary>
-        event HSVChangeHandler HSVChangeStarted;
+        event HSVChangedHandler HSVChangeStarted;
         /// <summary> Occurs when hsv changed. </summary>
-        event HSVChangeHandler HSVChangeDelta;
+        event HSVChangedHandler HSVChangeDelta;
         /// <summary> Occurs when the hsv changed is complete. </summary>
-        event HSVChangeHandler HSVChangeCompleted;
+        event HSVChangedHandler HSVChangeCompleted;
     }
 }
