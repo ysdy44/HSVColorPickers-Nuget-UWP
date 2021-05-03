@@ -122,7 +122,7 @@
     <Compile Include="AlphaPicker.xaml.cs">
       <DependentUpon>AlphaPicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Handlers\ColorChangeHandler.cs" />
+    <Compile Include="Handlers\ColorChangedHandler.cs" />
     <Compile Include="ColorPicker.xaml.cs">
       <DependentUpon>ColorPicker.xaml</DependentUpon>
     </Compile>

@@ -6,8 +6,9 @@ using Windows.Foundation;
 using Windows.UI.Xaml.Media;
 
 namespace HSVColorPickers
-{    /// <summary>
-     /// Represents PalettePicker from PaletteValue.
+{  
+    /// <summary>
+     /// Represents a PalettePicker for Value.
      /// </summary>
     public class PaletteValuePicker : PalettePicker
     {

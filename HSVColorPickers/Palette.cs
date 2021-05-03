@@ -27,7 +27,7 @@ namespace HSVColorPickers
 
 
         /// <summary>
-        /// Palette color from Uri.
+        /// Palette color from Url.
         /// </summary>
         /// <param name="uri"> Web or file path. </param>
         /// <returns> Color </returns>
@@ -166,7 +166,7 @@ namespace HSVColorPickers
         }
 
         /// <summary>
-        /// get CanvasBitmap from uri
+        /// Get CanvasBitmap from url.
         /// </summary>
         /// <param name="uri">web or file path</param>
         /// <returns></returns>

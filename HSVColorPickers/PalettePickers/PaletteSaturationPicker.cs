@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Media;
 namespace HSVColorPickers
 {
     /// <summary>
-    /// Represents PalettePicker from PaletteSaturation.
+    /// Represents a PalettePicker for Saturation.
     /// </summary>
     public class PaletteSaturationPicker : PalettePicker
     {
