@@ -33,7 +33,7 @@ namespace HSVColorPickers
         /// <summary> Gets picker self. </summary>
         public Control Self => this;
 
-        
+
         #region Color
 
 
@@ -91,8 +91,8 @@ namespace HSVColorPickers
         }
         /// <summary> Identifies the <see cref = "NumberPicker.Placement" /> dependency property. </summary>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register(nameof(Placement), typeof(FlyoutPlacementMode), typeof(AlphaPicker), new PropertyMetadata(FlyoutPlacementMode.Bottom));
-    
-        
+
+
         /// <summary>  Gets or sets a brush that describes the border fill of the control. </summary>
         public SolidColorBrush Stroke
         {
@@ -129,18 +129,21 @@ namespace HSVColorPickers
             {
                 byte alpha = (byte)value;
                 this.alpha = alpha;
+                this.APicker.Value = alpha;
                 this.AlphaChangeStarted?.Invoke(this, alpha);//Delegate
             };
             this.ASlider.ValueChangeDelta += (s, value) =>
             {
                 byte alpha = (byte)value;
                 this.alpha = alpha;
+                this.APicker.Value = alpha;
                 this.AlphaChangeDelta?.Invoke(this, alpha);//Delegate
             };
             this.ASlider.ValueChangeCompleted += (s, value) =>
             {
                 byte alpha = (byte)value;
                 this.alpha = alpha;
+                this.APicker.Value = alpha;
                 this.AlphaChangeCompleted?.Invoke(this, alpha);//Delegate
             };
 
@@ -149,6 +152,7 @@ namespace HSVColorPickers
             {
                 byte alpha = (byte)value;
                 this.alpha = alpha;
+                this.ASlider.Value = alpha;
                 this.AlphaChanged?.Invoke(this, alpha);//Delegate
             };
 
@@ -189,7 +193,7 @@ namespace HSVColorPickers
 
             if (sliderOrPicker != false) this.ASlider.Value = A;
             if (sliderOrPicker != true) this.APicker.Value = A;
-            
+
             this.CanvasControl.Invalidate();
             return A;
         }
