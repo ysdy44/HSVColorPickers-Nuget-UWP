@@ -1,31 +1,31 @@
 # HSV Color Pickers
 
-This is a library used to develop the UWP.
-ColorPicker, RGBPicker, HSVPicker, WheelPicker, PalettePicker, StrawPicker, HexPicker, SwatchesPicker.
+这是一个用于开发 UWP 的库。
+ColorPicker、RGBPicker、HSVPicker、WheelPicker、PalettePicker、StrawPicker、HexPicker、SwatchesPicker。
 
 ![](ScreenShot/ScreenShot001.png)
 ![](ScreenShot/ScreenShot003.png)
 
 
-## Getting Started
+## 开始
 
 |Key|Value|
 |:-|:-|
-|System requirements| Windows10 Creators Update or upper|
-|Development tool|Visual Studio 2017|
-|Programing language|C#|
-|Display language|English|
+|系统要求| Windows10 Creators Update 或更高|
+|开发工具|Visual Studio 2017|
+|编程语言|C#|
+|显示语言|English|
 
   ![](ScreenShot/logo.png)
 
 
-Search 'HSV Color' in Nuget and download it.  
+在 Nuget 中搜索 “HSV Color” 并下载。
   ![](ScreenShot/Thumbnails000.jpg)
 
 
-### Example
+### 示例
 
-Run the "TestApp".
+运行 "TestApp".
 
 ```xaml
 xmlns:hSVColorPickers="using:HSVColorPickers"
@@ -71,18 +71,18 @@ new CirclePicker();
 ```
 
 
-## Learn More
+## 了解更多
 
-You can learn more from the demo application in windows 10 store:<br/>
+您可以从 Windows 10 商店中的演示应用程序中了解更多信息:<br/>
 [FanKit](https://www.microsoft.com/store/productId/9PD2JJZQF524)
 
 
-1.Click on item "Colors" in the top bar.  
+1.单击顶部栏中的 “Color” 项。
   ![](ScreenShot/Thumbnails001.jpg)
 
 
-2.Look for simple examples.  
+2.寻找简易示例。
     ![](ScreenShot/Thumbnails002.jpg)
 
 
-Enjoy it..
+玩得开心..
