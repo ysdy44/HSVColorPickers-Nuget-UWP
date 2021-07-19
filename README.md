@@ -3,8 +3,8 @@
 This is a library used to develop the UWP.
 ColorPicker, RGBPicker, HSVPicker, WheelPicker, PalettePicker, StrawPicker, HexPicker, SwatchesPicker.
 
-![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/ScreenShot001.png)
-![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/ScreenShot003.png)
+![](ScreenShot/ScreenShot001.png)
+![](ScreenShot/ScreenShot003.png)
 
 
 ## Getting Started
@@ -16,11 +16,11 @@ ColorPicker, RGBPicker, HSVPicker, WheelPicker, PalettePicker, StrawPicker, HexP
 |Programing language|C#|
 |Display language|English|
 
-  ![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/logo.png)
+  ![](ScreenShot/logo.png)
 
 
 Search 'HSV Color' in Nuget and download it.  
-  ![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/Thumbnails000.jpg)
+  ![](ScreenShot/Thumbnails000.jpg)
 
 
 ### Example
@@ -79,11 +79,11 @@ You can learn more from the demo application in windows 10 store:<br/>
 
 
 1.Click on item "Colors" in the top bar.  
-  ![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/Thumbnails001.jpg)
+  ![](ScreenShot/Thumbnails001.jpg)
 
 
 2.Look for simple examples.  
-    ![](https://github.com/ysdy44/HSVColorPickers-Nuget-UWP/blob/master/ScreenShot/Thumbnails002.jpg)
+    ![](ScreenShot/Thumbnails002.jpg)
 
 
 Enjoy it..
