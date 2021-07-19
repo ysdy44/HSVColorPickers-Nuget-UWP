@@ -9,10 +9,14 @@ namespace HSVColorPickers
     public struct HSV
     {
 
-        /// <summary> Alpha </summary>
+        /// <summary> 
+        /// Alpha. Default value 0, range 0 to 255.
+        /// </summary>
         public byte A;
 
-        /// <summary> Hue </summary>
+        /// <summary> 
+        /// Hue. Default value 0, range 0 to 360.
+        /// </summary>
         public float H
         {
             get => this.h;
@@ -25,7 +29,9 @@ namespace HSVColorPickers
         }
         private float h;
 
-        /// <summary> Saturation </summary>
+        /// <summary> 
+        /// Saturation. Default value 0, range 0 to 100.
+        /// </summary>
         public float S
         {
             get => this.s;
@@ -38,7 +44,9 @@ namespace HSVColorPickers
         }
         private float s;
 
-        /// <summary> Value </summary>
+        /// <summary> 
+        /// Value. Default value 0, range 0 to 100.
+        /// </summary>
         public float V
         {
             get => this.v;
@@ -57,7 +65,7 @@ namespace HSVColorPickers
         /// Construct a HSV.
         /// </summary>
         /// <param name="a"> Alpha </param>
-        /// <param name="h"> hue </param>
+        /// <param name="h"> Hue </param>
         /// <param name="s"> Saturation </param>
         /// <param name="v"> Value </param>   
         public HSV(byte a, float h, float s, float v)
